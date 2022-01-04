@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 232 144" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <path d="M46.56,126.653l59.941,-111.221l66.401,111.92l-126.342,-0.699Z" style="fill:#e16e6e;stroke:#000;stroke-width:1.09px;"/>
+    <path d="M46.62,126.663l59.665,-35.362" style="fill:none;stroke:#000;stroke-width:1.09px;"/>
+    <path d="M106.526,15.954l-0.187,75.471" style="fill:none;stroke:#000;stroke-width:1.09px;"/>
+    <path d="M83.722,104.708l23.078,-52.605l32.071,56.488l-55.149,-3.883Z" style="fill:#ba2727;fill-opacity:0.39;stroke:#fff;stroke-width:1.09px;"/>
+    <path d="M173.001,127.195l-66.671,-35.849" style="fill:none;stroke:#000;stroke-width:1.09px;"/>
+    <path d="M83.183,101.847c1.607,0.001 2.911,1.304 2.91,2.908c-0.001,1.603 -1.307,2.904 -2.914,2.903c-1.607,-0.001 -2.911,-1.304 -2.91,-2.907c0.001,-1.604 1.307,-2.905 2.914,-2.904Z" style="fill:#fff;stroke:#000;stroke-width:1.09px;"/>
+    <path d="M138.372,105.739c1.607,0.001 2.911,1.304 2.91,2.907c-0.001,1.604 -1.307,2.905 -2.914,2.904c-1.607,-0.002 -2.91,-1.304 -2.909,-2.908c0.001,-1.604 1.306,-2.905 2.913,-2.903Z" style="fill:#fff;stroke:#000;stroke-width:1.09px;"/>
+    <path d="M106.397,49.515c1.607,0.001 2.91,1.304 2.909,2.908c-0.001,1.603 -1.307,2.904 -2.914,2.903c-1.606,-0.001 -2.91,-1.304 -2.909,-2.907c0.001,-1.604 1.307,-2.905 2.914,-2.904Z" style="fill:#fff;stroke:#000;stroke-width:1.09px;"/>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0232925,0.331081)">
+        <text x="36.424px" y="130.615px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">100</text>
+    </g>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0236649,0.23208)">
+        <text x="174.57px" y="130.045px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">100</text>
+    </g>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.107358,0.28465)">
+        <text x="101.172px" y="13.287px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">100</text>
+    </g>
+    <path d="M106.53,88.278c1.777,0.001 3.218,1.478 3.217,3.296c-0.002,1.818 -1.445,3.293 -3.222,3.292c-1.776,-0.001 -3.217,-1.478 -3.216,-3.296c0.001,-1.818 1.445,-3.293 3.221,-3.292Z" style="fill:#fff;stroke:#090000;stroke-width:1.09px;"/>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0501152,0.281931)">
+        <text x="104.995px" y="93.161px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">0</text>
+    </g>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.132109,0.366623)">
+        <text x="77.045px" y="5.29px" style="font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:8px;">What the system is</text>
+    </g>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0347378,0.421791)">
+        <text x="0.112px" y="141.19px" style="font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:8px;">Why the system works</text>
+    </g>
+    <text x="144.567px" y="141.955px" style="font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:8px;">How the system works</text>
+</svg>
