@@ -102,7 +102,6 @@ function Scene(props) {
 
 export default function Home() {
   
- 
   const LIMITY = {
     q1: {max:91, min:15},
     q2: {max:127, min:91},
