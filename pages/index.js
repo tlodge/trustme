@@ -5,10 +5,10 @@ import * as THREE from 'three';
 import { useLoader, useThree} from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Canvas, useFrame } from "@react-three/fiber";
-import {useRef, useState} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import * as d3 from 'd3';
-import {useD3} from './hooks/useD3';
+
 
 const SVGMARGIN = 40;
 //const svgData = loader.parse(svgMarkup);
@@ -102,6 +102,16 @@ function Scene(props) {
 
 export default function Home() {
   
+
+const useD3 = (d3Fn, dependencies) => {
+  const ref = useRef();
+  useEffect(() => {
+      d3Fn(d3.select(ref.current));
+      return () => {};
+    }, dependencies);
+  return ref;
+}
+
   const LIMITY = {
     q1: {max:91, min:15},
     q2: {max:127, min:91},
