@@ -21,21 +21,24 @@
 .controlpoint{
   fill:#fff;stroke:#000;stroke-width:1px;fill-opacity: 0.5;
 }
+.rotatepoint{
+  fill:#ba2727;stroke:#000;stroke-width:1px;fill-opacity: 1.0;
+}
 
 .inneroutline{
   fill:#fff;stroke:#000;stroke-width:1.09px;
 }
 
 .textvalue{
-  font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;
+  text-anchor: middle;  font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:4px;fill:#848484;
 }
 
 .text0value{
-  font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:white;
+  font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:4px;fill:white;
 }
 
 .questiontext{
-  font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:6px;
+  text-anchor: middle; font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:6px;
 }
 
 .canvascontainer {
