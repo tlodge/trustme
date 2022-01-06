@@ -22,7 +22,7 @@ const TriangleShape = (props) => {
 	    renderer.setPixelRatio( window.devicePixelRatio );  
         renderer.setSize(width, height);
         setupCamera(width, height);  
-        var light = new THREE.HemisphereLight(0xD25252, 0xFFFFFF, 0.8);
+        var light = new THREE.HemisphereLight(0x000000, 0xFFFFFF, 1.0);
         scene.add(light);
        
     }
@@ -123,7 +123,7 @@ const TriangleShape = (props) => {
      
           <div style={{display:"flex",justifyContent:"center"}}>
            
-            <div style={{ background:"transparent", width: "100%", height: "400px", margin: "0px" }} ref={shapeRef}/>
+            <div style={{ background:"transparent", width: "100%", height: "50vh", margin: "0px" }} ref={shapeRef}/>
             
           </div>
  );

@@ -218,7 +218,7 @@ const questionfor = (q)=>{
   return (
     <div style={{display:'flex', flexDirection:"column"}}>
     
-      <svg ref={triangle} width="100%" height="100%" viewBox="0 0 232 144" className={styles.trianglesvg}>
+      <svg ref={triangle} width="100%" height="50vh" viewBox="0 0 232 144" className={styles.trianglesvg}>
         <g id="bigtriangle">
           <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle}/>
          
