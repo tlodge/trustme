@@ -19,10 +19,18 @@
 }
 
 .controlpoint{
-  fill:#fff;stroke:#000;stroke-width:1px;fill-opacity: 0.5;
+  fill:#fff;stroke:#000;stroke-width:1px;fill-opacity: 1.0;
 }
 .rotatepoint{
   fill:#ba2727;stroke:#000;stroke-width:1px;fill-opacity: 1.0;
+}
+.rotation{
+  fill:white;
+  stroke:black;
+  stroke-width:0.9px;
+}
+.value{
+  text-anchor: middle;  font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:8px;fill:#000;
 }
 
 .inneroutline{
