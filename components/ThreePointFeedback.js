@@ -252,20 +252,37 @@ const ThreePointFeedback = ({points, setPoints, colour}) => {
         }
     
         Object.keys(controlpoints).map((name)=>{
-          const elem = controlpoints[name];
+            const elem = controlpoints[name];
+          
      
-          elem.call(d3.drag().on("drag", (e)=>{
-             if (name===selected){
-              const {x,y} = controlfn(name,e.x,e.y);
-              _points = {..._points, [name] : {x, y}}
-              elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
-           
-              dimshape.attr("d", linefn(_points));
-              setPoints(_points);
-             }
-          }).on("end", ()=>{
-              //setPoints(_points);
-          }))
+            
+          
+            elem.on("click", ()=>{
+            
+                if (name !== selected){
+                    const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, name);
+      
+                    triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                        const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                        const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                        return d3.interpolate(from, to);
+                    })
+                    setSelected(name);
+                }
+            });
+
+        elem.call(d3.drag().on("drag", (e)=>{
+                if (name===selected){
+                    const {x,y} = controlfn(name,e.x,e.y);
+                    _points = {..._points, [name] : {x, y}}
+                    elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
+                
+                    dimshape.attr("d", linefn(_points));
+                    setPoints(_points);
+                }
+            }).on("end", ()=>{
+                //setPoints(_points);
+            }))
           
           
         })
