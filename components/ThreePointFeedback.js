@@ -13,13 +13,13 @@ const CX = 109, CY = 89;
 const questionfor = (q) => {
     switch (q) {
         case "q1":
-            return "What the system is"
+            return "I KNOW what the system is"
 
         case "q2":
-            return "What the system does"
+            return "I KNOW what the system does"
 
         case "q3":
-            return "How the system works"
+            return "I KNOW how the system works"
     }
 }
 
