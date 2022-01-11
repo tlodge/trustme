@@ -44,7 +44,7 @@
   stroke-width:0.9px;
 }
 .value{
-  text-anchor: middle;  font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:8px;fill:#000;
+  text-anchor: middle;  font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:7px;fill:#000;
 }
 
 .inneroutline{

@@ -192,6 +192,17 @@ const ThreePointFeedback = ({points, setPoints, colour}) => {
         }, dependencies);
         return ref;
     }
+
+    const zeroRotation = (q)=>{
+        switch(q){
+            case "q1":
+                return "rotate(0, 109.5, 90.5)"
+            case "q2":
+                return "rotate(120,109.5, 90.5)"
+            case "q3":
+                return "rotate(-120,109.5, 90.5)"
+        }
+    }
     const triangle = useD3((root)=>{
     
         let _points = points;
@@ -275,6 +286,7 @@ const ThreePointFeedback = ({points, setPoints, colour}) => {
                 <text x="44px" y="132px" className={styles.textvalue}>100</text>
                     <text x="174px" y="132px" className={styles.textvalue}>100</text>
                     <text x="109.5px" y="14px" className={styles.textvalue}>100</text>
+                    
                     <g id="bigtriangle">
                         <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:colour[0]}}/>
                         <path d="M109.708,17.272L109.527,90.317" className={styles.triangleoutline}/>
@@ -282,24 +294,24 @@ const ThreePointFeedback = ({points, setPoints, colour}) => {
                         <path d="M172.705,127.087L109.616,90.352" className={styles.triangleoutline}/>
                         <circle cx={109.5} cy={90.5} r={5} className={styles.zeroline} style={{fill:colour[0]}}/>
                         <path id="dimshape" d={`M${points.q3.x},${points.q3.y}L${points.q1.x},${points.q1.y}L${points.q2.x},${points.q2.y}Z`} className={styles.innertriangle} style={{fill:colour[1]}}/>
-                    
+                        <text x="108px" y="92px" className={styles.text0value} transform={`${zeroRotation(selected)}`}>0</text>
                         <g id="controls">
                             <g id="q1" transform={`translate(${points.q1.x},${points.q1.y}) ${rotationFor(selected,"q1")}`}>
-                            <circle id="q1"  r={8} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q1" ? "white":colour[1]}}/>
+                            <circle id="q1"  r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q1" ? "white":colour[1]}}/>
                             <text y={2.5} className={styles.value}>{q1value(points.q1.x,points.q1.y)}</text>
                             </g>
                             <g id="q2" transform={`translate(${points.q2.x},${points.q2.y}) ${rotationFor(selected,"q2")}`}>
-                            <circle id="q2"  r={8} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q2" ? "white":colour[1]}}/>
+                            <circle id="q2"  r={7} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q2" ? "white":colour[1]}}/>
                             <text y={2.5} className={styles.value}>{q2value(points.q2.x,points.q2.y)}</text>
                             </g>
                             <g id="q3" transform={`translate(${points.q3.x},${points.q3.y}) ${rotationFor(selected,"q3")}`}>
-                            <circle id="q3"  r={8} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q3" ? "white":colour[1]}}/>
+                            <circle id="q3"  r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q3" ? "white":colour[1]}}/>
                             <text y={2.5} className={styles.value}>{q3value(points.q3.x,points.q3.y)}</text>
                             </g>
                         </g>
                     </g>
                     
-                    <text x="108px" y="92px" className={styles.text0value}>0</text>
+                    
                     <text x="109.5px" y="7.29px" className={styles.questiontext}>{questionfor(selected)}</text>
                     
                     
