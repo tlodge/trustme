@@ -13,9 +13,9 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
                 {children}
                 <GamutMenu points={points} chapter={chapter} colours={colours} dimension={dimension} setDimension={setDimension}/>
           </div>
-          <div style={{display:"flex", alignItems:"center", flexDirection:"column", width:"300px", borderLeft:"1px solid #ddd", background:"#eee", padding:20}}>
+            <div style={{display:"flex", alignItems:"center", flexDirection:"column", width:"300px", borderLeft:"1px solid #ddd", background:"#eee", padding:20}}>
                 {renderChapters()}
-          </div>
+            </div>
                
 
         </div>

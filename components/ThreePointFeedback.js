@@ -179,7 +179,7 @@ const rotationFor = (current, selected) => {
     return 'rotate (0,0,0)';
 }
 
-const ThreePointFeedback = ({points, setPoints, colour}) => {
+const ThreePointFeedback = ({points, setPoints, colour, deviceType}) => {
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
@@ -278,10 +278,14 @@ const ThreePointFeedback = ({points, setPoints, colour}) => {
                     elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
                 
                     dimshape.attr("d", linefn(_points));
-                    setPoints(_points);
+                    if (deviceType==="desktop"){
+                        setPoints(_points);
+                    }
                 }
             }).on("end", ()=>{
-                //setPoints(_points);
+                if (deviceType!=="desktop"){
+                    setPoints(_points);
+                }
             }))
           
           

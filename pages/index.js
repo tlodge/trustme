@@ -4,8 +4,8 @@ import Layout  from '../components/Layout';
 
 import ThreePointFeedback from '../components/ThreePointFeedback';
 
-export default function Home() {
-
+export default function Home({deviceType}) {
+ 
   const q2ypos = (x) => (18 / 31 * x) + 27;
   const q3ypos = (x) => (-13.5 / 23 * x) + 154;
   
@@ -65,7 +65,20 @@ export default function Home() {
 
   return (
     <Layout points={points[chapter]} dimension={dimension} colours={colours} chapter={chapter} setChapter={setChapter} setDimension={setDimension}>
-        <ThreePointFeedback points={points[chapter][dimension]} colour={colours[dimension]} setPoints={_setPoints}/>
+        <ThreePointFeedback points={points[chapter][dimension]} deviceType={deviceType} colour={colours[dimension]} setPoints={_setPoints}/>
     </Layout>
   )
+}
+
+export async function getServerSideProps(context) {
+  const UA = context.req.headers['user-agent'];
+  const isMobile = Boolean(UA.match(
+    /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+  ))
+  
+  return {
+    props: {
+      deviceType: isMobile ? 'mobile' : 'desktop'
+    }
+  }
 }
