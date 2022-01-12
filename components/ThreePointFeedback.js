@@ -183,7 +183,7 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType}) => {
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
-
+    const [windowSize, setWindowSize] = useState({width:0,height:0})
     const useD3 = (d3Fn, dependencies) => {
         const ref = useRef();
         useEffect(() => {
@@ -291,9 +291,16 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType}) => {
           
         })
     });
-    
+
+    useEffect(() => {
+        setWindowSize({
+            width: window.innerWidth,
+            height: window.innerHeight,
+          });
+    }, []);
+
     return  <div style={{padding:20}}>
-                <svg ref={triangle} width="100%"  viewBox="0 0 232 144" className={styles.trianglesvg}>
+                <svg ref={triangle} width="100%" height={windowSize.height-(windowSize.width-300)/5 - 44}  viewBox="0 0 232 144" className={styles.trianglesvg}>
 
                 <g id="rotright">
                     <circle cx={182} cy={139} r={10} style={{fill:"white"}}/>
