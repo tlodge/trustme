@@ -6,7 +6,7 @@ import {
 } from 'react';
 import * as d3 from 'd3';
 
-
+const TOTALSHAPES = 3;
 const ROTATIONTIME = 1000;
 const CX = 109, CY = 89;
 
@@ -142,7 +142,6 @@ const fromto = (from, to) => {
     }
 }
 
-
 const rightof = (q) => {
     if (q == "q1") {
         return "q2"
@@ -179,11 +178,11 @@ const rotationFor = (current, selected) => {
     return 'rotate (0,0,0)';
 }
 
-const ThreePointFeedback = ({points, setPoints, colour, deviceType}) => {
+const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, height}) => {
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
-    const [windowSize, setWindowSize] = useState({width:0,height:0})
+  
     const useD3 = (d3Fn, dependencies) => {
         const ref = useRef();
         useEffect(() => {
@@ -214,11 +213,9 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType}) => {
     
         const rleft =  root.select("g#rotleft");
         const rright =  root.select("g#rotright");
-    
-        const dimshape = root.select("path#dimshape");
         const triangle = root.select("g#bigtriangle");
     
-        rleft.on("click", function(){
+        /*rleft.on("click", function(){
           const q = leftof(selected);
           const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, q);
           
@@ -243,13 +240,9 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType}) => {
             return d3.interpolate(from, to);
           })
           setSelected(q);
-        });
+        });*/
     
         const controlpoints = {q1,q2,q3};
-    
-        const linefn = (points)=>{
-          return `M${points.q3.x},${points.q3.y}L${points.q1.x},${points.q1.y}L${points.q2.x},${points.q2.y}Z`;
-        }
     
         Object.keys(controlpoints).map((name)=>{
             const elem = controlpoints[name];
@@ -277,7 +270,7 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType}) => {
                     _points = {..._points, [name] : {x, y}}
                     elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
                 
-                    dimshape.attr("d", linefn(_points));
+                   
                     if (deviceType==="desktop"){
                         setPoints(_points);
                     }
@@ -292,37 +285,32 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType}) => {
         })
     });
 
-    useEffect(() => {
-        setWindowSize({
-            width: window.innerWidth,
-            height: window.innerHeight,
-          });
-    }, []);
-
+//viewBox="0 0 232 144" 
     return  <div style={{padding:20}}>
-                <svg ref={triangle} width="100%" height={windowSize.height-(windowSize.width-300)/5 - 44}  viewBox="0 0 232 144" className={styles.trianglesvg}>
+                <svg ref={triangle} width="100%" height={height-(width-300)/TOTALSHAPES - 44}  viewBox="30 0 151 144" className={styles.trianglesvg}>
 
-                <g id="rotright">
+                {/*<g id="rotright">
                     <circle cx={182} cy={139} r={10} style={{fill:"white"}}/>
                     <path className={styles.rotation} d="M174,139c1.67,1.437 3.989,2.05 6.261,1.437c3.326,-0.897 5.416,-4.117 5.023,-7.469l-1.357,0.343l1.379,-3.093l2.757,2.049l-1.33,0.335c0.576,4.218 -2.013,8.298 -6.173,9.42c-2.775,0.749 -5.609,0.008 -7.669,-1.737l1.109,-1.285Z" />
                 </g>
                 <g id="rotleft">
                 <circle cx={38} cy={139} r={10} style={{fill:"white"}}/>
                     <path  className={styles.rotation} d="M46,139c-1.67,1.437 -3.989,2.05 -6.261,1.437c-3.326,-0.897 -5.417,-4.117 -5.023,-7.469l1.357,0.343l-1.379,-3.093l-2.757,2.049l1.329,0.335c-0.575,4.218 2.014,8.298 6.174,9.42c2.775,0.749 5.608,0.008 7.669,-1.737l-1.109,-1.285Z" /> 
-                </g>
+                </g>*/}
 
-                <text x="44px" y="132px" className={styles.textvalue}>100</text>
+                {/*<text x="44px" y="132px" className={styles.textvalue}>100</text>
                     <text x="174px" y="132px" className={styles.textvalue}>100</text>
-                    <text x="109.5px" y="14px" className={styles.textvalue}>100</text>
-                    
+            <text x="109.5px" y="14px" className={styles.textvalue}>100</text>*/}
+                   
                     <g id="bigtriangle">
                         <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:colour[0]}}/>
                         <path d="M109.708,17.272L109.527,90.317" className={styles.triangleoutline}/>
                         <path d="M46.236,126.829L109.495,90.306" className={styles.triangleoutline}/>
                         <path d="M172.705,127.087L109.616,90.352" className={styles.triangleoutline}/>
-                        <circle cx={109.5} cy={90.5} r={5} className={styles.zeroline} style={{fill:colour[0]}}/>
+                        <circle cx={109.5} cy={90.5} r={2} className={styles.zeroline} style={{fill:colour[0]}}/>
                         <path id="dimshape" d={`M${points.q3.x},${points.q3.y}L${points.q1.x},${points.q1.y}L${points.q2.x},${points.q2.y}Z`} className={styles.innertriangle} style={{fill:colour[1]}}/>
-                        <text x="108px" y="92px" className={styles.text0value} transform={`${zeroRotation(selected)}`}>0</text>
+                        
+                        {/*<text x="108px" y="92px" className={styles.text0value} transform={`${zeroRotation(selected)}`}>0</text>*/}
                         <g id="controls">
                             <g id="q1" transform={`translate(${points.q1.x},${points.q1.y}) ${rotationFor(selected,"q1")}`}>
                             <circle id="q1"  r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q1" ? "white":colour[1]}}/>

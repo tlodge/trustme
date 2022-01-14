@@ -3,6 +3,8 @@ import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
+const TOTALSHAPES = 3;
+
 const TriangleShape = (props) => {
 
     const shapeRef = useRef(null);
@@ -10,13 +12,14 @@ const TriangleShape = (props) => {
     const groups = {};
 
     let scene, renderer, helper, camera;
+    const parent = new THREE.Object3D();
 
     const init = (width, height)=>{
         scene = new THREE.Scene();
         scene.background = new THREE.Color( 0xffffff );
         
-        helper = new THREE.GridHelper( 160, 10 );
-        helper.rotation.x = Math.PI / 2;
+        //helper = new THREE.GridHelper( 160, 100 );
+        //helper.rotation.x = Math.PI / 2;
         //scene.add( helper );
         
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -25,7 +28,7 @@ const TriangleShape = (props) => {
         setupCamera(width, height);  
         var light = new THREE.HemisphereLight(0x000000, 0xFFFFFF, 1.0);
         scene.add(light);
-       
+        scene.add( parent );
     }
     
     const loader = new SVGLoader();
@@ -49,7 +52,7 @@ const TriangleShape = (props) => {
         group.position.x =  0;
         group.position.y = 0;
         group.position.z = depth;
-        group.rotation.z = depth;
+        //group.rotation.z = depth;
         group.scale.y *=  -1;
 
         const shape = `<svg><path d="${path}"/></svg>`
@@ -65,11 +68,8 @@ const TriangleShape = (props) => {
             const shapes = SVGLoader.createShapes( path );
 
             for ( let j = 0; j < shapes.length; j ++ ) {
-
                 const shape = shapes[ j ];
-                //const geometry = new THREE.ShapeGeometry( shape );
-                const geometry = new THREE.ExtrudeGeometry(shape, {depth: 5,bevelEnabled: false});
-                geometry.center();
+                const geometry = new THREE.ExtrudeGeometry(shape, {depth: 15,bevelEnabled: false});
                 const mesh = new THREE.Mesh( geometry, material );
                 group.add( mesh );
             }
@@ -79,19 +79,22 @@ const TriangleShape = (props) => {
 
     useEffect(() => {
        
-        let group;
-        let depth=0;
-
-        //init(shapeRef.current.clientWidth,shapeRef.current.clientHeight);   
-        init((window.innerWidth-300)/5, (window.innerWidth-300)/5) 
+        init((window.innerWidth-300)/TOTALSHAPES, (window.innerWidth-300)/TOTALSHAPES) 
 
         const setpath = (path, chapter, colour)=>{
             
+            Object.keys(groups).map((k,i)=>{
+                const g = groups[k];
+                g.children[0].material.color.setHex(colour[i]);
+            })
+
             if (groups[chapter]){
-                scene.remove(groups[chapter]);
+                parent.remove(groups[chapter]);
             }
-            groups[chapter] = addShapes(path, chapter*1.3, colour);
-            scene.add(groups[chapter]);
+
+            groups[chapter] = addShapes(path, chapter*4, Object.keys(groups).length > 1 ? 0x4E89F8 : colour[0]);
+            parent.add(groups[chapter]);
+            parent.position.z = -(chapter*2);
         };
         
         shapeRef.current.appendChild(renderer.domElement);
@@ -100,16 +103,10 @@ const TriangleShape = (props) => {
 
         const animate =  ()=> {
             requestAnimationFrame(animate);
-
-            if (groups[0]){
-                const {x,y} = groups[0].rotation;
-
-                for (const key of Object.keys(groups)){
-                    const group = groups[key];
-                   // group.rotation.x = x + 0.01;
-                    //group.rotation.y = y + 0.01;
-                }
-             }
+            parent.rotation.x += 0.002;
+            parent.rotation.y += 0.002;
+           
+            //parent.rotation.z += 0.002;
             renderer.render(scene, camera);
         };
         
@@ -135,7 +132,7 @@ const TriangleShape = (props) => {
    
      
           <div onClick={props.onClick} style={{display:"flex",justifyContent:"center", ...props.style}}>
-            <div style={{ background:"transparent", width: (windowSize.width-300)/5, height: (windowSize.width-300)/5, margin: "0px" }} ref={shapeRef}/>
+            <div style={{ background:"transparent", width: (windowSize.width-300)/TOTALSHAPES, height: (windowSize.width-300)/TOTALSHAPES, margin: "0px" }} ref={shapeRef}/>
           </div>
  );
 };

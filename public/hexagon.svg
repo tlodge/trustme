@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 151 144" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" style="fill:#c8ded2;stroke:#000;stroke-width:1.15px;"/>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.105785,0.30685)">
+        <text x="70.194px" y="15.492px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">100</text>
+    </g>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0709808,0.256304)">
+        <text x="140.744px" y="64.033px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">100</text>
+    </g>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0144081,0.278436)">
+        <text x="109.889px" y="142.986px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">100</text>
+    </g>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0146572,0.332524)">
+        <text x="34.414px" y="142.665px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">100</text>
+    </g>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.132121,0.397191)">
+        <text x="36.29px" y="5.288px" style="font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:8px;">Personal experience</text>
+    </g>
+    <path d="M75.251,83.347L36.604,137.039" style="fill:none;stroke:#000;stroke-width:0.9px;"/>
+    <path d="M75.427,83.177L114.426,136.829" style="fill:none;stroke:#000;stroke-width:0.9px;"/>
+    <path d="M75.564,83.454L138.244,62.695" style="fill:none;stroke:#000;stroke-width:0.9px;"/>
+    <path d="M75.769,83.343L12.788,63.278" style="fill:none;stroke:#000;stroke-width:0.9px;"/>
+    <path d="M75.508,83.474L75.63,17.067" style="fill:none;stroke:#000;stroke-width:0.9px;"/>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0707622,0.357372)">
+        <text x="-0.286px" y="64.388px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;fill:#848484;">100</text>
+    </g>
+    <path d="M75.481,79.521C77.55,79.523 79.23,81.215 79.228,83.297C79.227,85.379 77.545,87.069 75.475,87.067C73.406,87.066 71.727,85.374 71.728,83.292C71.73,81.209 73.411,79.52 75.481,79.521Z" style="fill:#c8ded2;"/>
+    <g transform="matrix(1,0.00071664,-0.00071664,1,-0.0559465,0.304197)">
+        <text x="73.922px" y="85.036px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;">0</text>
+    </g>
+    <path id="innerhex" d="M27.286,67.61L75.644,41.184L113.5,70.943L92.013,106.588L50.241,118.282L27.286,67.61Z" style="fill:#e4e9db;fill-opacity:0.72;stroke:#fff;stroke-width:1.09px;"/>
+    <path id="q1control" d="M75.451,38.717C77.058,38.718 78.361,40.021 78.36,41.624C78.359,43.228 77.054,44.529 75.447,44.528C73.84,44.526 72.536,43.224 72.537,41.62C72.538,40.016 73.844,38.715 75.451,38.717Z" style="fill:#fff;stroke:#000;stroke-width:1.09px;"/>
+    <path id="q2control" d="M113.614,67.872C115.221,67.873 116.525,69.176 116.524,70.78C116.522,72.383 115.217,73.684 113.61,73.683C112.003,73.682 110.699,72.379 110.7,70.776C110.701,69.172 112.007,67.871 113.614,67.872Z" style="fill:#fff;stroke:#000;stroke-width:1.09px;"/>
+    <path id="q3control" d="M92.126,103.678C93.733,103.679 95.037,104.982 95.036,106.585C95.035,108.189 93.729,109.49 92.122,109.489C90.515,109.487 89.211,108.185 89.212,106.581C89.214,104.977 90.519,103.676 92.126,103.678Z" style="fill:#fff;stroke:#000;stroke-width:1.09px;"/>
+    <path id="q4control" d="M50.318,115.389C51.925,115.39 53.229,116.693 53.227,118.296C53.226,119.9 51.921,121.201 50.314,121.2C48.707,121.199 47.403,119.896 47.404,118.292C47.405,116.689 48.711,115.388 50.318,115.389Z" style="fill:#fff;stroke:#000;stroke-width:1.09px;"/>
+    <path id="q5control" d="M27.925,65C29.532,65.001 30.836,66.304 30.835,67.907C30.834,69.511 29.528,70.812 27.921,70.811C26.314,70.809 25.011,69.507 25.012,67.903C25.013,66.299 26.318,64.998 27.925,65Z" style="fill:#fff;stroke:#000;stroke-width:1.09px;"/>
+</svg>

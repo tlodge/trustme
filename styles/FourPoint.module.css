@@ -1,0 +1,33 @@
+.square {
+    fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;
+}
+
+.outersquare{
+    fill:#FFF1D4;stroke:#000;stroke-width:1.15px;
+}
+.questiontext{
+    text-anchor: middle; font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:6px;
+}
+.scaleline{
+    fill:none;stroke:#000;stroke-width:0.9px
+}
+
+.center{
+    fill:#FFF1D4
+}
+
+.zerotext{
+    font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;
+}
+
+.innersquare{
+    fill:#EEDBB6;fill-opacity:0.72;stroke:#fff;stroke-width:1.09px;
+}
+
+.controlpoint{
+    fill:#fff;stroke:#000;stroke-width:1.09px;
+}
+
+.rotatepoint{
+    stroke:#000;stroke-width:1.09px;fill-opacity:;
+}
