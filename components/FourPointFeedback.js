@@ -5,7 +5,7 @@ import {
     useEffect
 } from 'react';
 import * as d3 from 'd3';
-import useD3 from './hooks/useD3';
+import useD3 from '../hooks/useD3';
 const TOTALSHAPES =3;
 const ROTATIONTIME = 1000;
 const CX = 63.3, CY = 76.6;

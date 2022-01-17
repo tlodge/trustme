@@ -16,6 +16,7 @@ const useVideoPlayer = (videoElement) => {
   };
 
   useEffect(() => {
+      console.log('player state is', playerState);
     playerState.isPlaying
       ? videoElement.current.play()
       : videoElement.current.pause();
@@ -30,6 +31,7 @@ const useVideoPlayer = (videoElement) => {
   };
 
   const handleVideoProgress = (event) => {
+      console.log(event);
     const manualChange = Number(event.target.value);
     videoElement.current.currentTime = (videoElement.current.duration / 100) * manualChange;
     setPlayerState({
@@ -37,6 +39,15 @@ const useVideoPlayer = (videoElement) => {
       progress: manualChange,
     });
   };
+
+  const handleOnPlay = (event)=>{
+      console.log("ok seen handle on play", event);
+  }
+
+  const handleOnEnded= (cb)=>{
+    console.log("ok seen handle on ENDED!");
+    cb();
+  }
 
   const handleVideoSpeed = (event) => {
     const speed = Number(event.target.value);
@@ -66,7 +77,9 @@ const useVideoPlayer = (videoElement) => {
     handleOnTimeUpdate,
     handleVideoProgress,
     handleVideoSpeed,
+    handleOnPlay,
     toggleMute,
+    handleOnEnded
   };
 };
 
