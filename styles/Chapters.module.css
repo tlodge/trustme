@@ -1,0 +1,17 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.heading{
+    font-family:'Helvetica-Bold', 'Helvetica'; 
+    color:white;
+    font-weight:700;
+    font-size:1.5em;
+    padding:10px;
+  text-transform: uppercase;
+}

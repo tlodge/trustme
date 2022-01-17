@@ -5,7 +5,7 @@ import {
     useEffect
 } from 'react';
 import * as d3 from 'd3';
-
+import useD3 from './hooks/useD3';
 const TOTALSHAPES =3;
 const ROTATIONTIME = 1000;
 const CX = 75.5, CY = 83;
@@ -243,19 +243,17 @@ const leftof = (q) => {
     return positions[q]
 }
 
-const FivePointFeedback = ({points, setPoints, colour, deviceType, width, height}) => {
+const FivePointFeedback = ({points, setPoints, colour, deviceType, width, height, complete}) => {
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
-   
-    const useD3 = (d3Fn, dependencies) => {
-        const ref = useRef();
-        useEffect(() => {
-            d3Fn(d3.select(ref.current));
-            return () => {};
-        }, dependencies);
-        return ref;
-    }
+    const [answered, setAnswered] = useState([]);
+
+    useEffect(()=>{
+        if (answered.length >= 5){
+            complete();
+        }
+    },[answered,complete]);
 
     const zeroRotation = (q)=>{
         switch(q){
@@ -348,6 +346,16 @@ const FivePointFeedback = ({points, setPoints, colour, deviceType, width, height
                 if (deviceType!=="desktop"){
                     setPoints(_points);
                 }
+                const next = rightof(name);
+                const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
+      
+                hexagon.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                    const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                    const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                    return d3.interpolate(from, to);
+                })
+                setAnswered([...answered.filter(a=>a!=name), name]);
+                setSelected(next);
             }))
           
           

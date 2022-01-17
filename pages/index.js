@@ -1,13 +1,15 @@
 
 import {useState, useEffect} from 'react';
-import Layout  from '../components/Layout';
+import Layout from  '../components/Layout'
 
 import ThreePointFeedback from '../components/ThreePointFeedback';
 import FivePointFeedback from '../components/FivePointFeedback';
 import FourPointFeedback from '../components/FourPointFeedback';
+import VideoPlayer from '../components/VideoPlayer';
 
-export default function Home({deviceType}) {
+export default function Home(props) {
  
+  const {deviceType} = props;
   const d1q2ypos = (x) => (18 / 31 * x) + 27;
   const d1q3ypos = (x) => (-13.5 / 23 * x) + 154;
   
@@ -18,10 +20,9 @@ export default function Home({deviceType}) {
 
   const [dimension, setDimension] = useState("d1");
   const [chapter, setChapter] = useState(0);
-  
-
-  const [windowSize, setWindowSize] = useState({width:500,height:500})
-
+  const [windowSize, setWindowSize] = useState({width:0,height:0})
+  const  [view, setView] = useState("player"); //player || feedback!
+   
   useEffect(() => {
     setWindowSize({
         width: window.innerWidth,
@@ -92,7 +93,9 @@ export default function Home({deviceType}) {
             "d3":[0x004D40,0x00695C,0x00796B,0x00897B,0x009688,0x26A69A,0x4DB6AC,0x80CBC4,0xB2DFDB]
   };
   
+
   const renderDimension = ()=>{
+   
     switch (dimension){
       
       case "d1":
@@ -103,6 +106,7 @@ export default function Home({deviceType}) {
                 setPoints={_setPoints}
                 width={windowSize.width}
                 height={windowSize.height}
+                complete={()=>{setDimension("d2")}}
               />
       case "d2":
         return <FourPointFeedback 
@@ -112,6 +116,7 @@ export default function Home({deviceType}) {
                   setPoints={_setPoints}
                   width={windowSize.width}
                   height={windowSize.height}
+                  complete={()=>{setDimension("d3")}}
                 />
       case "d3":
         return <FivePointFeedback 
@@ -121,15 +126,40 @@ export default function Home({deviceType}) {
                   deviceType={deviceType}
                   width={windowSize.width}
                   height={windowSize.height}
+                  complete={()=>{
+                    setDimension("d1");
+                    setView("player");
+                    setChapter(++chapter);
+                  }}
                 />
     }
   }
 
-  return (
-    <Layout points={points[chapter]} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={setChapter} setDimension={setDimension}>
-      {renderDimension()}
-    </Layout>
-  )
+
+  const renderFeedback = ()=>{
+    if (windowSize.width > 0){
+
+      return <div style={{display: view === "feedback" ? "block" :"none"}}>
+        <Layout points={points[chapter]} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={setChapter} setDimension={setDimension}>
+        {renderDimension()}
+      </Layout>
+      </div> 
+    }
+  }
+
+  const renderPlayer = ()=>{
+    return <div style={{display: view === "feedback" ? "none" :"block"}}>
+      <VideoPlayer chapter={chapter+1} amFinished={()=>{
+        setView("feedback");
+      }}/>
+    </div>
+  }
+
+  return <>
+        {renderFeedback()}
+        {renderPlayer()}
+  </>
+
 }
 
 export async function getServerSideProps(context) {

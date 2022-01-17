@@ -5,7 +5,7 @@ import {
     useEffect
 } from 'react';
 import * as d3 from 'd3';
-
+import useD3 from './hooks/useD3';
 const TOTALSHAPES = 3;
 const ROTATIONTIME = 1000;
 const CX = 109, CY = 89;
@@ -178,19 +178,22 @@ const rotationFor = (current, selected) => {
     return 'rotate (0,0,0)';
 }
 
-const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, height}) => {
+const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, height,complete}) => {
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
-  
-    const useD3 = (d3Fn, dependencies) => {
-        const ref = useRef();
-        useEffect(() => {
-            d3Fn(d3.select(ref.current));
-            return () => {};
-        }, dependencies);
-        return ref;
-    }
+    const [answered, setAnswered] = useState([]);
+
+    useEffect(()=>{
+        if (answered.length >= 3){
+            complete();
+        }
+    },[answered,complete]);
+    /*useEffect(()=>{
+        if (answered.length >= 3){
+            complete();
+        }
+    }, [answered,complete]);*/
 
     const zeroRotation = (q)=>{
         switch(q){
@@ -265,26 +268,35 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, heigh
             });
 
         elem.call(d3.drag().on("drag", (e)=>{
-                if (name===selected){
-                    const {x,y} = controlfn(name,e.x,e.y);
-                    _points = {..._points, [name] : {x, y}}
-                    elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
-                
-                   
-                    if (deviceType==="desktop"){
-                        setPoints(_points);
-                    }
+            if (name===selected){
+                const {x,y} = controlfn(name,e.x,e.y);
+                _points = {..._points, [name] : {x, y}}
+                elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
+            
+                if (deviceType==="desktop"){
+                    setPoints(_points);
                 }
+            }
             }).on("end", ()=>{
                 if (deviceType!=="desktop"){
                     setPoints(_points);
                 }
+                const next = rightof(name);
+                const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
+                triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                    const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                    const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                    return d3.interpolate(from, to);
+                })
+                //.on("end",  ()=>{
+                    setAnswered([...answered.filter(a=>a!=name), name]);
+                    setSelected(next);
+                //})
             }))
-          
-          
         })
     });
 
+    //console.log(answered);
 //viewBox="0 0 232 144" 
     return  <div style={{padding:20}}>
                 <svg ref={triangle} width="100%" height={height-(width-300)/TOTALSHAPES - 44}  viewBox="30 0 151 144" className={styles.trianglesvg}>

@@ -5,7 +5,7 @@ import {
     useEffect
 } from 'react';
 import * as d3 from 'd3';
-
+import useD3 from './hooks/useD3';
 const TOTALSHAPES =3;
 const ROTATIONTIME = 1000;
 const CX = 63.3, CY = 76.6;
@@ -180,19 +180,9 @@ const rightof = (q) => {
         "q1":"q2",
         "q2":"q3",
         "q3":"q4",
-        "q4":"q5"
+        "q4":"q1"
     }
     return positions[q];
-}
-
-const leftof = (q) => {
-    const positions = {
-        "q1":"q5",
-        "q5":"q4",
-        "q4":"q3",
-        "q3":"q2"
-    }
-    return positions[q]
 }
 
 const rotationFor = (current, selected) => {
@@ -211,19 +201,19 @@ const rotationFor = (current, selected) => {
     return 'rotate (0,0,0)';
 }
 
-const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width}) => {
+const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width, complete}) => {
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
-   
-    const useD3 = (d3Fn, dependencies) => {
-        const ref = useRef();
-        useEffect(() => {
-            d3Fn(d3.select(ref.current));
-            return () => {};
-        }, dependencies);
-        return ref;
-    }
+    const [answered, setAnswered] = useState([]);
+
+
+    useEffect(()=>{
+        if (answered.length >= 4){
+            console.log("calling complete!")
+            complete();
+        }
+    },[answered,complete]);
 
     const square = useD3((root)=>{
     
@@ -268,6 +258,18 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
                 if (deviceType!=="desktop"){
                     setPoints(_points);
                 }
+                const next = rightof(name);
+                console.log("next is", next);
+                const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
+
+                _square.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                    const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                    const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                    return d3.interpolate(from, to);
+                })
+
+                setAnswered([...answered.filter(a=>a!=name), name]);
+                setSelected(next);
             }))
 
         })
