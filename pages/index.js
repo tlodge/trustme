@@ -6,23 +6,26 @@ import ThreePointFeedback from '../components/ThreePointFeedback';
 import FivePointFeedback from '../components/FivePointFeedback';
 import FourPointFeedback from '../components/FourPointFeedback';
 import VideoPlayer from '../components/VideoPlayer';
+import { useAppSelector, useAppDispatch } from '../hooks/useRedux'
+
+import {
+  setShapes,
+  selectShapes,
+} from '../features/shapes/shapeSlice'
 
 export default function Home(props) {
  
   const {deviceType} = props;
-  const d1q2ypos = (x) => (18 / 31 * x) + 27;
-  const d1q3ypos = (x) => (-13.5 / 23 * x) + 154;
-  
-  const d3q2ypos = (x)=>(-0.33*x) + 108.6
-  const d3q3ypos = (x)=>(1.38*x) -20.72
-  const d3q4ypos = (x)=>(-1.39*x) + 187.79
-  const d3q5ypos = (x)=>(0.32*x) + 59.24
 
   const [dimension, setDimension] = useState("d1");
   const [chapter, setChapter] = useState(0);
   const [windowSize, setWindowSize] = useState({width:0,height:0})
   const  [view, setView] = useState("player"); //player || feedback!
-   
+  
+  const dispatch = useAppDispatch()
+  
+  const {shapes:points} = useAppSelector(selectShapes)
+
   useEffect(() => {
     setWindowSize({
         width: window.innerWidth,
@@ -30,50 +33,9 @@ export default function Home(props) {
       });
   }, []);
 
-
-  const [points, setPoints] = useState({
-    0:{
-      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
-      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76}, q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
-      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
-    },
-    1:{
-      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
-      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
-      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
-    },
-    2:{
-      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
-      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
-      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
-    },
-    3:{
-      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
-      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
-      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
-    },
-    4:{
-      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
-      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
-      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
-    },
-    5:{
-      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
-      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
-      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
-    }, 
-    6:{
-      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
-      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
-      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
-    },
-    7:{
-      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
-      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
-      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
-    }
-  });
-
+  const setPoints = (points)=>{
+    dispatch(setShapes(points));
+  }
 
   const _setPoints = (_points)=>{
       setPoints({
@@ -140,7 +102,7 @@ export default function Home(props) {
     if (windowSize.width > 0){
 
       return <div style={{display: view === "feedback" ? "block" :"none"}}>
-        <Layout points={points[chapter]} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={setChapter} setDimension={setDimension}>
+        <Layout points={points} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={setChapter} setDimension={setDimension}>
         {renderDimension()}
       </Layout>
       </div> 
@@ -156,8 +118,8 @@ export default function Home(props) {
   }
 
   return <>
-        {renderFeedback()}
-        {renderPlayer()}
+        {view=="feedback" && renderFeedback()}
+        {view=="player" && renderPlayer()}
   </>
 
 }

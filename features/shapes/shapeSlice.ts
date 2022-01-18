@@ -1,0 +1,136 @@
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+import type { AppState, AppThunk } from '../../app/store'
+import { fetchCount } from './shapeAPI'
+
+export interface ShapeState {
+  value: number
+  status: 'idle' | 'loading' | 'failed'
+  shapes: Object
+}
+const d1q2ypos = (x) => (18 / 31 * x) + 27;
+const d1q3ypos = (x) => (-13.5 / 23 * x) + 154;
+const d3q2ypos = (x)=>(-0.33*x) + 108.6
+const d3q3ypos = (x)=>(1.38*x) -20.72
+const d3q4ypos = (x)=>(-1.39*x) + 187.79
+const d3q5ypos = (x)=>(0.32*x) + 59.24
+
+const initialState: ShapeState = {
+  value: 0,
+  status: 'idle',
+  shapes: {
+    0:{
+      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
+      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76}, q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
+      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
+    },
+    1:{
+      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
+      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
+      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
+    },
+    2:{
+      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
+      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
+      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
+    },
+    3:{
+      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
+      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
+      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
+    },
+    4:{
+      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
+      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
+      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
+    },
+    5:{
+      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
+      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
+      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
+    }, 
+    6:{
+      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
+      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
+      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
+    },
+    7:{
+      d1:{q1:{x:109.5,y:52.5}, q2:{x:140.5, y:d1q2ypos(140.5)},q3:{x:83, y:d1q3ypos(83)}},
+      d2:{q1:{x:63.4,y:45}, q2:{x:99, y:76},q3:{x:63.3, y:106.8}, q4:{x:27.5,y:76.6}},
+      d3:{q1:{x:75.6, y:41.2},q2:{x:113.5, y:d3q2ypos(113.5)}, q3:{x:92,y:d3q3ypos(92)}, q4:{x:50.2,y:d3q4ypos(50.2)},q5:{x:27.3,y:d3q5ypos(27.3)}}
+    }
+  }
+}
+
+// The function below is called a thunk and allows us to perform async logic. It
+// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
+// will call the thunk with the `dispatch` function as the first argument. Async
+// code can then be executed and other actions can be dispatched. Thunks are
+// typically used to make async requests.
+export const incrementAsync = createAsyncThunk(
+  'counter/fetchCount',
+  async (amount: number) => {
+    const response = await fetchCount(amount)
+    // The value we return becomes the `fulfilled` action payload
+    return response.data
+  }
+)
+
+export const shapeSlice = createSlice({
+  name: 'shapes',
+  initialState,
+  // The `reducers` field lets us define reducers and generate associated actions
+  reducers: {
+    
+    setShapes: (state, action:PayloadAction<Object>)=>{
+        state.shapes = action.payload;
+    },
+
+    increment: (state) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.value += 1
+    },
+    decrement: (state) => {
+      state.value -= 1
+    },
+    // Use the PayloadAction type to declare the contents of `action.payload`
+    incrementByAmount: (state, action: PayloadAction<number>) => {
+      state.value += action.payload
+    },
+  },
+  // The `extraReducers` field lets the slice handle actions defined elsewhere,
+  // including actions generated by createAsyncThunk or in other slices.
+  extraReducers: (builder) => {
+    builder
+      .addCase(incrementAsync.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(incrementAsync.fulfilled, (state, action) => {
+        state.status = 'idle'
+        state.value += action.payload
+      })
+  },
+})
+
+export const { increment, decrement, incrementByAmount, setShapes } = shapeSlice.actions
+
+// The function below is called a selector and allows us to select a value from
+// the state. Selectors can also be defined inline where they're used instead of
+// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
+export const selectCount = (state: AppState) => state.shapes.value
+export const selectShapes = (state: AppState) => state.shapes
+// We can also write thunks by hand, which may contain both sync and async logic.
+// Here's an example of conditionally dispatching actions based on current state.
+export const incrementIfOdd =
+  (amount: number): AppThunk =>
+  (dispatch, getState) => {
+    const currentValue = selectCount(getState())
+    if (currentValue % 2 === 1) {
+      dispatch(incrementByAmount(amount))
+    }
+  }
+
+export default shapeSlice.reducer

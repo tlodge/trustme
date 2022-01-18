@@ -20,6 +20,8 @@ const genpath = (d, points)=>{
 }
 
 const renderFeedback = ({points,dimension,chapter,colours,setDimension})=>{
+
+   
     return dimensions.map(d=>{
         return <TriangleShape 
                      key={d} 
@@ -28,7 +30,7 @@ const renderFeedback = ({points,dimension,chapter,colours,setDimension})=>{
                      onClick={(e)=>{setDimension(d)}} 
                      style={{opacity:dimension===d? 1.0:0.2}} 
                      className={styles.gamut} 
-                     path={genpath(d,points)}/>
+                     paths={[...Array(chapter+1).keys()].map(ch=>genpath(d,points[ch]))}/>
     })
 }
 

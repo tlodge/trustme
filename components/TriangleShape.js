@@ -120,8 +120,8 @@ const TriangleShape = (props) => {
     }, []);
 
    useEffect(()=>{
-        controls.current.setpath(props.path, props.chapter, props.colour);
-   },[props.path, props.chapter])
+    props.paths.map((p,i)=>controls.current.setpath(p, i, props.colour))
+   },[props.paths])
 
    const [windowSize, setWindowSize] = useState({width: 500,height: 500});
 
