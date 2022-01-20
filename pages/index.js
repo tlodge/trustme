@@ -100,7 +100,6 @@ export default function Home(props) {
 
   const renderFeedback = ()=>{
     if (windowSize.width > 0){
-
       return <div>
         <Layout points={points} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={setChapter} setDimension={setDimension}>
         {renderDimension()}
@@ -110,17 +109,18 @@ export default function Home(props) {
   }
 
   const renderPlayer = ()=>{
-    return <div style={{display: view === "feedback" ? "none" :"block"}}>
+    console.log("rendering player...!");
+    return <div>
       <VideoPlayer chapter={chapter+1} amFinished={()=>{
         setView("feedback");
       }}/>
     </div>
   }
 
+  console.log("view is", view);
   return <>
-  {renderFeedback()}
-        {/*view=="feedback" && renderFeedback()*/}
-        {/*view=="player" && renderPlayer()*/}
+        {view=="feedback" && renderFeedback()}
+        {view=="player" && renderPlayer()}
   </>
 
 }
