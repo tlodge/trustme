@@ -29,39 +29,39 @@ const questionfor = (q) => {
 
 const LIMITY = {
     q1: {
-        max: 85.7,
-        min: 16.6
+        max: 68.3,
+        min: 20.1
     },
     q2: {
-        max: 127.16,
-        min: 93
+        max: 76,
+        min: 76
     },
     q3: {
-        max: 127,
-        min: 93
+        max: 135,
+        min: 85,
     },
     q4: {
-        max: 127,
-        min: 93
+        max: 76,
+        min: 76
     }
 }
 
 const LIMITX = {
     q1: {
-        max: 109.5,
-        min: 109.5
+        max: 63.4,
+        min: 63.4,
     },
     q2: {
-        max: 172.5,
-        min: 113.8
+        max: 123.6,
+        min: 71.5
     },
     q3: {
         max: 103.9,
         min: 45.5
     },
     q4: {
-        max: 172.5,
-        min: 113.8
+        max: 54.5,
+        min: 6.3
     }
 }
 
@@ -117,10 +117,10 @@ const limity = (name, y) => {
 
 
 const controlfn = (name, x, y) => {
-    //console.log(xcontrolfn[name](x,y), ycontrolfn[name](x,y));
+
     return {
-        x: xcontrolfn[name](x, y), //limitx(name, xcontrolfn[name](x, y)),
-        y: ycontrolfn[name](x, y), //limity(name, ycontrolfn[name](x, y))
+        x: limitx(name,xcontrolfn[name](x, y)),
+        y: limity(name,ycontrolfn[name](x, y))
     }
 }
 
@@ -172,6 +172,8 @@ const fromto = (from, to) => {
             return [-270, -180, CX,CY,CX,CY];
         }
     }
+
+    return [0, 0, CX,CY,CX,CY];
 }
 
 
@@ -210,7 +212,6 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
 
     useEffect(()=>{
         if (answered.length >= 4){
-            console.log("calling complete!")
             complete();
         }
     },[answered,complete]);
@@ -230,20 +231,6 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
         Object.keys(controlpoints).map((name)=>{
             const elem = controlpoints[name];
                 
-            elem.on("click", ()=>{
-            
-                if (name !== selected){
-                    const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, name);
-      
-                    _square.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
-                        const to =  `rotate(${_to}, ${cx2}, ${cy2})`
-                        const from = `rotate(${_from}, ${cx1}, ${cy1})`
-                        return d3.interpolate(from, to);
-                    })
-                    setSelected(name);
-                }
-            });
-
             elem.call(d3.drag().on("drag", (e)=>{
                 if (name===selected){
                     const {x,y} = controlfn(name,e.x,e.y);
@@ -255,21 +242,22 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
                     }
                 }
             }).on("end", ()=>{
-                if (deviceType!=="desktop"){
-                    setPoints(_points);
+                if (name===selected){
+                    if (deviceType!=="desktop"){
+                        setPoints(_points);
+                    }
+                    const next = rightof(name);
+                    const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
+
+                    _square.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                        const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                        const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                        return d3.interpolate(from, to);
+                    })
+
+                    setAnswered([...answered.filter(a=>a!=name), name]);
+                    setSelected(next);
                 }
-                const next = rightof(name);
-                console.log("next is", next);
-                const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
-
-                _square.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
-                    const to =  `rotate(${_to}, ${cx2}, ${cy2})`
-                    const from = `rotate(${_from}, ${cx1}, ${cy1})`
-                    return d3.interpolate(from, to);
-                })
-
-                setAnswered([...answered.filter(a=>a!=name), name]);
-                setSelected(next);
             }))
 
         })

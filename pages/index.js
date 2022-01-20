@@ -91,7 +91,7 @@ export default function Home(props) {
                   complete={()=>{
                     setDimension("d1");
                     setView("player");
-                    setChapter(++chapter);
+                    setChapter((++chapter)%Object.keys(points).length);
                   }}
                 />
     }
@@ -101,7 +101,7 @@ export default function Home(props) {
   const renderFeedback = ()=>{
     if (windowSize.width > 0){
 
-      return <div style={{display: view === "feedback" ? "block" :"none"}}>
+      return <div>
         <Layout points={points} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={setChapter} setDimension={setDimension}>
         {renderDimension()}
       </Layout>
@@ -118,8 +118,9 @@ export default function Home(props) {
   }
 
   return <>
-        {view=="feedback" && renderFeedback()}
-        {view=="player" && renderPlayer()}
+  {renderFeedback()}
+        {/*view=="feedback" && renderFeedback()*/}
+        {/*view=="player" && renderPlayer()*/}
   </>
 
 }

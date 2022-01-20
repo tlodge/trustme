@@ -81,9 +81,10 @@ const TriangleShape = (props) => {
     useEffect(() => {
        
         init((window.innerWidth-300)/TOTALSHAPES, (window.innerWidth-300)/TOTALSHAPES) 
+        
 
         const setpath = (path, chapter, colour)=>{
-            
+            const chaptercount = Object.keys(groups).length;
             Object.keys(groups).map((k,i)=>{
                 const g = groups[k];
                 g.children[0].material.color.setHex(colour[i]);
@@ -93,11 +94,10 @@ const TriangleShape = (props) => {
                 parent.remove(groups[chapter]);
             }
 
-            groups[chapter] = addShapes(path, chapter*4, Object.keys(groups).length > 1 ? 0x4E89F8 : colour[0]);
+            groups[chapter] = addShapes(path, chapter*4, chaptercount> 1 ? 0x4E89F8 : colour[0]);
             parent.add(groups[chapter]);
-            console.log("Adding chapter", chapter, "x", groups[chapter].position.x, "y", groups[chapter].position.y, "z", groups[chapter].position.z);
-
-            parent.position.y = 10; //how close to top (make vary with chapter)
+            camera.position.z = 20 + (chaptercount * 2)
+            parent.position.y = 1.8 + (chaptercount * 1.8) //how close to top (make vary with chapter)
             parent.position.x = 0; //intercept with axis
             parent.position.z = -1;
             parent.rotation.x =  Math.PI / 2;
@@ -111,9 +111,7 @@ const TriangleShape = (props) => {
         const animate =  ()=> {
             requestAnimationFrame(animate);
             parent.rotation.z += 0.002;
-            //parent.rotation.y += 0.002;
-           
-            //parent.rotation.z += 0.002;
+            parent.rotation.x = Math.PI / 2  + 0.4
             renderer.render(scene, camera);
         };
         

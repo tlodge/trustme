@@ -31,47 +31,47 @@ const questionfor = (q) => {
 
 const LIMITY = {
     q1: {
-        max: 85.7,
-        min: 16.6
+        max: 73.6,
+        min: 23.97
     },
     q2: {
-        max: 127.16,
-        min: 93
+        max: 80.75,
+        min: 65.1
     },
     q3: {
-        max: 127,
-        min: 93
+        max: 130.97,
+        min: 90.56
     },
     q4: {
-        max: 127,
-        min: 93
+        max: 131.25,
+        min: 90.6
     },
     q5: {
-        max: 127,
-        min: 93
+        max: 80.44,
+        min: 65.38
     },
 }
 
 const LIMITX = {
     q1: {
-        max: 109.5,
-        min: 109.5
+        max: 75.6,
+        min: 75.6
     },
     q2: {
-        max: 172.5,
-        min: 113.8
+        max: 131.67,
+        min: 84.36
     },
     q3: {
-        max: 103.9,
-        min: 45.5
+        max: 109.92,
+        min: 80.6
     },
     q4: {
-        max: 172.5,
-        min: 113.8
+        max: 69.9,
+        min: 40.47
     },
     q5: {
-        max: 103.9,
-        min: 45.5
+        max: 66.11,
+        min: 19.18
     },
 }
 
@@ -133,10 +133,9 @@ const limity = (name, y) => {
 
 
 const controlfn = (name, x, y) => {
-    //console.log(xcontrolfn[name](x,y), ycontrolfn[name](x,y));
     return {
-        x: xcontrolfn[name](x, y), //limitx(name, xcontrolfn[name](x, y)),
-        y: ycontrolfn[name](x, y), //limity(name, ycontrolfn[name](x, y))
+        x: limitx(name, xcontrolfn[name](x, y)),
+        y: limity(name, ycontrolfn[name](x, y))
     }
 }
 
@@ -318,7 +317,7 @@ const FivePointFeedback = ({points, setPoints, colour, deviceType, width, height
         Object.keys(controlpoints).map((name)=>{
             const elem = controlpoints[name];
                 
-            elem.on("click", ()=>{
+            /*elem.on("click", ()=>{
             
                 if (name !== selected){
                     const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, name);
@@ -330,7 +329,7 @@ const FivePointFeedback = ({points, setPoints, colour, deviceType, width, height
                     })
                     setSelected(name);
                 }
-            });
+            });*/
 
         elem.call(d3.drag().on("drag", (e)=>{
                 if (name===selected){
@@ -343,19 +342,21 @@ const FivePointFeedback = ({points, setPoints, colour, deviceType, width, height
                     }
                 }
             }).on("end", ()=>{
-                if (deviceType!=="desktop"){
-                    setPoints(_points);
+                if (name===selected){
+                    if (deviceType!=="desktop"){
+                        setPoints(_points);
+                    }
+                    const next = rightof(name);
+                    const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
+        
+                    hexagon.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                        const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                        const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                        return d3.interpolate(from, to);
+                    })
+                    setAnswered([...answered.filter(a=>a!=name), name]);
+                    setSelected(next);
                 }
-                const next = rightof(name);
-                const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
-      
-                hexagon.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
-                    const to =  `rotate(${_to}, ${cx2}, ${cy2})`
-                    const from = `rotate(${_from}, ${cx1}, ${cy1})`
-                    return d3.interpolate(from, to);
-                })
-                setAnswered([...answered.filter(a=>a!=name), name]);
-                setSelected(next);
             }))
           
           

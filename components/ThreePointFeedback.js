@@ -103,7 +103,7 @@ const limity = (name, y) => {
 
 
 const controlfn = (name, x, y) => {
-    //console.log(xcontrolfn[name](x,y), ycontrolfn[name](x,y));
+  
     return {
         x: limitx(name, xcontrolfn[name](x, y)),
         y: limity(name, ycontrolfn[name](x, y))
@@ -118,7 +118,6 @@ const fromto = (from, to) => {
         if (to === "q3") {
             return [0, -240, CX, CY, CX + 0.8, CY + 1.2];
         }
-        return [0, 0];
     }
 
     if (from == "q2") {
@@ -128,7 +127,6 @@ const fromto = (from, to) => {
         if (to === "q3") {
             return [-120, -240, CX + 1, CY + 2, CX + 0.8, CY + 1.2];
         }
-        return [0, 0];
     }
 
     if (from === "q3") {
@@ -138,8 +136,8 @@ const fromto = (from, to) => {
         if (to === "q2") {
             return [-240, -120, CX + 0.8, CY + 1.2, CX + 1, CY + 2]
         }
-        return [0, 0];
     }
+    return [0, 0, CX,CY,CX,CY];
 }
 
 const rightof = (q) => {
@@ -249,11 +247,7 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, heigh
     
         Object.keys(controlpoints).map((name)=>{
             const elem = controlpoints[name];
-          
-     
-            
-          
-            elem.on("click", ()=>{
+            /*elem.on("click", ()=>{
             
                 if (name !== selected){
                     const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, name);
@@ -265,33 +259,35 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, heigh
                     })
                     setSelected(name);
                 }
-            });
+            });*/
 
-        elem.call(d3.drag().on("drag", (e)=>{
-            if (name===selected){
-                const {x,y} = controlfn(name,e.x,e.y);
-                _points = {..._points, [name] : {x, y}}
-                elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
+            elem.call(d3.drag().on("drag", (e)=>{
+                if (name===selected){
+                    const {x,y} = controlfn(name,e.x,e.y);
+                    _points = {..._points, [name] : {x, y}}
+                    elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
             
-                if (deviceType==="desktop"){
-                    setPoints(_points);
+                    if (deviceType==="desktop"){
+                        setPoints(_points);
+                    }
                 }
-            }
             }).on("end", ()=>{
-                if (deviceType!=="desktop"){
-                    setPoints(_points);
+                if (name===selected){
+                    if (deviceType!=="desktop"){
+                        setPoints(_points);
+                    }
+                    const next = rightof(name);
+                    const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
+                    triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                        const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                        const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                        return d3.interpolate(from, to);
+                    })
+                    //.on("end",  ()=>{
+                        setAnswered([...answered.filter(a=>a!=name), name]);
+                        setSelected(next);
+                    //})
                 }
-                const next = rightof(name);
-                const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
-                triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
-                    const to =  `rotate(${_to}, ${cx2}, ${cy2})`
-                    const from = `rotate(${_from}, ${cx1}, ${cy1})`
-                    return d3.interpolate(from, to);
-                })
-                //.on("end",  ()=>{
-                    setAnswered([...answered.filter(a=>a!=name), name]);
-                    setSelected(next);
-                //})
             }))
         })
     });
@@ -326,15 +322,15 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, heigh
                         <g id="controls">
                             <g id="q1" transform={`translate(${points.q1.x},${points.q1.y}) ${rotationFor(selected,"q1")}`}>
                             <circle id="q1"  r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q1" ? "white":colour[1]}}/>
-                            <text y={2.5} className={styles.value}>{q1value(points.q1.x,points.q1.y)}</text>
+                            {/*<text y={2.5} className={styles.value}>{q1value(points.q1.x,points.q1.y)}</text>*/}
                             </g>
                             <g id="q2" transform={`translate(${points.q2.x},${points.q2.y}) ${rotationFor(selected,"q2")}`}>
                             <circle id="q2"  r={7} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q2" ? "white":colour[1]}}/>
-                            <text y={2.5} className={styles.value}>{q2value(points.q2.x,points.q2.y)}</text>
+                            {/*<text y={2.5} className={styles.value}>{q2value(points.q2.x,points.q2.y)}</text>*/}
                             </g>
                             <g id="q3" transform={`translate(${points.q3.x},${points.q3.y}) ${rotationFor(selected,"q3")}`}>
                             <circle id="q3"  r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q3" ? "white":colour[1]}}/>
-                            <text y={2.5} className={styles.value}>{q3value(points.q3.x,points.q3.y)}</text>
+                            {/*<text y={2.5} className={styles.value}>{q3value(points.q3.x,points.q3.y)}</text>*/}
                             </g>
                         </g>
                     </g>
