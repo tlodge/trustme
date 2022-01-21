@@ -264,7 +264,7 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
     });
 
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
-    return  <div style={{padding:20}}>
+    return  <div>
                <svg ref={square} width="100%" height={SVGHEIGHT}  viewBox="-12 0 151 144"  className={styles.square}>
                     
                     <g>
