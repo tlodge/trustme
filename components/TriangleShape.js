@@ -51,7 +51,7 @@ const TriangleShape = (props) => {
         group.scale.multiplyScalar( 0.25 );
         group.position.x =  0;
         group.position.y = 0;
-        group.position.z = depth;
+        group.position.z = -depth;
         //group.rotation.z = depth;
         group.scale.y *=  -1;
 
@@ -79,9 +79,9 @@ const TriangleShape = (props) => {
     }
 
     useEffect(() => {
-        const DIMSHAPE = props.deviceType==="mobile" ? window.innerWidth-300 : (window.innerWidth-300)/TOTALSHAPES;
+        const DIMSHAPE = props.deviceType==="mobile" ? window.innerWidth : (window.innerWidth-300)/TOTALSHAPES;
 
-        init(DIMSHAPE,DIMSHAPE);
+        init(DIMSHAPE, DIMSHAPE-100);
         
         const setpath = (path, chapter, colour)=>{
             const chaptercount = Object.keys(groups).length;
@@ -96,8 +96,8 @@ const TriangleShape = (props) => {
 
             groups[chapter] = addShapes(path, chapter*4, chaptercount> 1 ? 0x4E89F8 : colour[0]);
             parent.add(groups[chapter]);
-            camera.position.z = 20 + (chaptercount * 2)
-            parent.position.y = 1.8 + (chaptercount * 1.8) //how close to top (make vary with chapter)
+            //camera.position.z = 20 + (chaptercount * 2)
+            parent.position.y = -1.8 - (chaptercount * 1.8) //how close to top (make vary with chapter)
             parent.position.x = 0; //intercept with axis
             parent.position.z = -1;
             parent.rotation.x =  Math.PI / 2;
@@ -129,7 +129,7 @@ const TriangleShape = (props) => {
    },[props.paths])
 
  const [windowSize, setWindowSize] = useState({width: 500,height: 500});
- const DIMSHAPE = props.deviceType==="mobile"  ? windowSize.width-300 : (windowSize.width-300)/TOTALSHAPES;
+ const DIMSHAPE = props.deviceType==="mobile"  ? windowSize.width: (windowSize.width-300)/TOTALSHAPES;
  
  return (
           <div onClick={props.onClick} style={{display:"flex",justifyContent:"center", ...props.style}}>

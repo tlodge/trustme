@@ -118,8 +118,9 @@ export default function Home(props) {
 
   console.log("view is", view);
   return <>
-        {view=="feedback" && renderFeedback()}
-        {view=="player" && renderPlayer()}
+  {renderFeedback()}
+        {/*view=="feedback" && renderFeedback()*/}
+        {/*view=="player" && renderPlayer()*/}
   </>
 
 }
