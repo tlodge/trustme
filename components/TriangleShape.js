@@ -79,7 +79,7 @@ const TriangleShape = (props) => {
     }
 
     useEffect(() => {
-        const DIMSHAPE = props.deviceType==="mobile" ? windowSize.width-300 : (window.innerWidth-300)/TOTALSHAPES;
+        const DIMSHAPE = props.deviceType==="mobile" ? window.innerWidth-300 : (window.innerWidth-300)/TOTALSHAPES;
 
         init(DIMSHAPE,DIMSHAPE);
         
