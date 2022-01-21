@@ -6,7 +6,7 @@ import {
 } from 'react';
 import * as d3 from 'd3';
 import useD3 from '../hooks/useD3';
-const TOTALSHAPES = 3;
+
 const ROTATIONTIME = 1000;
 const CX = 109, CY = 89;
 
@@ -294,8 +294,12 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, heigh
 
     //console.log(answered);
 //viewBox="0 0 232 144" 
-    return  <div style={{padding:20}}>
-                <svg ref={triangle} width="100%" height={height-(width-300)/TOTALSHAPES - 44}  viewBox="30 0 151 144" className={styles.trianglesvg}>
+    const TOTALSHAPES = 3;
+
+    const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
+    return  <div style={{display:"flex", justifyContent:"center"}}>
+                <div>
+                <svg ref={triangle} width="100%" height={SVGHEIGHT}  viewBox="30 0 151 144" className={styles.trianglesvg}>
 
                 {/*<g id="rotright">
                     <circle cx={182} cy={139} r={10} style={{fill:"white"}}/>
@@ -341,6 +345,7 @@ const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, heigh
                     
                    
                 </svg>
+                </div>
             </div>
 }
 

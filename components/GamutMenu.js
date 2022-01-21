@@ -19,17 +19,18 @@ const genpath = (d, points)=>{
     
 }
 
-const renderFeedback = ({points,dimension,chapter,colours,setDimension})=>{
+const renderFeedback = ({points,dimension,chapter,colours,setDimension, deviceType})=>{
 
    
-    return dimensions.map(d=>{
+    return (deviceType==="mobile" ? [dimension] : dimensions).map(d=>{
         return <TriangleShape 
                      key={d} 
                      chapter={chapter}
                      colour={colours[d]}
                      onClick={(e)=>{setDimension(d)}} 
                      style={{opacity:dimension===d? 1.0:0.2}} 
-                     className={styles.gamut} 
+                     className={styles.gamut}
+                     deviceType={deviceType}
                      paths={[...Array(chapter+1).keys()].map(ch=>genpath(d,points[ch]))}/>
     })
 }

@@ -3,10 +3,10 @@ import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-const TOTALSHAPES = 3;
+
 
 const TriangleShape = (props) => {
-
+    const TOTALSHAPES = props.deviceType === "mobile" ? 1 : 3;
     const shapeRef = useRef(null);
     const controls = useRef(null);
     const groups = {};
@@ -79,10 +79,10 @@ const TriangleShape = (props) => {
     }
 
     useEffect(() => {
-       
-        init((window.innerWidth-300)/TOTALSHAPES, (window.innerWidth-300)/TOTALSHAPES) 
-        
+        const DIMSHAPE = props.deviceType==="mobile" ? windowSize.width-300 : (window.innerWidth-300)/TOTALSHAPES;
 
+        init(DIMSHAPE,DIMSHAPE);
+        
         const setpath = (path, chapter, colour)=>{
             const chaptercount = Object.keys(groups).length;
             Object.keys(groups).map((k,i)=>{
@@ -128,16 +128,12 @@ const TriangleShape = (props) => {
     props.paths.map((p,i)=>controls.current.setpath(p, i, props.colour))
    },[props.paths])
 
-   const [windowSize, setWindowSize] = useState({width: 500,height: 500});
-
-
+ const [windowSize, setWindowSize] = useState({width: 500,height: 500});
+ const DIMSHAPE = props.deviceType==="mobile"  ? windowSize.width-300 : (windowSize.width-300)/TOTALSHAPES;
  
-//<div style={{ position:"absolute", width: "90%", height: "600px", margin: "40px", border:"2px solid black" }}/>
  return (
-   
-     
           <div onClick={props.onClick} style={{display:"flex",justifyContent:"center", ...props.style}}>
-            <div style={{ background:"transparent", width: (windowSize.width-300)/TOTALSHAPES, height: (windowSize.width-300)/TOTALSHAPES, margin: "0px" }} ref={shapeRef}/>
+            <div style={{ background:"transparent", width: {DIMSHAPE}, height: {DIMSHAPE}, margin: "0px" }} ref={shapeRef}/>
           </div>
  );
 };

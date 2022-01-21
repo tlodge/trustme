@@ -364,9 +364,9 @@ const FivePointFeedback = ({points, setPoints, colour, deviceType, width, height
     });
 
  
-
+    const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
     return  <div style={{padding:20}}>
-                <svg ref={hexagon} width="100%" height={height-(width-300)/TOTALSHAPES - 44}  viewBox="0 0 151 144" className={styles.hexagon}>
+                <svg ref={hexagon} width="100%" height={SVGHEIGHT}  viewBox="0 0 151 144" className={styles.hexagon}>
                     <g>
                         <text x="78px" y="7.29px" className={styles.questiontext}>Personal experience</text>
                     </g>
