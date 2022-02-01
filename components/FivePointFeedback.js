@@ -10,25 +10,6 @@ const TOTALSHAPES =3;
 const ROTATIONTIME = 1000;
 const CX = 75.5, CY = 83;
 
-const questionfor = (q) => {
-    switch (q) {
-        case "q1":
-            return "I KNOW what the system is"
-
-        case "q2":
-            return "I KNOW what the system does"
-
-        case "q3":
-            return "I KNOW how the system works"
-
-        case "q4":
-            return "I KNOW how the system works"
-        
-        case "q5":
-            return "This is something else!"
-    }
-}
-
 const LIMITY = {
     q1: {
         max: 73.6,
@@ -288,7 +269,7 @@ const leftof = (q) => {
 
 const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['lime', 'orange', 'red']);
 
-const FivePointFeedback = ({answers, setAnswer, questions, points, setPoints, colour, deviceType, width, height, complete:next}) => {
+const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, width, height, complete:next}) => {
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
@@ -434,9 +415,7 @@ const FivePointFeedback = ({answers, setAnswer, questions, points, setPoints, co
         const pnts = pointfn[q](answer);
         return `translate(${pnts[0]},${pnts[1]})`;
     }
-
-    //`M${points.q1.x},${points.q1.y}L${points.q2.x},${points.q2.y}L${points.q3.x},${points.q3.y}L${points.q4.x},${points.q4.y}L${points.q5.x},${points.q5.y}L${points.q1.x},${points.q1.y}Z`} className={styles.innerhexline}/>
-                        
+                    
     const pathstr = () =>{
         const q1 = pointfn["q1"](answers["q1"]);
         const q2 = pointfn["q2"](answers["q2"]);
@@ -449,7 +428,7 @@ const FivePointFeedback = ({answers, setAnswer, questions, points, setPoints, co
     return  <div>
                 <svg ref={hexagon} width="100%" height={SVGHEIGHT}  viewBox="0 0 151 144" className={styles.hexagon}>
                     <g>
-                        <text x="78px" y="7.29px" className={styles.questiontext}>Personal experience</text>
+                        <text x="78px" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>
                     </g>
                     <g id="bighexagon">
                         <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex}/>
