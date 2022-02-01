@@ -13,18 +13,29 @@ import {
   selectShapes,
 } from '../features/shapes/shapeSlice'
 
+import {
+  selectQuestions,
+  selectAnswers,
+  selectChapter,
+  selectDimension,
+  setChapter,
+  setDimension,
+  setAnswer,
+} from '../features/questions/questionSlice'
+
 export default function Home(props) {
  
-  const {deviceType} = props;
-
-  const [dimension, setDimension] = useState("d1");
-  const [chapter, setChapter] = useState(0);
+  const {deviceType} = props; 
   const [windowSize, setWindowSize] = useState({width:0,height:0})
   const  [view, setView] = useState("player"); //player || feedback!
   
   const dispatch = useAppDispatch()
   
   const {shapes:points} = useAppSelector(selectShapes)
+  const questions = useAppSelector(selectQuestions);
+  const answers = useAppSelector(selectAnswers);
+  const chapter = useAppSelector(selectChapter);
+  const dimension = useAppSelector(selectDimension);
 
   useEffect(() => {
     setWindowSize({
@@ -32,6 +43,18 @@ export default function Home(props) {
         height: window.innerHeight,
       });
   }, []);
+
+  const _setDimension = (dimension)=>{
+    dispatch(setDimension(dimension));
+  } 
+
+  const _setChapter = (chapter)=>{
+    dispatch(setChapter(chapter));
+  }
+
+  const _setAnswer = (question, answer)=>{
+    dispatch(setAnswer({chapter,dimension,question,answer}))
+  }
 
   const setPoints = (points)=>{
     dispatch(setShapes(points));
@@ -62,23 +85,27 @@ export default function Home(props) {
       
       case "d1":
         return <ThreePointFeedback 
-                points={points[chapter][dimension]} 
+                answers={answers}
                 deviceType={deviceType} 
                 colour={colours[dimension]} 
-                setPoints={_setPoints}
                 width={windowSize.width}
                 height={windowSize.height}
-                complete={()=>{setDimension("d2")}}
+                questions={questions}
+                setAnswer={(q, a)=>_setAnswer(q,a)}
+                complete={()=>{_setDimension("d2")}}
               />
       case "d2":
         return <FourPointFeedback 
+                  answers={answers}
+                  questions={questions}
                   points={points[chapter][dimension]} 
                   deviceType={deviceType} 
                   colour={colours[dimension]} 
                   setPoints={_setPoints}
                   width={windowSize.width}
                   height={windowSize.height}
-                  complete={()=>{setDimension("d3")}}
+                  setAnswer={(q, a)=>_setAnswer(q,a)}
+                  complete={()=>{_setDimension("d3")}}
                 />
       case "d3":
         return <FivePointFeedback 
@@ -88,10 +115,13 @@ export default function Home(props) {
                   deviceType={deviceType}
                   width={windowSize.width}
                   height={windowSize.height}
+                  questions={questions}
+                  answers={answers}
+                  setAnswer={(q, a)=>_setAnswer(q,a)}
                   complete={()=>{
-                    setDimension("d1");
+                    _setDimension("d1");
                     setView("player");
-                    setChapter((++chapter)%Object.keys(points).length);
+                    _setChapter((++chapter)%Object.keys(points).length);
                   }}
                 />
     }
@@ -100,7 +130,7 @@ export default function Home(props) {
 
   const renderFeedback = ()=>{
     if (windowSize.width > 0){
-      return <Layout points={points} deviceType={deviceType} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={setChapter} setDimension={setDimension}>
+      return <Layout points={points} deviceType={deviceType} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension}>
         {renderDimension()}
       </Layout>
    
@@ -116,7 +146,7 @@ export default function Home(props) {
     </div>
   }
 
-  console.log("view is", view);
+  
   return <>
   {renderFeedback()}
         {/*view=="feedback" && renderFeedback()*/}
@@ -124,6 +154,8 @@ export default function Home(props) {
   </>
 
 }
+
+
 
 export async function getServerSideProps(context) {
   const UA = context.req.headers['user-agent'];

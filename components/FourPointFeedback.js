@@ -10,23 +10,6 @@ const TOTALSHAPES =3;
 const ROTATIONTIME = 1000;
 const CX = 63.3, CY = 76.6;
 
-const questionfor = (q) => {
-    switch (q) {
-        case "q1":
-            return "I KNOW what the system is"
-
-        case "q2":
-            return "I KNOW what the system does"
-
-        case "q3":
-            return "I KNOW how the system works"
-
-        case "q4":
-            return "I KNOW how the system works"
-        
-    }
-}
-
 const LIMITY = {
     q1: {
         max: 68.3,
@@ -65,10 +48,38 @@ const LIMITX = {
     }
 }
 
-const q1scale = d3.scaleLinear().domain([16.6, 85.7]).range([100, 0]);
-const q2scale = d3.scaleLinear().domain([93, 127.16]).range([0, 100]);
-const q3scale = d3.scaleLinear().domain([93, 127.16]).range([0, 100]);
-const q4scale = d3.scaleLinear().domain([93, 127.16]).range([0, 100]);
+const q1scale = d3.scaleLinear().domain([20.1, 68.3]).range([100, 0]);
+const q2scale = d3.scaleLinear().domain([71.5, 123.6]).range([0, 100]);
+const q3scale = d3.scaleLinear().domain([85, 135]).range([0, 100]);
+const q4scale = d3.scaleLinear().domain([6.3, 54.5]).range([0, 100]);
+
+
+const q1points = (answer)=>{
+    const q1ToY = d3.scaleLinear().domain([0,100]).range([68.3,20.1]);
+    return [63.4, q1ToY(answer)];
+}
+
+const q2points = (answer)=>{
+    const q2ToX = d3.scaleLinear().domain([0,100]).range([71.5,123.6])
+    return [q2ToX(answer), q2ypos(q2ToX(answer))];
+}
+
+const q3points = (answer)=>{
+    const q3ToY = d3.scaleLinear().domain([0,100]).range([85,135])
+    return [63.4, q3ypos(0,q3ToY(answer))];
+}
+const q4points = (answer)=>{
+    const q4ToX = d3.scaleLinear().domain([0,100]).range([6.3,54.5])
+    return [q4ToX(answer), q4ypos(q4ToX(answer))];
+}
+
+
+const pointfn = {
+    "q1":q1points,
+    "q2":q2points,
+    "q3":q3points,
+    "q4":q4points
+}
 
 
 const q1value = (x, y) => {
@@ -76,7 +87,7 @@ const q1value = (x, y) => {
 }
 
 const q2value = (x, y) => {
-    return Math.ceil(q2scale(y));
+    return Math.ceil(q2scale(x));
 }
 
 const q3value = (x, y) => {
@@ -84,8 +95,17 @@ const q3value = (x, y) => {
 }
 
 const q4value = (x, y) => {
-    return Math.ceil(q3scale(y));
+    return Math.ceil(q4scale(x));
 }
+
+const valuefn = {
+    "q1" : q1value,
+    "q2" : q2value,
+    "q3" : q3value,
+    "q4" : q4value,
+}
+
+
 
 const q1ypos = (x, y)=> y;
 const q2ypos = (x, y)=>76;
@@ -203,23 +223,42 @@ const rotationFor = (current, selected) => {
     return 'rotate (0,0,0)';
 }
 
-const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width, complete}) => {
+const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['lime', 'orange', 'red']);
+
+const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, height, width, complete:next}) => {
+
+   
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
     const [answered, setAnswered] = useState([]);
+    const [complete, setComplete] = useState(false);
+    const [almostComplete, setAlmostComplete] = useState(false);
+    const questionScale = d3.scaleLinear().clamp(true).domain([0,100]).range([0, questions.q1.length-1]);
 
+    const currentQuestion = (value)=>{
+        return questions[selected][Math.ceil(questionScale(value))];
+    }
+
+    const updateAnswer = (question,answer)=>{
+        setAnswer(question,answer);
+        setAnswered([...answered.filter(a=>a!=question), question]);
+    }
 
     useEffect(()=>{
         if (answered.length >= 4){
-            complete();
+            setComplete(true);
         }
-    },[answered,complete]);
+        if (answered.length == 3){
+            setAlmostComplete(true);
+        }
+    },[answered]);
 
     const square = useD3((root)=>{
     
-        let _points = points;
-    
+      
+        let _answer = 0;
+
         const controls = root.select("g#controls");
         const q1 = controls.select("g#q1");
         const q2 = controls.select("g#q2");
@@ -228,24 +267,53 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
         const _square = root.select("g#bigsquare");
         const controlpoints = {q1,q2,q3,q4};
     
+        const rotateIfSelected = (name)=>{
+            if (name !== selected){
+                const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, name);
+
+                _square.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                    const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                    const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                    return d3.interpolate(from, to);
+                })
+                setSelected(name);
+            }
+        }
+
         Object.keys(controlpoints).map((name)=>{
             const elem = controlpoints[name];
-                
+              
+            elem.on("click", ()=>{
+                if (complete){
+                    rotateIfSelected(name);
+                }
+            });
+
             elem.call(d3.drag().on("drag", (e)=>{
                 if (name===selected){
                     const {x,y} = controlfn(name,e.x,e.y);
-                    _points = {..._points, [name] : {x, y}}
+                  
+
                     elem.attr("transform", `translate(${x},${y})`);// ${rotationFor(selected,name)}`)
                 
+                    _answer = valuefn[name](x,y);
+                   
                     if (deviceType==="desktop"){
-                        setPoints(_points);
+                        updateAnswer(name,_answer);
                     }
+
+                
                 }
+            }).on("start",()=>{
+                rotateIfSelected(name);
             }).on("end", ()=>{
                 if (name===selected){
-                    if (deviceType!=="desktop"){
-                        setPoints(_points);
+
+                    if (almostComplete){
+                        updateAnswer(name, _answer);
+                        return;
                     }
+
                     const next = rightof(name);
                     const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
 
@@ -254,8 +322,7 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
                         const from = `rotate(${_from}, ${cx1}, ${cy1})`
                         return d3.interpolate(from, to);
                     })
-
-                    setAnswered([...answered.filter(a=>a!=name), name]);
+                    updateAnswer(name, _answer);
                     setSelected(next);
                 }
             }))
@@ -263,12 +330,35 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
         })
     });
 
+    const colourFor = (q, selected)=>{
+        if (selected || answered.indexOf(q) != -1){
+            return colorScale(answers[q])
+        }
+        return "white"
+    }
+
+    const translatestr = (q)=>{
+        const answer = answers[q];
+        const pnts = pointfn[q](answer);
+        
+        return `translate(${pnts[0]},${pnts[1]})`;
+    }
+
+    const pathstr = () =>{
+        const q1 = pointfn["q1"](answers["q1"]);
+        const q2 = pointfn["q2"](answers["q2"]);
+        const q3 = pointfn["q3"](answers["q3"]);
+        const q4 = pointfn["q4"](answers["q4"]);
+        return `M${q1[0]},${q1[1]}L${q2[0]},${q2[1]}L${q3[0]},${q3[1]}L${q4[0]},${q4[1]}L${q1[0]},${q1[1]}Z`
+    }
+
+
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
     return  <div>
                <svg ref={square} width="100%" height={SVGHEIGHT}  viewBox="-12 0 151 144"  className={styles.square}>
                     
                     <g>
-                        <text x="65" y="7.29px" className={styles.questiontext}>That I need to use this system</text>
+                        <text x="65" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>
                     </g>
 
                     <g id="bigsquare">
@@ -278,23 +368,30 @@ const FourPointFeedback = ({points, setPoints, colour, deviceType, height, width
                         <path d="M0.865,76.474L125.922,76.474" className={styles.scaleline}/>
                         <circle cx="63.394" cy="76.686" r={3} className={styles.center} />
                         
-                        <path d={`M${points.q1.x},${points.q1.y}L${points.q2.x},${points.q2.y}L${points.q3.x},${points.q3.y}L${points.q4.x},${points.q4.y}L${points.q1.x},${points.q1.y}Z`}  className={styles.innersquare}/>
+                        <path d={pathstr()}  className={styles.innersquare}/>
                         
                         <g id="controls">
-                            <g id="q1" transform={`translate(${points.q1.x},${points.q1.y})`}>
-                                <circle r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q1" ? "white":colour[1]}}/>
+                            <g id="q1" transform={translatestr("q1")}>
+                                <circle r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1", "q1"===selected)}}/>
                             </g>
-                            <g id="q2" transform={`translate(${points.q2.x},${points.q2.y})`}>
-                                <circle r={7}  className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q2" ? "white":colour[1]}}/>
+                            <g id="q2" transform={translatestr("q2")}>
+                                <circle r={7}  className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2", "q2"===selected)}}/>
                             </g>
-                            <g id="q3" transform={`translate(${points.q3.x},${points.q3.y})`}>
-                                <circle r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q3" ? "white":colour[1]}}/>
+                            <g id="q3" transform={translatestr("q3")}>
+                                <circle r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3", "q3"===selected)}}/>
                             </g>
-                            <g id="q4" transform={`translate(${points.q4.x},${points.q4.y})`}>
-                                <circle r={7} className={selected === "q4" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q4" ? "white":colour[1]}}/>
+                            <g id="q4" transform={translatestr("q4")}>
+                                <circle r={7} className={selected === "q4" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q4", "q4"===selected)}}/>
                             </g>
                         </g>
+
+                        
                     </g>
+                    {complete && <g> 
+                        <circle onClick={next} cx="63" cy="76" r="7.012" style={{fill:"#fff",stroke:"#000",strokeWidth:0.8}}/>
+                        <circle onClick={next}  cx="63" cy="76" r="5.5" style={{fill:"#ffd5d5"}}/>
+                        <path onClick={next}  d="M62,74l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#000",strokeWidth:0.82}}/>
+                    </g>}
                 </svg>
             </div>
 }

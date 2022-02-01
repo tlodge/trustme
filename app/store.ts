@@ -3,10 +3,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 
 import shapeReducer from '../features/shapes/shapeSlice'
+import questionReducer from '../features/questions/questionSlice'
 
 export function makeStore() {
   return configureStore({
-    reducer: { shapes: shapeReducer },
+    reducer: { shapes: shapeReducer, questions: questionReducer },
   })
 }
 

@@ -1,6 +1,13 @@
 import GamutMenu from '../components/GamutMenu';
+import { useAppSelector, useAppDispatch } from '../hooks/useRedux'
+
+import {
+  selectQuestions
+} from '../features/questions/questionSlice'
 
 const Layout = ({points,children,dimension, chapter, colours, setChapter, setDimension, deviceType}) => {
+
+    const questions = useAppSelector(selectQuestions);
 
     const isMobile = deviceType === "mobile";
 
@@ -43,7 +50,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
                 <div style={{display:"flex", flexDirection: isMobile ? "column":"row", height:"100vh", paddingTop:20, flex: "1 1 auto", background:"white"}}>
                     <div style={{display:'flex', flex: "1 1 auto", flexDirection:"column"}}>     
                             {children}
-                            <GamutMenu points={points} deviceType={deviceType} chapter={chapter} colours={colours} dimension={dimension} setDimension={setDimension}/>
+                            <GamutMenu points={points} deviceType={deviceType} chapter={chapter} colours={colours} dimension={dimension} questions={questions} setDimension={setDimension}/>
                     </div>
                     {renderChapters()}
                 </div>

@@ -1,6 +1,5 @@
 import styles from '../styles/Home.module.css'
 import {
-    useRef,
     useState,
     useEffect
 } from 'react';
@@ -9,19 +8,6 @@ import useD3 from '../hooks/useD3';
 
 const ROTATIONTIME = 1000;
 const CX = 109, CY = 89;
-
-const questionfor = (q) => {
-    switch (q) {
-        case "q1":
-            return "I KNOW what the system is"
-
-        case "q2":
-            return "I KNOW what the system does"
-
-        case "q3":
-            return "I KNOW how the system works"
-    }
-}
 
 const LIMITY = {
     q1: {
@@ -67,6 +53,12 @@ const q2value = (x, y) => {
 
 const q3value = (x, y) => {
     return Math.ceil(q3scale(y));
+}
+
+const valuefn = {
+    "q1" : q1value,
+    "q2" : q2value,
+    "q3" : q3value,
 }
 
 const q2ypos = (x) => {
@@ -150,16 +142,6 @@ const rightof = (q) => {
     return "q1"
 }
 
-const leftof = (q) => {
-    if (q == "q3") {
-        return "q2"
-    }
-    if (q == "q2") {
-        return "q1"
-    }
-    return "q3"
-}
-
 const rotationFor = (current, selected) => {
     
     if (current == "q2") {
@@ -176,171 +158,192 @@ const rotationFor = (current, selected) => {
     return 'rotate (0,0,0)';
 }
 
-const ThreePointFeedback = ({points, setPoints, colour, deviceType, width, height,complete}) => {
+const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['lime', 'orange', 'red']);
 
-    //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
+
+const q1points = (answer)=>{
+    const q1ToY = d3.scaleLinear().domain([0,100]).range([85.7,16.6]);
+    return [109.5, q1ToY(answer)];
+}
+
+const q2points = (answer)=>{
+    const q2ToX = d3.scaleLinear().domain([0,100]).range([113.8,172.5])
+    return [q2ToX(answer), q2ypos(q2ToX(answer))];
+}
+
+const q3points = (answer)=>{
+    const q3ToX = d3.scaleLinear().domain([0,100]).range([103.9,45.5])
+    return [q3ToX(answer), q3ypos(q3ToX(answer))];
+}
+
+const pointfn = {
+    "q1":q1points,
+    "q2":q2points,
+    "q3":q3points,
+}
+const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, questions, setAnswer, answers}) => {
+
     const [selected, setSelected] = useState("q1");
     const [answered, setAnswered] = useState([]);
+    const [complete, setComplete] = useState(false);
+    const [almostComplete, setAlmostComplete] = useState(false);
+    const questionScale = d3.scaleLinear().clamp(true).domain([0,100]).range([0, questions.q1.length-1]);
 
     useEffect(()=>{
         if (answered.length >= 3){
-            complete();
+            setComplete(true);
         }
-    },[answered,complete]);
-    /*useEffect(()=>{
-        if (answered.length >= 3){
-            complete();
+        if (answered.length ==2){
+            setAlmostComplete(true);
         }
-    }, [answered,complete]);*/
+    },[answered]);
+  
 
-    const zeroRotation = (q)=>{
-        switch(q){
-            case "q1":
-                return "rotate(0, 109.5, 90.5)"
-            case "q2":
-                return "rotate(120,109.5, 90.5)"
-            case "q3":
-                return "rotate(-120,109.5, 90.5)"
-        }
+    const currentQuestion = (value)=>{
+        return questions[selected][Math.ceil(questionScale(value))];
     }
+
+    const updateAnswer = (question,answer)=>{
+        setAnswer(question,answer);
+        setAnswered([...answered.filter(a=>a!=question), question]);
+    }
+
     const triangle = useD3((root)=>{
-    
-        let _points = points;
-    
+      //let _points = points;
+        let _answer =50;
+
         const controls = root.select("g#controls");
         const q1 = controls.select("g#q1");
         const q2 = controls.select("g#q2");
         const q3 = controls.select("g#q3");
-    
-        const rleft =  root.select("g#rotleft");
-        const rright =  root.select("g#rotright");
         const triangle = root.select("g#bigtriangle");
-    
-        /*rleft.on("click", function(){
-          const q = leftof(selected);
-          const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, q);
-          
-          triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
-            const to =  `rotate(${_to}, ${cx2}, ${cy2})`
-            const from = `rotate(${_from}, ${cx1}, ${cy1})`
-            return d3.interpolate(from, to);
-          })
-          setSelected(q);
-        });
-    
-    
-        rright.on("click", function(){
-          const q = rightof(selected);
-          
-          const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, q);
-    
-          
-          triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
-            const to =  `rotate(${_to}, ${cx2}, ${cy2})`
-            const from = `rotate(${_from}, ${cx1}, ${cy1})`
-            return d3.interpolate(from, to);
-          })
-          setSelected(q);
-        });*/
-    
         const controlpoints = {q1,q2,q3};
     
+        const rotateIfSelected = (name)=>{
+            if (name !== selected){
+                const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, name);
+
+                triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
+                    const to =  `rotate(${_to}, ${cx2}, ${cy2})`
+                    const from = `rotate(${_from}, ${cx1}, ${cy1})`
+                    return d3.interpolate(from, to);
+                })
+                setSelected(name);
+            }
+        }
+
         Object.keys(controlpoints).map((name)=>{
             const elem = controlpoints[name];
-            /*elem.on("click", ()=>{
-            
-                if (name !== selected){
-                    const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, name);
-      
-                    triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
-                        const to =  `rotate(${_to}, ${cx2}, ${cy2})`
-                        const from = `rotate(${_from}, ${cx1}, ${cy1})`
-                        return d3.interpolate(from, to);
-                    })
-                    setSelected(name);
+            elem.on("click", ()=>{
+                if (complete){
+                    rotateIfSelected(name);
                 }
-            });*/
+            });
 
             elem.call(d3.drag().on("drag", (e)=>{
                 if (name===selected){
                     const {x,y} = controlfn(name,e.x,e.y);
-                    _points = {..._points, [name] : {x, y}}
+                   // _points = {..._points, [name] : {x, y}}
+                    _answer = valuefn[name](x,y);
+
                     elem.attr("transform", `translate(${x},${y}) ${rotationFor(selected,name)}`)
             
                     if (deviceType==="desktop"){
-                        setPoints(_points);
+                        //setPoints(_points);
+                        updateAnswer(name,_answer);
                     }
                 }
+            }).on("start", ()=>{
+                rotateIfSelected(name);
             }).on("end", ()=>{
                 if (name===selected){
                     if (deviceType!=="desktop"){
-                        setPoints(_points);
+                        //setPoints(_points);
+                        updateAnswer(name, _answer);
                     }
+                    if (almostComplete){
+                        updateAnswer(name, _answer);
+                        return;
+                    }
+                    
                     const next = rightof(name);
                     const [_from, _to, cx1, cy1, cx2, cy2] = fromto(selected, next);
+                    
                     triangle.transition().duration(ROTATIONTIME).attrTween("transform", (d)=>{
                         const to =  `rotate(${_to}, ${cx2}, ${cy2})`
                         const from = `rotate(${_from}, ${cx1}, ${cy1})`
                         return d3.interpolate(from, to);
                     })
-                    //.on("end",  ()=>{
-                        setAnswered([...answered.filter(a=>a!=name), name]);
-                        setSelected(next);
-                    //})
+                    
+                    updateAnswer(name, _answer);
+                    setSelected(next);
+                    
                 }
             }))
         })
     });
 
-    //console.log(answered);
-//viewBox="0 0 232 144" 
     const TOTALSHAPES = 3;
 
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
+
+    const colourFor = (q, selected)=>{
+    
+        if (selected || answered.indexOf(q) != -1){
+            return colorScale(answers[q])
+        }
+        return "white"
+    }
+
+    const translatestr = (q)=>{
+        const answer = answers[q];
+        const pnts = pointfn[q](answer);
+        return `translate(${pnts[0]},${pnts[1]})`;
+    }
+
+    const pathstr = () =>{
+        const q1 = pointfn["q1"](answers["q1"]);
+        const q2 = pointfn["q2"](answers["q2"]);
+        const q3 = pointfn["q3"](answers["q3"]);
+        return `M${q3[0]},${q3[1]}L${q1[0]},${q1[1]}L${q2[0]},${q2[1]}Z`
+    }
+
     return  <div style={{display:"flex", justifyContent:"center"}}>
                 <div>
                 <svg ref={triangle} width="100%" height={SVGHEIGHT}  viewBox="30 0 151 144" className={styles.trianglesvg}>
-
-                {/*<g id="rotright">
-                    <circle cx={182} cy={139} r={10} style={{fill:"white"}}/>
-                    <path className={styles.rotation} d="M174,139c1.67,1.437 3.989,2.05 6.261,1.437c3.326,-0.897 5.416,-4.117 5.023,-7.469l-1.357,0.343l1.379,-3.093l2.757,2.049l-1.33,0.335c0.576,4.218 -2.013,8.298 -6.173,9.42c-2.775,0.749 -5.609,0.008 -7.669,-1.737l1.109,-1.285Z" />
-                </g>
-                <g id="rotleft">
-                <circle cx={38} cy={139} r={10} style={{fill:"white"}}/>
-                    <path  className={styles.rotation} d="M46,139c-1.67,1.437 -3.989,2.05 -6.261,1.437c-3.326,-0.897 -5.417,-4.117 -5.023,-7.469l1.357,0.343l-1.379,-3.093l-2.757,2.049l1.329,0.335c-0.575,4.218 2.014,8.298 6.174,9.42c2.775,0.749 5.608,0.008 7.669,-1.737l-1.109,-1.285Z" /> 
-                </g>*/}
-
-                {/*<text x="44px" y="132px" className={styles.textvalue}>100</text>
-                    <text x="174px" y="132px" className={styles.textvalue}>100</text>
-            <text x="109.5px" y="14px" className={styles.textvalue}>100</text>*/}
-                   
                     <g id="bigtriangle">
                         <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:colour[0]}}/>
                         <path d="M109.708,17.272L109.527,90.317" className={styles.triangleoutline}/>
                         <path d="M46.236,126.829L109.495,90.306" className={styles.triangleoutline}/>
                         <path d="M172.705,127.087L109.616,90.352" className={styles.triangleoutline}/>
                         <circle cx={109.5} cy={90.5} r={2} className={styles.zeroline} style={{fill:colour[0]}}/>
-                        <path id="dimshape" d={`M${points.q3.x},${points.q3.y}L${points.q1.x},${points.q1.y}L${points.q2.x},${points.q2.y}Z`} className={styles.innertriangle} style={{fill:colour[1]}}/>
-                        
+                        <path id="dimshape" d={pathstr()} className={styles.innertriangle} style={{fill:colour[1]}}/>
+
+
                         {/*<text x="108px" y="92px" className={styles.text0value} transform={`${zeroRotation(selected)}`}>0</text>*/}
                         <g id="controls">
-                            <g id="q1" transform={`translate(${points.q1.x},${points.q1.y}) ${rotationFor(selected,"q1")}`}>
-                            <circle id="q1"  r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q1" ? "white":colour[1]}}/>
+                            <g id="q1" transform={`${translatestr("q1")} ${rotationFor(selected,"q1")}`}>
+                            <circle id="q1"  r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1",selected=="q1")}}/>
                             {/*<text y={2.5} className={styles.value}>{q1value(points.q1.x,points.q1.y)}</text>*/}
                             </g>
-                            <g id="q2" transform={`translate(${points.q2.x},${points.q2.y}) ${rotationFor(selected,"q2")}`}>
-                            <circle id="q2"  r={7} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q2" ? "white":colour[1]}}/>
+                            <g id="q2" transform={`${translatestr("q2")} ${rotationFor(selected,"q2")}`}>
+                            <circle id="q2"  r={7} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2",selected=="q2")}}/>
                             {/*<text y={2.5} className={styles.value}>{q2value(points.q2.x,points.q2.y)}</text>*/}
                             </g>
-                            <g id="q3" transform={`translate(${points.q3.x},${points.q3.y}) ${rotationFor(selected,"q3")}`}>
-                            <circle id="q3"  r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: selected=="q3" ? "white":colour[1]}}/>
+                            <g id="q3" transform={`${translatestr("q3")}, ${rotationFor(selected,"q3")}`}>
+                            <circle id="q3"  r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3",selected=="q3")}}/>
                             {/*<text y={2.5} className={styles.value}>{q3value(points.q3.x,points.q3.y)}</text>*/}
                             </g>
                         </g>
                     </g>
+                   
+                    {complete && <g> 
+                        <circle onClick={next} cx="109.5" cy="92" r="7.012" style={{fill:"#fff",stroke:"#000",strokeWidth:0.8}}/>
+                        <circle onClick={next}  cx="109.5" cy="92" r="5.5" style={{fill:"#ffd5d5"}}/>
+                        <path onClick={next}  d="M108.5,90l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#000",strokeWidth:0.82}}/>
+                    </g>}
                     
-                    
-                    <text x="109.5px" y="7.29px" className={styles.questiontext}>{questionfor(selected)}</text>
+                    <text x="109.5px" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>
                     
                     
                    
