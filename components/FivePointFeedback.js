@@ -1,6 +1,5 @@
 import styles from '../styles/FivePoint.module.css'
 import {
-    useRef,
     useState,
     useEffect
 } from 'react';
@@ -267,11 +266,11 @@ const leftof = (q) => {
     return positions[q]
 }
 
-const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['lime', 'orange', 'red']);
+
+const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['#3c6647', 'white']);
 
 const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, width, height, complete:next}) => {
 
-    //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
     const [almostComplete, setAlmostComplete] = useState(false);
     const [complete, setComplete] = useState(false);
@@ -449,29 +448,30 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
                         <g id="controls">
                         
                             <g id="q1" transform={translatestr("q1")}>
-                                <circle id="q1" r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1",selected==="q1")}}/>    
+                                <circle id="q1" r={selected==="q1" ? 7: 4} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1",selected==="q1")}}/>    
                             </g>
                             <g id="q2" transform={translatestr("q2")}>
-                                <circle id="q2" r={7} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2",selected==="q2")}}/>    
+                                <circle id="q2" r={selected==="q2" ? 7: 4} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2",selected==="q2")}}/>    
                             </g>
                             <g id="q3" transform={translatestr("q3")}>
-                                <circle id="q3" r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3",selected==="q3")}}/>    
+                                <circle id="q3" r={selected==="q3" ? 7: 4}className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3",selected==="q3")}}/>    
                             </g>
                             <g id="q4" transform={translatestr("q4")}>
-                                <circle id="q4" r={7} className={selected === "q4" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q4",selected==="q4")}}/>    
+                                <circle id="q4" r={selected==="q4" ? 7: 4}className={selected === "q4" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q4",selected==="q4")}}/>    
                             </g>
                             <g id="q5" transform={translatestr("q5")}>
-                                <circle id="q5" r={7} className={selected === "q5" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q5",selected==="q5")}}/>    
+                                <circle id="q5" r={selected==="q5" ? 7: 4} className={selected === "q5" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q5",selected==="q5")}}/>    
                             </g>
                         </g>
                     </g>
                     {complete && <g> 
-                        <circle onClick={next} cx="75.5" cy="83" r="7.012" style={{fill:"#fff",stroke:"#000",strokeWidth:0.8}}/>
-                        <circle onClick={next}  cx="75.5" cy="83" r="5.5" style={{fill:"#ffd5d5"}}/>
-                        <path onClick={next}  d="M74.5,81l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#000",strokeWidth:0.82}}/>
+                        <circle onClick={next} cx="75.5" cy="83" r="7.012" style={{fill:"#c8c8c8",stroke:"#171834",strokeWidth:0.8}}/>
+                        <circle onClick={next}  cx="75.5" cy="83" r="5.5" style={{fill:"#282b55"}}/>
+                        <path onClick={next}  d="M74.5,81l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>
                     </g>}
                 </svg>
             </div>
 }
+
 
 export default FivePointFeedback;

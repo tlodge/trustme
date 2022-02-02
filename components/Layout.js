@@ -5,9 +5,9 @@ import {
   selectQuestions
 } from '../features/questions/questionSlice'
 
-const Layout = ({points,children,dimension, chapter, colours, setChapter, setDimension, deviceType}) => {
 
-    const questions = useAppSelector(selectQuestions);
+
+const Layout = ({points,children,dimension, chapter, colours, setChapter, setDimension, deviceType}) => {
 
     const isMobile = deviceType === "mobile";
 
@@ -15,16 +15,17 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
         
         return [0,1,2,3,4,5,6,7].map((c)=>{
             const chstyle = {
-                fontSize:isMobile ? "1em" : "2em", 
-                paddingTop:2, 
+                fontFamily: "'Nunito', sans-serif;",
+                fontSize:isMobile ? "0.8em" : "1.5em", 
+                paddingTop:9, 
                 margin:isMobile ? 4 : 10,
-                color:c===chapter ? "white":"#aaa", 
-                background:c===chapter ? "#5882B3":"white", 
+                color:"#171834", 
+                background:"#c8c8c8", 
+                opacity:c===chapter ? 1.0:0.5, 
                 textAlign:"center", 
                 width: isMobile ? 30 : 50, 
                 height: isMobile ? 30 : 50, 
                 borderRadius: isMobile ? 15 : 25, 
-                border:`3px solid ${c===chapter?"#333":"#888"}` 
             }
             return <div key={c} style={chstyle} onClick={()=>setChapter(c)}>{c+1}</div>
         });
@@ -34,25 +35,35 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
         const cstyle = {
             display:"flex", 
             alignItems:"center", 
-            justifyContent: isMobile ? "center" : "flex-start",
+            justifyContent: isMobile ? "center" : "center",
             flexDirection: isMobile ? "row" : "column", 
-            width: isMobile ? "100vw" : "300px", 
-            borderLeft:"1px solid #ddd", 
-            background:"#eee", 
-            padding: 20
+            width: isMobile ? "auto" : "280px", 
+            alignItems:"center",
+            border: !isMobile ? "1px solid #c8c8c8" : "none",
+            marginLeft: !isMobile ? 20 : 0,
+            background: "#2b2b55",
+            padding: isMobile ? 5: 0,
         }
 
         return <div style={cstyle}>
-            {chapters()}
+                {!isMobile && <div style={{fontFamily: "'Nunito', sans-serif;", margin:10,fontWeight:300,fontSize:20,color:"#c8c8c8"}}>Chapter</div>}
+                {chapters()}
+           
         </div>
     }
     return  <div style={{display:'flex', height:"100vh", width:"100vw", alignItems:"center", background:"black", justifyContent:"center"}}>
-                <div style={{display:"flex", flexDirection: isMobile ? "column":"row", height:"100vh", paddingTop:20, flex: "1 1 auto", background:"white"}}>
+                <div style={{display:"flex", flexDirection: isMobile ? "column":"row", height:"100vh", flex: "1 1 auto", background:"#171834"}}>
                     <div style={{display:'flex', flex: "1 1 auto", flexDirection:"column"}}>     
-                            {children}
-                            <GamutMenu points={points} deviceType={deviceType} chapter={chapter} colours={colours} dimension={dimension} questions={questions} setDimension={setDimension}/>
+                        <div style={{ display:"flex", flexDirection: isMobile ? "column":"row", margin: !isMobile ? "20px": "0px"}}>
+                            {isMobile && renderChapters()}
+                            <div style={{border:"1px solid #c8c8c8", background:"#2b2b55", display:"flex", justifyContent:"center",flex: "1 1 auto"}}>
+                                {children}
+                            </div>
+                            {!isMobile && renderChapters()}
+                        </div>
+                        <GamutMenu points={points} deviceType={deviceType} chapter={chapter} colours={colours} dimension={dimension} setDimension={setDimension}/>
                     </div>
-                    {renderChapters()}
+                   
                 </div>
             </div>
     

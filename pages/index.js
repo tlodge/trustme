@@ -9,13 +9,13 @@ import VideoPlayer from '../components/VideoPlayer';
 import { useAppSelector, useAppDispatch } from '../hooks/useRedux'
 
 import {
-  setShapes,
   selectShapes,
 } from '../features/shapes/shapeSlice'
 
 import {
   selectQuestions,
   selectAnswers,
+  selectPoints,
   selectChapter,
   selectDimension,
   setChapter,
@@ -30,12 +30,14 @@ export default function Home(props) {
   const  [view, setView] = useState("player"); //player || feedback!
   
   const dispatch = useAppDispatch()
-  
-  const {shapes:points} = useAppSelector(selectShapes)
+  const points = useAppSelector(selectPoints);
+
+  //const {shapes:points} = useAppSelector(selectShapes)
   const questions = useAppSelector(selectQuestions);
   const answers = useAppSelector(selectAnswers);
   const chapter = useAppSelector(selectChapter);
   const dimension = useAppSelector(selectDimension);
+
 
   useEffect(() => {
     setWindowSize({
@@ -56,28 +58,19 @@ export default function Home(props) {
     dispatch(setAnswer({chapter,dimension,question,answer}))
   }
 
-  const setPoints = (points)=>{
-    dispatch(setShapes(points));
-  }
-
-  const _setPoints = (_points)=>{
-      setPoints({
-                  ...points, 
-                  [chapter]:{ 
-                    ...points[chapter], 
-                    [dimension]: _points
-                  }
-                });
-  }
-
   const colours = {"d1":["#E16E6E","#ba2727"], "d2":["#FFF1D4","#EEDBB6"], "d3":["#C8DED2","#E4E9DB"]};
   
-  const threeDcolours = {
+  /*const threeDcolours = {
             "d1":[0xB71C1C,0xC62828,0xD32F2F,0xE53935,0xF44336,0xEF5350,0xE57373,0xEF9A9A,0xFFCDD2], 
             "d2":[0xFF8F00,0xFFA000,0xFFB300,0xFFC107,0xFFCA28,0xFFD54F,0xFFE082,0xFFECB3,0xFFF8E1],
             "d3":[0x004D40,0x00695C,0x00796B,0x00897B,0x009688,0x26A69A,0x4DB6AC,0x80CBC4,0xB2DFDB]
-  };
+  };*/
   
+  const threeDcolours = {
+    "d1":[0x69212F,0x69212F,0x69212F,0x69212F,0x69212F,0x69212F,0x69212F,0x69212F,0x69212F], 
+    "d2":[0x7c5a36,0x7c5a36,0x7c5a36,0x7c5a36,0x7c5a36,0x7c5a36,0x7c5a36,0x7c5a36,0x7c5a36],
+    "d3":[0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647]
+};
 
   const renderDimension = ()=>{
    
@@ -87,7 +80,7 @@ export default function Home(props) {
         return <ThreePointFeedback 
                 answers={answers}
                 deviceType={deviceType} 
-                colour={colours[dimension]} 
+                colour={colours[dimension]}
                 width={windowSize.width}
                 height={windowSize.height}
                 questions={questions}
@@ -98,10 +91,8 @@ export default function Home(props) {
         return <FourPointFeedback 
                   answers={answers}
                   questions={questions}
-                  points={points[chapter][dimension]} 
                   deviceType={deviceType} 
                   colour={colours[dimension]} 
-                  setPoints={_setPoints}
                   width={windowSize.width}
                   height={windowSize.height}
                   setAnswer={(q, a)=>_setAnswer(q,a)}
@@ -109,8 +100,6 @@ export default function Home(props) {
                 />
       case "d3":
         return <FivePointFeedback 
-                  points={points[chapter][dimension]} 
-                  setPoints={_setPoints} 
                   colour={colours[dimension]} 
                   deviceType={deviceType}
                   width={windowSize.width}
@@ -148,7 +137,7 @@ export default function Home(props) {
 
   
   return <>
-  {renderFeedback()}
+      {renderFeedback()}
         {/*view=="feedback" && renderFeedback()*/}
         {/*view=="player" && renderPlayer()*/}
   </>

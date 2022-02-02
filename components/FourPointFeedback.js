@@ -223,7 +223,7 @@ const rotationFor = (current, selected) => {
     return 'rotate (0,0,0)';
 }
 
-const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['lime', 'orange', 'red']);
+const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['#7c5a36','white']);
 
 const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, height, width, complete:next}) => {
 
@@ -372,25 +372,25 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
                         
                         <g id="controls">
                             <g id="q1" transform={translatestr("q1")}>
-                                <circle r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1", "q1"===selected)}}/>
+                                <circle r={selected==="q1" ? 7: 4} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1", "q1"===selected)}}/>
                             </g>
                             <g id="q2" transform={translatestr("q2")}>
-                                <circle r={7}  className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2", "q2"===selected)}}/>
+                                <circle r={selected==="q2" ? 7: 4} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2", "q2"===selected)}}/>
                             </g>
                             <g id="q3" transform={translatestr("q3")}>
-                                <circle r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3", "q3"===selected)}}/>
+                                <circle r={selected==="q3" ? 7: 4} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3", "q3"===selected)}}/>
                             </g>
                             <g id="q4" transform={translatestr("q4")}>
-                                <circle r={7} className={selected === "q4" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q4", "q4"===selected)}}/>
+                                <circle r={selected==="q4" ? 7: 4} className={selected === "q4" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q4", "q4"===selected)}}/>
                             </g>
                         </g>
 
                         
                     </g>
                     {complete && <g> 
-                        <circle onClick={next} cx="63" cy="76" r="7.012" style={{fill:"#fff",stroke:"#000",strokeWidth:0.8}}/>
-                        <circle onClick={next}  cx="63" cy="76" r="5.5" style={{fill:"#ffd5d5"}}/>
-                        <path onClick={next}  d="M62,74l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#000",strokeWidth:0.82}}/>
+                        <circle onClick={next} cx="63" cy="76" r="7.012" style={{fill:"#c8c8c8",stroke:"#000",strokeWidth:0.8}}/>
+                        <circle onClick={next}  cx="63" cy="76" r="5.5" style={{fill:"#282b55"}}/>
+                        <path onClick={next}  d="M62,74l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>
                     </g>}
                 </svg>
             </div>

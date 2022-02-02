@@ -1,15 +1,21 @@
+@font-face {
+    font-family: 'Avenir';
+    src:  url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
+  }
+
+  
 .hexagon {
     fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;
 }
 
 .outerhex{
-    fill:#c8ded2;stroke:#000;stroke-width:1.15px;
+    fill:#61b359;
 }
 .questiontext{
-    text-anchor: middle; font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:6px;
+    text-anchor: middle; font-family: 'Nunito', sans-serif;font-weight:300;font-size:4.1px;fill:#c8c8c8;
 }
 .scaleline{
-    fill:none;stroke:#000;stroke-width:0.9px
+    fill:none;stroke:#c8c8c8;stroke-width:0.4px
 }
 
 .center{
@@ -21,13 +27,13 @@
 }
 
 .innerhexline{
-    fill:#e4e9db;fill-opacity:0.72;stroke:#fff;stroke-width:1.09px;
+    fill:#3c6647;fill-opacity:0.72;
 }
 
 .controlpoint{
-    fill:#fff;stroke:#000;stroke-width:1.09px;
+    fill:#fff;
 }
 
 .rotatepoint{
-    stroke:#000;stroke-width:1.09px;fill-opacity:;
+   fill-opacity:1.0
 }

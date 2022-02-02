@@ -6,6 +6,12 @@ const d1CX = 109, d1CY = 89;
 const d2CX = 63.3, d2CY = 76.6;
 const d3CX = 75.5, d3CY = 83;
 
+const dimcolours = {
+    "d1":0xbb2929,
+    "d2":0xe19c38,
+    "d3":0x61b359
+}
+
 const genpath = (d, points)=>{
 
     switch (d){
@@ -27,8 +33,9 @@ const renderFeedback = ({points,dimension,chapter,colours,setDimension, deviceTy
                      key={d} 
                      chapter={chapter}
                      colour={colours[d]}
+                     selectedColour={dimcolours[d]}
                      onClick={(e)=>{setDimension(d)}} 
-                     style={{opacity:dimension===d? 1.0:0.2}} 
+                     style={{}} 
                      className={styles.gamut}
                      deviceType={deviceType}
                      paths={[...Array(chapter+1).keys()].map(ch=>genpath(d,points[ch]))}/>
@@ -36,7 +43,8 @@ const renderFeedback = ({points,dimension,chapter,colours,setDimension, deviceTy
 }
 
 const GamutMenu = (props) => {
-    return <div className={styles.gamutmenu}>        
+    const isMobile = props.deviceType==="mobile";
+    return <div className={styles.gamutmenu} style={{margin: isMobile ? 0:"0px 20px 20px 20px", border: isMobile ? "none":"1px solid #c8c8c8"}}>        
         {renderFeedback(props)}
     </div>
 }

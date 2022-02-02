@@ -158,7 +158,7 @@ const rotationFor = (current, selected) => {
     return 'rotate (0,0,0)';
 }
 
-const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['lime', 'orange', 'red']);
+const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['#bb2929', 'white']);
 
 
 const q1points = (answer)=>{
@@ -312,35 +312,35 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
                 <div>
                 <svg ref={triangle} width="100%" height={SVGHEIGHT}  viewBox="30 0 151 144" className={styles.trianglesvg}>
                     <g id="bigtriangle">
-                        <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:colour[0]}}/>
+                        <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:"#69212f"}}/>
                         <path d="M109.708,17.272L109.527,90.317" className={styles.triangleoutline}/>
                         <path d="M46.236,126.829L109.495,90.306" className={styles.triangleoutline}/>
                         <path d="M172.705,127.087L109.616,90.352" className={styles.triangleoutline}/>
                         <circle cx={109.5} cy={90.5} r={2} className={styles.zeroline} style={{fill:colour[0]}}/>
-                        <path id="dimshape" d={pathstr()} className={styles.innertriangle} style={{fill:colour[1]}}/>
+                        <path id="dimshape" d={pathstr()} className={styles.innertriangle} style={{fill:"#bb2929"}}/>
 
 
                         {/*<text x="108px" y="92px" className={styles.text0value} transform={`${zeroRotation(selected)}`}>0</text>*/}
                         <g id="controls">
                             <g id="q1" transform={`${translatestr("q1")} ${rotationFor(selected,"q1")}`}>
-                            <circle id="q1"  r={7} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1",selected=="q1")}}/>
+                            <circle id="q1"  r={selected==="q1" ? 7: 4} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1",selected=="q1")}}/>
                             {/*<text y={2.5} className={styles.value}>{q1value(points.q1.x,points.q1.y)}</text>*/}
                             </g>
                             <g id="q2" transform={`${translatestr("q2")} ${rotationFor(selected,"q2")}`}>
-                            <circle id="q2"  r={7} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2",selected=="q2")}}/>
+                            <circle id="q2"  r={selected==="q2" ? 7: 4} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2",selected=="q2")}}/>
                             {/*<text y={2.5} className={styles.value}>{q2value(points.q2.x,points.q2.y)}</text>*/}
                             </g>
                             <g id="q3" transform={`${translatestr("q3")}, ${rotationFor(selected,"q3")}`}>
-                            <circle id="q3"  r={7} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3",selected=="q3")}}/>
+                            <circle id="q3"  r={selected==="q3" ? 7: 4} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3",selected=="q3")}}/>
                             {/*<text y={2.5} className={styles.value}>{q3value(points.q3.x,points.q3.y)}</text>*/}
                             </g>
                         </g>
                     </g>
                    
                     {complete && <g> 
-                        <circle onClick={next} cx="109.5" cy="92" r="7.012" style={{fill:"#fff",stroke:"#000",strokeWidth:0.8}}/>
-                        <circle onClick={next}  cx="109.5" cy="92" r="5.5" style={{fill:"#ffd5d5"}}/>
-                        <path onClick={next}  d="M108.5,90l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#000",strokeWidth:0.82}}/>
+                        <circle onClick={next} cx="109.5" cy="92" r="7.012" style={{fill:"#c8c8c8",stroke:"#171834",strokeWidth:0.8}}/>
+                        <circle onClick={next}  cx="109.5" cy="92" r="5.5" style={{fill:"#282b55"}}/>
+                        <path onClick={next}  d="M108.5,90l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>
                     </g>}
                     
                     <text x="109.5px" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>

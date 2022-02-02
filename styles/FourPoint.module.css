@@ -1,33 +1,35 @@
+
+@font-face {
+    font-family: 'Avenir';
+    src:  url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
+  }
+
+  
 .square {
     fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;
 }
 
 .outersquare{
-    fill:#FFF1D4;stroke:#000;stroke-width:1.15px;
+    fill:#e19c38;stroke-width:1.15px;
 }
 .questiontext{
-    text-anchor: middle; font-family:'HelveticaNeue-Bold', 'Helvetica Neue';font-weight:700;font-size:6px;
+    text-anchor: middle; fill:#c8c8c8; font-family: 'Nunito', sans-serif; fill:"white"; font-weight:300;font-size:4.2px;
 }
 .scaleline{
-    fill:none;stroke:#000;stroke-width:0.9px
+    fill:none;stroke:#c8c8c8;stroke-width:0.4px
 }
 
 .center{
-    fill:#FFF1D4
-}
-
-.zerotext{
-    font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;
+    fill:#e19c38
 }
 
 .innersquare{
-    fill:#EEDBB6;fill-opacity:0.72;stroke:#fff;stroke-width:1.09px;
+    fill:#7c5a36;fill-opacity:1;
 }
-
 .controlpoint{
-    fill:#fff;stroke:#000;stroke-width:1.09px;
+    fill:#fff;
 }
 
 .rotatepoint{
-    stroke:#000;stroke-width:1.09px;fill-opacity:;
+    fill:#fff;
 }

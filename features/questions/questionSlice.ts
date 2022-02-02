@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import * as d3 from 'd3';
 
 import type { AppState, AppThunk } from '../../app/store'
 
@@ -13,8 +14,8 @@ const initialState: QuestionState = {
     questions: {
         0 : {
             "d1":{
-                "q1":["I don't understand what an AV is","I think I understand what an AV is","I reasonably understand what an AV is","I understand what an AV is"],
-                "q2":["I don't understand why Ubler use AVs", "I think I understand why Ubler use AVs", "I reasonably understand why Ubler use AVs", "I know why Ubler use AVs"],
+                "q1":["I don't understand what an AV is","I think I understand what an AV is","I have a reasonable understanding of what an AV is","I understand what an AV is"],
+                "q2":["I don't understand why Ubler use AVs", "I think I understand why Ubler use AVs", "I have a reasonable understanding of why Ubler use AVs", "I know why Ubler use AVs"],
                 "q3":["I don't know how AVs work", "I think I know how AVs work", "I reasonably know how AVs work", "I know how AVs work"],
             },
             "d2":{
@@ -24,18 +25,18 @@ const initialState: QuestionState = {
                 "q4":["I am not confident that I would recommend an AV to others", "I am loosely confident that I would recommend an AV to others", "I am moderately confident that I would recommend an AV to others", "I am confident that I would recommend an AV to others"],
             },
             "d3":{
-                "q1":["I am not confident I believe the AV will get me to the shops", "I am loosely confident I believe the AV will get me to the shops", "I am moderately confident I believe the AV will get me to the shops", "I am confident I believe the AV will get me to the shops"],
+                "q1":["I am not confident the AV will get me to the shops", "I am loosely confident the AV will get me to the shops", "I am moderately confident the AV will get me to the shops", "I am confident the AV will get me to the shops"],
                 "q2":["I am not confident that I will be safe in this AV", "I am loosely confident that I will be safe in this AV", "I am moderately confident that I will be safe in this AV", "I am confident that I will be safe in this AV"],
                 "q3":["I am not confident others will be safe from the operation of this AV", "I am loosely confident others will be safe from the operation of this AV", "I am moderately confident others will be safe from the operation of this AV", "I am confident others will be safe from the operation of this AV"],
                 "q4":["I am not confident this AV will be safer", "I am loosely confident this AV will be safer", "I am moderately confident this AV will be safer", "I am confident this AV will be safer"],
-                "q5":["I am not confident if anything goes wrong during the AV experience, I will not be held responsible", "I am loosely confident if anything goes wrong during the AV experience, I will not be held responsible", "I am moderately confident if anything goes wrong during the AV experience, I will not be held responsible", "I am confident if anything goes wrong during the AV experience, I will not be held responsible"]
+                "q5":["I am not confident if anything goes wrong during the AV experience, I won't be held responsible", "I am loosely confident if anything goes wrong during the AV experience, I won't be held responsible", "I am moderately confident if anything goes wrong during the AV experience, I won't be held responsible", "I am confident if anything goes wrong during the AV experience, I won't be held responsible"]
             }
         },
         1: {
             "d1":{
-                "q1":["I don't know what AI speed control is","I think I understand what AI speed control is","I reasonably understand what AI speed control is","I understand what AI speed control is"],
-                "q2":["I don't understand why this AV has AI speed control", "I think I understand why this AV has AI speed control", "I reasonably understand why this AV has AI speed control", "I know why this AV has AI speed control"],
-                "q3":["I don't understand how AI speed control works", "I think I understand how AI speed control works", "I reasonably understand how AI speed control works", "I understand how AI speed control works"],
+                "q1":["I don't know what AI speed control is","I think I understand what AI speed control is","I have a reasonable understanding of what AI speed control is","I understand what AI speed control is"],
+                "q2":["I don't understand why this AV has AI speed control", "I think I understand why this AV has AI speed control", "I have a reasonable understanding of why this AV has AI speed control", "I know why this AV has AI speed control"],
+                "q3":["I don't understand how AI speed control works", "I think I understand how AI speed control works", "I have a reasonable understanding of how AI speed control works", "I understand how AI speed control works"],
             },
             "d2":{
                 "q1":["I am not confident that I have a choice about using this AI speed control ", "I am loosely confident that I have a choice about using this AI speed control ", "I am moderately confident that I have a choice about using this AI speed control ", "I am confident that I have a choice about using this AI speed control "],
@@ -53,9 +54,9 @@ const initialState: QuestionState = {
         },
         2: {
             "d1":{
-                "q1":["I don't know what the AVs navigation system does","I think I understand what the AVs navigation system does","I reasonably understand the AVs navigation system does","I understand what the AVs navigation system does"],
-                "q2":["I don't understand why AV uses a navigation system", "I think I understand why AV uses a navigation system", "I reasonably understand why AV uses a navigation system", "I know why AV uses a navigation system"],
-                "q3":["I don't understand how AV navigation systems work", "I think I understand how AV navigation systems work", "I reasonably understand how AV navigation systems work", "I understand how AV navigation systems work"],
+                "q1":["I don't know what the AVs navigation system does","I think I understand what the AVs navigation system does","I have a reasonable understanding of what the AVs navigation system does","I understand what the AVs navigation system does"],
+                "q2":["I don't understand why AV uses a navigation system", "I think I understand why AV uses a navigation system", "I have a reasonable understanding of why AV uses a navigation system", "I know why AV uses a navigation system"],
+                "q3":["I don't understand how AV navigation systems work", "I think I understand how AV navigation systems work", "I have a reasonable understanding of how AV navigation systems work", "I understand how AV navigation systems work"],
             },
             "d2":{
                 "q1":["I am not confident that I have a choice about using this AV navigation", "I am loosely confident that I have a choice about using this AV navigation", "I am moderately confident that I have a choice about using this AV navigation", "I am confident that I have a choice about using this AV navigation"],
@@ -75,7 +76,7 @@ const initialState: QuestionState = {
             "d1":{
                 "q1":["I don't know what an autonomous ecosystem is","I think I know what an autonomous ecosystem is","I reasonably know what an autonomous ecosystem is","I know what an autonomous ecosystem is"],
                 "q2":["I don't know why an automomous ecosystem exists", "I think I know why an automomous ecosystem exists", "I reasonably know why an automomous ecosystem exists", "I know why an automomous ecosystem exists"],
-                "q3":["I don't understand how automomous ecosystems work", "I think I understand how automomous ecosystems work", "I reasonably understand how automomous ecosystems work", "I understand how automomous ecosystems work"],
+                "q3":["I don't understand how automomous ecosystems work", "I think I understand how automomous ecosystems work", "I have a reasonable understanding of how automomous ecosystems work", "I understand how automomous ecosystems work"],
             },
             "d2":{
                 "q1":["I am not confident that I have a choice about whether I use an autonomous ecosystem", "I am loosely confident that I have a choice about whether I use an autonomous ecosystem", "I am moderately confident that I have a choice about whether I use an autonomous ecosystem", "I am confident that I have a choice about whether I use an autonomous ecosystem"],
@@ -95,7 +96,7 @@ const initialState: QuestionState = {
             "d1":{
                 "q1":["I don't know what a system override is","I think I know what a system override is","I reasonably know what a system override is","I know what a system override is"],
                 "q2":["I don't know why a system override exists", "I think I know why a system override exists", "I reasonably know why a system override exists", "I know why a system override exists"],
-                "q3":["I don't understand how a system override works", "I think I understand how a system override works", "I reasonably understand how a system override works", "I understand how a system override works"],
+                "q3":["I don't understand how a system override works", "I think I understand how a system override works", "I have a reasonable understanding of how a system override works", "I understand how a system override works"],
             },
             "d2":{
                 "q1":["I am not confident that I have a choice about whether the AV overrides my decision", "I am loosely confident that I have a choice about whether the AV overrides my decision", "I am moderately confident that I have a choice about whether the AV overrides my decision", "I am confident that I have a choice about whether the AV overrides my decision"],
@@ -109,14 +110,14 @@ const initialState: QuestionState = {
                 "q2":["I am not confident the AV system override will prevent injury to me", "I am loosely confident the AV system override will prevent injury to me", "I am moderately confident the AV system override will prevent injury to me", "I am confident the AV system override will prevent injury to me"],
                 "q3":["I am not confident the AV system override will protect injury to others", "I am loosely confident the AV system override will protect injury to others", "I am moderately confident the AV system override will protect injury to others", "I am confident the AV system override will protect injury to others"],
                 "q4":["I am not confident the AV system override will make better decisions than a human", "I am loosely confident the AV system override will make better decisions than a human", "I am moderately confident the AV system override will make better decisions than a human", "I am confident the AV system override will make better decisions than a human"],
-                "q5":["I am not confident I will not be held accountable in the event of injury to myself or another due to the fault of system override", "I am loosely confident I will not be held accountable in the event of injury to myself or another due to the fault of system override", "I am moderately confident I will not be held accountable in the event of injury to myself or another due to the fault of system override", "I am confident I will not be held accountable in the event of injury to myself or another due to the fault of system override"]
+                "q5":["I am not confident I won't be held accountable in the event of injury to myself or another due to the fault of system override", "I am loosely confident I won't be held accountable in the event of injury to myself or another due to the fault of system override", "I am moderately confident I won't be held accountable in the event of injury to myself or another due to the fault of system override", "I am confident I won't be held accountable in the event of injury to myself or another due to the fault of system override"]
             }
         },
         5:{
             "d1":{
                 "q1":["I don't know what ML is","I think I know what ML is","I reasonably know what ML is","I know what ML is"],
-                "q2":["I don't understand why we use ML", "I think I understand why we use ML", "I reasonably understand why we use ML", "I understand why we use ML"],
-                "q3":["I don't understand how ML works", "I think I understand how ML works", "I reasonably understand how ML works", "I understand how ML works"],
+                "q2":["I don't understand why we use ML", "I think I understand why we use ML", "I have a reasonable understanding of why we use ML", "I understand why we use ML"],
+                "q3":["I don't understand how ML works", "I think I understand how ML works", "I have a reasonable understanding of how ML works", "I understand how ML works"],
             },
             "d2":{
                 "q1":["I am not confident that I have a choice about whether the AV uses ML", "I am loosely confident that I have a choice about whether the AV uses ML", "I am moderately confident that I have a choice about whether the AV uses ML", "I am confident that I have a choice about whether the AV uses ML"],
@@ -127,17 +128,17 @@ const initialState: QuestionState = {
             },
             "d3":{
                 "q1":["I am not confident ML will enable the AV to avoid Hazards", "I am loosely confident ML will enable the AV to avoid Hazards", "I am moderately confident ML will enable the AV to avoid Hazards", "I am confident ML will enable the AV to avoid Hazards"],
-                "q2":["I am not confident my safety will not be compromised due to the use of ML", "I am loosely confident my safety will not be compromised due to the use of ML", "I am moderately confident my safety will not be compromised due to the use of ML", "I am confident my safety will not be compromised due to the use of ML"],
-                "q3":["I am not confident others' safety will not be compromised due to the use of ML", "I am loosely confident others' safety will not be compromised due to the use of ML", "I am moderately confident others' safety will not be compromised due to the use of ML", "I am confident others' safety will not be compromised due to the use of ML"],
+                "q2":["I am not confident my safety won't be compromised due to the use of ML", "I am loosely confident my safety won't be compromised due to the use of ML", "I am moderately confident my safety won't be compromised due to the use of ML", "I am confident my safety won't be compromised due to the use of ML"],
+                "q3":["I am not confident others' safety won't be compromised due to the use of ML", "I am loosely confident others' safety won't be compromised due to the use of ML", "I am moderately confident others' safety won't be compromised due to the use of ML", "I am confident others' safety won't be compromised due to the use of ML"],
                 "q4":["I am not confident ML will do a better job than a human in getting me where I need to be", "I am loosely confident ML will do a better job than a human in getting me where I need to be", "I am moderately confident ML will do a better job than a human in getting me where I need to be", "I am confident ML will do a better job than a human in getting me where I need to be"],
                 "q5":["I am not confident if there is an accident, it won't be my fault", "I am loosely confident if there is an accident, it won't be my fault", "I am moderately confident if there is an accident, it won't be my fault", "I am confident if there is an accident, it won't be my fault"]
             }
         },
         6:{
             "d1":{
-                "q1":["I don't understand what sensors are", "I think I understand what sensors are","I reasonably understand what sensors are","I understand what sensors are"],
-                "q2":["I don't understand why we use sensors", "I think I understand why we use sensors", "I reasonably understand why we use sensors", "I understand why we use sensors"],
-                "q3":["I don't understand how sensors work", "I think I understand how sensors work", "I reasonably understand how sensors work", "I understand how sensors work"],
+                "q1":["I don't understand what sensors are", "I think I understand what sensors are","I have a reasonable understanding of what sensors are","I understand what sensors are"],
+                "q2":["I don't understand why we use sensors", "I think I understand why we use sensors", "I have a reasonable understanding of why we use sensors", "I understand why we use sensors"],
+                "q3":["I don't understand how sensors work", "I think I understand how sensors work", "I have a reasonable understanding of how sensors work", "I understand how sensors work"],
             },
             "d2":{
                 "q1":["I am not confident that I have a choice about whether the AV uses sensors", "I am loosely confident that I have a choice about whether the AV uses sensors", "I am moderately confident that I have a choice about whether the AV uses sensors", "I am confident that I have a choice about whether the AV uses sensors"],
@@ -156,8 +157,8 @@ const initialState: QuestionState = {
         7:{
             "d1":{
                 "q1":["I don't know what an AR is", "I think I know what an AR is","I reasonably know what an AR is","I know what an AR is"],
-                "q2":["I don't understand why we use AR", "I think I understand why we use AR", "I reasonably understand why we use AR", "I understand why we use AR"],
-                "q3":["I don't understand how AR works", "I think I understand how AR works", "I reasonably understand how AR works", "I understand how AR works"],
+                "q2":["I don't understand why we use AR", "I think I understand why we use AR", "I have a reasonable understanding of why we use AR", "I understand why we use AR"],
+                "q3":["I don't understand how AR works", "I think I understand how AR works", "I have a reasonable understanding of how AR works", "I understand how AR works"],
             },
             "d2":{
                 "q1":["I am not confident that I have a choice about using ARs", "I am loosely confident that I have a choice about using ARs", "I am moderately confident that I have a choice about using ARs", "I am confident that I have a choice about using ARs"],
@@ -166,9 +167,9 @@ const initialState: QuestionState = {
                 "q4":["I am not confident that I would recommend others to use ARs", "I am loosely confident that I would recommend others to use ARs", "I am moderately confident that I would recommend others to use ARs", "I am confident that I would recommend others to use ARs"],
             },
             "d3":{
-                "q1":["I am not confident the AR will not malfunction", "I am loosely confident the AR will not malfunction", "I am moderately confident the AR will not malfunction", "I am confident the AR will not malfunction"],
-                "q2":["I am not confident a malfunctioning AR will not pose a safety risk to me", "I am loosely confident a malfunctioning AR will not pose a safety risk to me", "I am moderately confident a malfunctioning AR will not pose a safety risk to me", "I am confident a malfunctioning AR will not pose a safety risk to me"],
-                "q3":["I am not confident a malfunctioning AR will not pose a safety risk to others", "I am loosely confident a malfunctioning AR will not pose a safety risk to others", "I am moderately confident a malfunctioning AR will not pose a safety risk to others", "I am confident a malfunctioning AR will not pose a safety risk to others"],
+                "q1":["I am not confident the AR won't malfunction", "I am loosely confident the AR won't malfunction", "I am moderately confident the AR won't malfunction", "I am confident the AR won't malfunction"],
+                "q2":["I am not confident a malfunctioning AR won't pose a safety risk to me", "I am loosely confident a malfunctioning AR won't pose a safety risk to me", "I am moderately confident a malfunctioning AR won't pose a safety risk to me", "I am confident a malfunctioning AR won't pose a safety risk to me"],
+                "q3":["I am not confident a malfunctioning AR won't pose a safety risk to others", "I am loosely confident a malfunctioning AR won't pose a safety risk to others", "I am moderately confident a malfunctioning AR won't pose a safety risk to others", "I am confident a malfunctioning AR won't pose a safety risk to others"],
                 "q4":["I am not confident a malfunctioning AR is still better than a human doing the same job", "I am loosely confident a malfunctioning AR is still better than a human doing the same job   ", "I am moderately confident a malfunctioning AR is still better than a human doing the same job", "I am confident a malfunctioning AR is still better than a human doing the same job"],
                 "q5":["I am not confident if an AS malfunctions, it is not my fault", "I am loosely confident if an AS malfunctions, it is not my fault", "I am moderately confident if an AS malfunctions, it is not my fault", "I am confident if an AS malfunctions, it is not my fault"]
             }
@@ -378,5 +379,93 @@ export const selectQuestions = (state: AppState) => state.questions.questions[st
 export const selectAnswers = (state: AppState) => state.questions.answers[state.questions.chapter][state.questions.dimension]
 export const selectChapter = (state: AppState) => state.questions.chapter
 export const selectDimension = (state: AppState) => state.questions.dimension
+
+
+const converttopoints = (dimension, question, answer)=>{
+    
+    const pointfn = {
+        "d1":{
+            "q1":(answer)=>{
+                const q1ToY = d3.scaleLinear().domain([0,100]).range([85.7,16.6]);
+                return {x:109.5, y:q1ToY(answer)};
+            },
+            "q2":(answer)=>{
+                const q2ypos = (x) => (18 / 31 * x) + 27;
+                const q2ToX = d3.scaleLinear().domain([0,100]).range([113.8,172.5])
+                return {x:q2ToX(answer), y:q2ypos(q2ToX(answer))};
+            },
+            "q3":(answer)=>{
+                const q3ypos = (x) => (-13.5 / 23 * x) + 154;
+                const q3ToX = d3.scaleLinear().domain([0,100]).range([103.9,45.5])
+                return {x:q3ToX(answer), y:q3ypos(q3ToX(answer))};
+            }
+        },
+        "d2":{
+            "q1":(answer)=>{
+                const q1ToY = d3.scaleLinear().domain([0,100]).range([68.3,20.1]);
+                return {x:63.4, y:q1ToY(answer)};
+            },
+            "q2":(answer)=>{
+                const q2ToX = d3.scaleLinear().domain([0,100]).range([71.5,123.6])
+                return {x:q2ToX(answer),y:76};
+            },
+            "q3":(answer)=>{
+                const q3ypos = (x, y)=>y;
+                const q3ToY = d3.scaleLinear().domain([0,100]).range([85,135])
+                return {x:63.4, y:q3ypos(0,q3ToY(answer))};
+            },
+            "q4":(answer)=>{
+                const q4ToX = d3.scaleLinear().domain([0,100]).range([6.3,54.5])
+                return {x:q4ToX(answer), y:76};
+            }
+        },
+        "d3":{
+            "q1":(answer)=>{
+                const q1ToY = d3.scaleLinear().domain([0,100]).range([23.97,73.6]);
+                return {x:75.6, y:q1ToY(answer)};
+            },
+            "q2":(answer)=>{
+                const q2ypos = (x)=>(-0.33*x) + 108.6;
+                const q2ToX = d3.scaleLinear().domain([0,100]).range([131.67,84.36])
+                return {x:q2ToX(answer), y:q2ypos(q2ToX(answer))};
+            },
+            "q3":(answer)=>{
+                const q3ypos = (x)=>(1.38*x) -20.72;
+                const q3ToX = d3.scaleLinear().domain([0,100]).range([109.92,80.6])
+                return {x:q3ToX(answer), y:q3ypos(q3ToX(answer))};
+            },
+            "q4":(answer)=>{
+                const q4ypos = (x)=>(-1.39*x) + 187.79;
+                const q4ToX = d3.scaleLinear().domain([0,100]).range([69.9, 40.7])
+                return {x:q4ToX(answer), y:q4ypos(q4ToX(answer))};
+            },
+            "q5":(answer)=>{
+                const q5ypos = (x)=>(0.32*x) + 59.24;
+                const q5ToX = d3.scaleLinear().domain([0,100]).range([66.11,19.8])
+                return {x:q5ToX(answer), y:q5ypos(q5ToX(answer))};
+            }
+        }
+    }
+    return pointfn[dimension][question](answer);
+}
+
+export const selectPoints = (state: AppState)=>{
+    return Object.keys(state.questions.answers).reduce((acc,k1)=>{
+        return {
+            ...acc,
+            [k1] : Object.keys(state.questions.answers[k1]).reduce((acc, k2)=>{
+                return {
+                    ...acc,
+                    [k2]: Object.keys(state.questions.answers[k1][k2]).reduce((acc, k3)=>{
+                        return{
+                            ...acc,
+                            [k3] : converttopoints(k2,k3,state.questions.answers[k1][k2][k3])
+                        }
+                    },{})
+                }
+            },{})
+        }
+    },{})
+}
 
 export default questionSlice.reducer

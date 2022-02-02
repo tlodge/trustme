@@ -16,7 +16,7 @@ const TriangleShape = (props) => {
 
     const init = (width, height)=>{
         scene = new THREE.Scene();
-        scene.background = new THREE.Color( 0xffffff );
+        scene.background = new THREE.Color( 0x2b2b55 );
         
        //helper = new THREE.GridHelper( 160, 100 );
         //helper.rotation.x = Math.PI / 2;
@@ -45,14 +45,13 @@ const TriangleShape = (props) => {
 
   
 
-    const addShapes = (path, depth, colour)=>{
-       
+    const addShapes = (path, depth, bevel, colour)=>{
+ 
         const group = new THREE.Group();
         group.scale.multiplyScalar( 0.25 );
         group.position.x =  0;
         group.position.y = 0;
         group.position.z = -depth;
-        //group.rotation.z = depth;
         group.scale.y *=  -1;
 
         const shape = `<svg><path d="${path}"/></svg>`
@@ -69,8 +68,8 @@ const TriangleShape = (props) => {
 
             for ( let j = 0; j < shapes.length; j ++ ) {
                 const shape = shapes[ j ];
-                const geometry = new THREE.ExtrudeGeometry(shape, {depth: 15,bevelEnabled: false});
-                //geometry.center();
+                const geometry = new THREE.ExtrudeGeometry(shape, {depth: bevel,bevelEnabled: false});
+                geometry.center();
                 const mesh = new THREE.Mesh( geometry, material );
                 group.add( mesh );
             }
@@ -79,12 +78,15 @@ const TriangleShape = (props) => {
     }
 
     useEffect(() => {
-        const DIMSHAPE = props.deviceType==="mobile" ? window.innerWidth : (window.innerWidth-300)/TOTALSHAPES;
+        const DIMSHAPE = props.deviceType==="mobile" ? window.innerWidth : (window.innerWidth-320)/TOTALSHAPES;
 
         init(DIMSHAPE, DIMSHAPE-100);
-        
-        const setpath = (path, chapter, colour)=>{
-            const chaptercount = Object.keys(groups).length;
+ 
+        const depths = [0,0,10,6.65,5,4,3.3,2.85,2.5];
+        const ty = [0,0,-5,-6.5,-7,-8,-9,-9.5,-10];
+
+        const setpath = (path, chapter, colour, tc)=>{
+    
             Object.keys(groups).map((k,i)=>{
                 const g = groups[k];
                 g.children[0].material.color.setHex(colour[i]);
@@ -92,14 +94,17 @@ const TriangleShape = (props) => {
 
             if (groups[chapter]){
                 parent.remove(groups[chapter]);
+                delete groups[chapter];
             }
-
-            groups[chapter] = addShapes(path, chapter*4, chaptercount> 1 ? 0x4E89F8 : colour[0]);
+            
+            const TOTALCHAPTERS = Math.max(tc,Object.keys(groups).length + 1);
+       
+            
+            groups[chapter] = addShapes(path, depths[TOTALCHAPTERS]*chapter, 80/(TOTALCHAPTERS), TOTALCHAPTERS> 1 ? props.selectedColour : colour[0]);
             parent.add(groups[chapter]);
-            //camera.position.z = 20 + (chaptercount * 2)
-            parent.position.y = -1.8 - (chaptercount * 1.8) //how close to top (make vary with chapter)
+            parent.position.y = ty[TOTALCHAPTERS]
             parent.position.x = 0; //intercept with axis
-            parent.position.z = -1;
+            parent.position.z = -1.5;
             parent.rotation.x =  Math.PI / 2;
         };
         
@@ -125,15 +130,15 @@ const TriangleShape = (props) => {
     }, []);
 
    useEffect(()=>{
-    props.paths.map((p,i)=>controls.current.setpath(p, i, props.colour))
+        props.paths.map((p,i)=>controls.current.setpath(p, i, props.colour, (props.paths||[]).length))
    },[props.paths])
 
  const [windowSize, setWindowSize] = useState({width: 500,height: 500});
- const DIMSHAPE = props.deviceType==="mobile"  ? windowSize.width: (windowSize.width-300)/TOTALSHAPES;
+ const DIMSHAPE = props.deviceType==="mobile"  ? windowSize.width: (windowSize.width-320)/TOTALSHAPES;
  
  return (
           <div onClick={props.onClick} style={{display:"flex",justifyContent:"center", ...props.style}}>
-            <div style={{ background:"transparent", width: {DIMSHAPE}, height: {DIMSHAPE}, margin: "0px" }} ref={shapeRef}/>
+            <div style={{ background:"black", width: {DIMSHAPE}, height: {DIMSHAPE}, margin: "0px" }} ref={shapeRef}/>
           </div>
  );
 };
