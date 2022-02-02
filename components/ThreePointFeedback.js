@@ -313,13 +313,14 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
                 <svg ref={triangle} width="100%" height={SVGHEIGHT}  viewBox="30 0 151 144" className={styles.trianglesvg}>
                     <g id="bigtriangle">
                         <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:"#69212f"}}/>
+                       
+                        
+                        <path id="dimshape" d={pathstr()} className={styles.innertriangle} style={{fill:"#bb2929"}}/>
+
                         <path d="M109.708,17.272L109.527,90.317" className={styles.triangleoutline}/>
                         <path d="M46.236,126.829L109.495,90.306" className={styles.triangleoutline}/>
                         <path d="M172.705,127.087L109.616,90.352" className={styles.triangleoutline}/>
-                        <circle cx={109.5} cy={90.5} r={2} className={styles.zeroline} style={{fill:colour[0]}}/>
-                        <path id="dimshape" d={pathstr()} className={styles.innertriangle} style={{fill:"#bb2929"}}/>
-
-
+                        <circle cx={109.5} cy={90.5} r={2} className={styles.zeroline}/>
                         {/*<text x="108px" y="92px" className={styles.text0value} transform={`${zeroRotation(selected)}`}>0</text>*/}
                         <g id="controls">
                             <g id="q1" transform={`${translatestr("q1")} ${rotationFor(selected,"q1")}`}>

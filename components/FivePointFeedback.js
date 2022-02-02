@@ -433,18 +433,20 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
                         <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex}/>
                         
 
+                       
+                        
+                    
+                       
+
+                        <g><text x="73.922px" y="85.036px" className={styles.zerotext}></text></g>
+
+                        <path id="innerhex" d={pathstr()} className={styles.innerhexline}/>
                         <path d="M75.508,83.474L75.63,17.067" className={styles.scaleline} />
                         <path d="M75.6,83.5L138.2,62.7" className={styles.scaleline}  />
                         <path d="M75.4,83.1L114.4,136.8" className={styles.scaleline} />
                         <path d="M75.3,83.3L36.6,137.0" className={styles.scaleline} />
                         <path d="M75.8,83.3L12.8,63.3" className={styles.scaleline} />
-                    
                         <circle cx={75.5} cy={83} r={2} className={styles.center}/>
-
-                        <g><text x="73.922px" y="85.036px" className={styles.zerotext}></text></g>
-
-                        <path id="innerhex" d={pathstr()} className={styles.innerhexline}/>
-                        
                         <g id="controls">
                         
                             <g id="q1" transform={translatestr("q1")}>

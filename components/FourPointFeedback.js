@@ -364,12 +364,13 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
                     <g id="bigsquare">
                         <path d="M63.349,13.343L0.416,76.275L63.349,139.208L126.281,76.275L63.349,13.343Z" className={styles.outersquare}/>
                         
-                        <path d="M63.13,14.163L63.657,139.542" className={styles.scaleline}/>
-                        <path d="M0.865,76.474L125.922,76.474" className={styles.scaleline}/>
-                        <circle cx="63.394" cy="76.686" r={3} className={styles.center} />
+                       
+                        
                         
                         <path d={pathstr()}  className={styles.innersquare}/>
-                        
+                         <path d="M63.13,14.163L63.657,139.542" className={styles.scaleline}/>
+                        <path d="M0.865,76.474L125.922,76.474" className={styles.scaleline}/>
+                        <circle cx="63.394" cy="76.686" r={2} className={styles.center} />
                         <g id="controls">
                             <g id="q1" transform={translatestr("q1")}>
                                 <circle r={selected==="q1" ? 7: 4} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1", "q1"===selected)}}/>
@@ -388,7 +389,7 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
                         
                     </g>
                     {complete && <g> 
-                        <circle onClick={next} cx="63" cy="76" r="7.012" style={{fill:"#c8c8c8",stroke:"#000",strokeWidth:0.8}}/>
+                        <circle onClick={next} cx="63" cy="76" r="7.012" style={{fill:"#c8c8c8",stroke:"#171834",strokeWidth:0.8}}/>
                         <circle onClick={next}  cx="63" cy="76" r="5.5" style={{fill:"#282b55"}}/>
                         <path onClick={next}  d="M62,74l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>
                     </g>}
