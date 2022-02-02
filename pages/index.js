@@ -122,6 +122,7 @@ export default function Home(props) {
       return <Layout points={points} deviceType={deviceType} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension}>
         {renderDimension()}
       </Layout>
+     
    
     }
   }

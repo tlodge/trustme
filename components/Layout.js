@@ -15,7 +15,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
         
         return [0,1,2,3,4,5,6,7].map((c)=>{
             const chstyle = {
-                fontFamily: "'Nunito', sans-serif;",
+                fontFamily: "'Nunito', sans-serif",
                 fontSize:isMobile ? "0.8em" : "1.5em", 
                 paddingTop:9, 
                 margin:isMobile ? 4 : 10,
@@ -42,11 +42,11 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
             border: !isMobile ? "1px solid #c8c8c8" : "none",
             marginLeft: !isMobile ? 20 : 0,
             background: "#2b2b55",
-            padding: isMobile ? 5: 0,
+            padding: isMobile ? 15: 0,
         }
 
         return <div style={cstyle}>
-                {!isMobile && <div style={{fontFamily: "'Nunito', sans-serif;", margin:10,fontWeight:300,fontSize:20,color:"#c8c8c8"}}>Chapter</div>}
+                {!isMobile && <div style={{fontFamily: "'Nunito', sans-serif", margin:10,fontWeight:300,fontSize:20,color:"#c8c8c8"}}>Chapter</div>}
                 {chapters()}
            
         </div>
@@ -56,7 +56,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
                     <div style={{display:'flex', flex: "1 1 auto", flexDirection:"column"}}>     
                         <div style={{ display:"flex", flexDirection: isMobile ? "column":"row", margin: !isMobile ? "20px": "0px"}}>
                             {isMobile && renderChapters()}
-                            <div style={{border:"1px solid #c8c8c8", background:"#2b2b55", display:"flex", justifyContent:"center",flex: "1 1 auto"}}>
+                            <div style={{border: isMobile?"none":"1px solid #c8c8c8", background:"#2b2b55", display:"flex", justifyContent:"center",flex: "1 1 auto"}}>
                                 {children}
                             </div>
                             {!isMobile && renderChapters()}
