@@ -425,7 +425,7 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
     }
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
     return  <div>
-                <svg ref={hexagon} width="100%" height={SVGHEIGHT}  viewBox="0 0 151 144" className={styles.hexagon}>
+                <svg ref={hexagon} width="auto" height={SVGHEIGHT}  viewBox="0 0 151 144" className={styles.hexagon}>
                     <g>
                         <text x="78px" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>
                     </g>

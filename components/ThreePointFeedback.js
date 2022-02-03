@@ -310,7 +310,7 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
 
     return  <div style={{display:"flex", justifyContent:"center"}}>
                 <div>
-                <svg ref={triangle} width="100%" height={SVGHEIGHT}  viewBox="30 0 151 144" className={styles.trianglesvg}>
+                <svg ref={triangle} width="auto" height={SVGHEIGHT}  viewBox="30 0 151 144" className={styles.trianglesvg}>
                     <g id="bigtriangle">
                         <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:"#69212f"}}/>
                        

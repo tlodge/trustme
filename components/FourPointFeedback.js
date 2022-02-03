@@ -355,7 +355,7 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
 
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
     return  <div>
-               <svg ref={square} width="100%" height={SVGHEIGHT}  viewBox="-12 0 151 144"  className={styles.square}>
+               <svg ref={square} width="auto" height={SVGHEIGHT}  viewBox="-12 0 151 144"  className={styles.square}>
                     
                     <g>
                         <text x="65" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>
