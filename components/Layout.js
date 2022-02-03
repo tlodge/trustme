@@ -35,7 +35,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
         const cstyle = {
             display:"flex", 
             alignItems:"center", 
-            justifyContent: isMobile ? "center" : "center",
+            justifyContent: isMobile ? "center" : "flex-start",
             flexDirection: isMobile ? "row" : "column", 
             width: isMobile ? "auto" : "280px", 
             alignItems:"center",
@@ -46,7 +46,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
         }
 
         return <div style={cstyle}>
-                {!isMobile && <div style={{fontFamily: "'Nunito', sans-serif", margin:10,fontWeight:300,fontSize:20,color:"#c8c8c8"}}>Chapter</div>}
+                {!isMobile && <div style={{fontFamily: "'Nunito', sans-serif", margin:20,fontWeight:300,fontSize:"1.5em",color:"#c8c8c8"}}>Chapter</div>}
                 {chapters()}
            
         </div>

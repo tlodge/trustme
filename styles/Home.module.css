@@ -68,7 +68,7 @@
 
 .questiontext{
  
-  text-anchor: middle; fill:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300; font-size:4.2px;
+  margin-top:20px; text-align: center; color:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300; 
 }
 
 .canvascontainer {

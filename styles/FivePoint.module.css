@@ -12,8 +12,9 @@
     fill:#61b359;
 }
 .questiontext{
-    text-anchor: middle; font-family: 'Nunito', sans-serif;font-weight:300;font-size:4.1px;fill:#c8c8c8;
-}
+ 
+    margin:20px; text-align: center; color:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300; font-size:1.5em
+  }
 .scaleline{
     fill:none;stroke:#c8c8c8;stroke-width:0.4px
 }

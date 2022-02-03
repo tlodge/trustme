@@ -182,7 +182,7 @@ const pointfn = {
     "q3":q3points,
 }
 const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, questions, setAnswer, answers}) => {
-
+    const isMobile = deviceType==="mobile";
     const [selected, setSelected] = useState("q1");
     const [answered, setAnswered] = useState([]);
     const [complete, setComplete] = useState(false);
@@ -310,11 +310,12 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
 
     return  <div style={{display:"flex", justifyContent:"center"}}>
                 <div>
-                <svg ref={triangle} width="auto" height={SVGHEIGHT}  viewBox="30 0 151 144" className={styles.trianglesvg}>
+                <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
+                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em"}}>{currentQuestion(answers[selected])}</div>
+                </div>
+                <svg ref={triangle} width='auto' height={SVGHEIGHT}  viewBox="20 0 172 145" className={styles.trianglesvg}>
                     <g id="bigtriangle">
                         <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:"#69212f"}}/>
-                       
-                        
                         <path id="dimshape" d={pathstr()} className={styles.innertriangle} style={{fill:"#bb2929"}}/>
 
                         <path d="M109.708,17.272L109.527,90.317" className={styles.triangleoutline}/>
@@ -344,9 +345,9 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
                         <path onClick={next}  d="M108.5,90l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>
                     </g>}
                     
-                    <text x="109.5px" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>
+                  
                     
-                    
+                   {/*} <text x="109.5px" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>*/}
                    
                 </svg>
                 </div>

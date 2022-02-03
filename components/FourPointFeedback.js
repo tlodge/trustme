@@ -227,7 +227,7 @@ const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['#7c5a36
 
 const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, height, width, complete:next}) => {
 
-   
+    const isMobile = deviceType==="mobile";
 
     //const  colour = d3.scaleSequential(d3.interpolateRdYlBu).domain([0,10]);
     const [selected, setSelected] = useState("q1");
@@ -355,11 +355,12 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
 
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
     return  <div>
-               <svg ref={square} width="auto" height={SVGHEIGHT}  viewBox="-12 0 151 144"  className={styles.square}>
+           <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
+                <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em"}}>{currentQuestion(answers[selected])}</div>
+            </div>
+               <svg ref={square} width="auto" height={SVGHEIGHT}  viewBox="-20 0 172 145"  className={styles.square}>
                     
-                    <g>
-                        <text x="65" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>
-                    </g>
+                  
 
                     <g id="bigsquare">
                         <path d="M63.349,13.343L0.416,76.275L63.349,139.208L126.281,76.275L63.349,13.343Z" className={styles.outersquare}/>

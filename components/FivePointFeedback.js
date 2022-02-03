@@ -270,7 +270,7 @@ const leftof = (q) => {
 const colorScale = d3.scaleLinear().clamp(true).domain([0, 100]).range(['#3c6647', 'white']);
 
 const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, width, height, complete:next}) => {
-
+    const isMobile = deviceType==="mobile";
     const [selected, setSelected] = useState("q1");
     const [almostComplete, setAlmostComplete] = useState(false);
     const [complete, setComplete] = useState(false);
@@ -425,10 +425,11 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
     }
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
     return  <div>
+                <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
+                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em"}}>{currentQuestion(answers[selected])}</div>
+                </div>
                 <svg ref={hexagon} width="auto" height={SVGHEIGHT}  viewBox="0 0 151 144" className={styles.hexagon}>
-                    <g>
-                        <text x="78px" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>
-                    </g>
+                    
                     <g id="bighexagon">
                         <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex}/>
                         
