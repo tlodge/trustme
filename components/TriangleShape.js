@@ -26,7 +26,7 @@ const TriangleShape = (props) => {
 	    renderer.setPixelRatio( window.devicePixelRatio );  
         renderer.setSize(width, height);
         setupCamera(width, height);  
-        var light = new THREE.HemisphereLight(0x000000, 0xFFFFFF, 1.0);
+        var light = new THREE.HemisphereLight(0x000000, 0xFFFFFF, 2.0);
         scene.add(light);
         scene.add( parent );
     }
