@@ -11,12 +11,12 @@
 .outerhex{
     fill:#61b359;
 }
-.questiontext{
- 
-    margin:20px; text-align: center; color:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300; font-size:1.5em
-  }
+.questiontext{ 
+    height:80px; text-align: center; color:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300; 
+}
+
 .scaleline{
-    fill:none;stroke:#c8c8c8;stroke-width:0.4px
+    fill:none;stroke:#c8c8c8;stroke-width:0.3px
 }
 
 .center{

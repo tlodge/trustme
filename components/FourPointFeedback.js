@@ -290,6 +290,7 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
             });
 
             elem.call(d3.drag().on("drag", (e)=>{
+                e.sourceEvent.stopPropagation(); 
                 if (name===selected){
                     const {x,y} = controlfn(name,e.x,e.y);
                   
@@ -354,14 +355,14 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
 
 
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
-    return  <div>
+    return  <div style={{display:"flex", justifyContent:"center", flexDirection:"column"}}>
            <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
-                <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em"}}>{currentQuestion(answers[selected])}</div>
+                <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em", marginTop: isMobile ? 20: 40, width: isMobile? 300:500}}>{currentQuestion(answers[selected])}</div>
             </div>
-               <svg ref={square} width="auto" height={SVGHEIGHT}  viewBox="-20 0 172 145"  className={styles.square}>
+               <svg ref={square} width="auto" height={SVGHEIGHT}  viewBox="0 0 172 145"  className={styles.square}>
                     
-                  
-
+                
+                    <g transform = "translate(22,0)">
                     <g id="bigsquare">
                         <path d="M63.349,13.343L0.416,76.275L63.349,139.208L126.281,76.275L63.349,13.343Z" className={styles.outersquare}/>
                         
@@ -394,6 +395,7 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
                         <circle onClick={next}  cx="63" cy="76" r="5.5" style={{fill:"#282b55"}}/>
                         <path onClick={next}  d="M62,74l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>
                     </g>}
+                    </g>
                 </svg>
             </div>
 }

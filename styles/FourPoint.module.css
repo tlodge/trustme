@@ -13,11 +13,11 @@
     fill:#e19c38;stroke-width:1.15px;
 }
 .questiontext{
- 
-    margin-top:20px; text-align: center; color:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300;
-  }
+        height:80px;text-align: center; color:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300;
+}
+
 .scaleline{
-    fill:none;stroke:#c8c8c8;stroke-width:0.4px
+    fill:none;stroke:#c8c8c8;stroke-width:0.3px
 }
 
 .center{

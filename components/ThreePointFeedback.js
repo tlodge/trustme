@@ -234,13 +234,15 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
 
         Object.keys(controlpoints).map((name)=>{
             const elem = controlpoints[name];
-            elem.on("click", ()=>{
+            elem.on("click", (e)=>{
+                console.log(e);
                 if (complete){
                     rotateIfSelected(name);
                 }
             });
 
             elem.call(d3.drag().on("drag", (e)=>{
+                e.sourceEvent.stopPropagation(); 
                 if (name===selected){
                     const {x,y} = controlfn(name,e.x,e.y);
                    // _points = {..._points, [name] : {x, y}}
@@ -254,8 +256,10 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
                     }
                 }
             }).on("start", ()=>{
+               
                 rotateIfSelected(name);
             }).on("end", ()=>{
+              
                 if (name===selected){
                     if (deviceType!=="desktop"){
                         //setPoints(_points);
@@ -308,12 +312,14 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
         return `M${q3[0]},${q3[1]}L${q1[0]},${q1[1]}L${q2[0]},${q2[1]}Z`
     }
 
-    return  <div style={{display:"flex", justifyContent:"center"}}>
-                <div>
+    return  <div style={{display:"flex", justifyContent:"center", flexDirection:"column"}}>
+               
                 <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
-                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em"}}>{currentQuestion(answers[selected])}</div>
+                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em", marginTop: isMobile ? 20: 40, width: isMobile? 300:500}}>{currentQuestion(answers[selected])}</div>
                 </div>
-                <svg ref={triangle} width='auto' height={SVGHEIGHT}  viewBox="20 0 172 145" className={styles.trianglesvg}>
+                <svg ref={triangle} width='auto' height={SVGHEIGHT}  viewBox="0 0 172 145" className={styles.trianglesvg}>
+                  
+                    <g transform="translate(-23,0)">
                     <g id="bigtriangle">
                         <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:"#69212f"}}/>
                         <path id="dimshape" d={pathstr()} className={styles.innertriangle} style={{fill:"#bb2929"}}/>
@@ -348,9 +354,9 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
                   
                     
                    {/*} <text x="109.5px" y="7.29px" className={styles.questiontext}>{currentQuestion(answers[selected])}</text>*/}
-                   
+                   </g>
                 </svg>
-                </div>
+                
             </div>
 }
 

@@ -364,6 +364,7 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
             });
 
             elem.call(d3.drag().on("drag", (e)=>{
+                e.sourceEvent.stopPropagation(); 
                 if (name===selected){
                     const {x,y} = controlfn(name,e.x,e.y);
                     
@@ -424,21 +425,16 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
         return `M${q1[0]},${q1[1]}L${q2[0]},${q2[1]}L${q3[0]},${q3[1]}L${q4[0]},${q4[1]}L${q5[0]},${q5[1]}L${q1[0]},${q1[1]}Z`
     }
     const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
-    return  <div>
+    return  <div style={{display:"flex", justifyContent:"center", flexDirection:"column"}}>
                 <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
-                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em"}}>{currentQuestion(answers[selected])}</div>
+                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em", marginTop: isMobile ? 20: 40, width: isMobile? 300:500}}>{currentQuestion(answers[selected])}</div>
                 </div>
                 <svg ref={hexagon} width="auto" height={SVGHEIGHT}  viewBox="0 0 151 144" className={styles.hexagon}>
                     
+                    <g transform="translate(0,-4)">
                     <g id="bighexagon">
                         <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex}/>
-                        
-
-                       
-                        
                     
-                       
-
                         <g><text x="73.922px" y="85.036px" className={styles.zerotext}></text></g>
 
                         <path id="innerhex" d={pathstr()} className={styles.innerhexline}/>
@@ -472,6 +468,7 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
                         <circle onClick={next}  cx="75.5" cy="83" r="5.5" style={{fill:"#282b55"}}/>
                         <path onClick={next}  d="M74.5,81l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>
                     </g>}
+                    </g>
                 </svg>
             </div>
 }

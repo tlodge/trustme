@@ -17,7 +17,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
             const chstyle = {
                 fontFamily: "'Nunito', sans-serif",
                 fontSize:isMobile ? "0.8em" : "1.5em", 
-                paddingTop:9, 
+                paddingTop: isMobile ? 7 : 9, 
                 margin:isMobile ? 4 : 10,
                 color:"#171834", 
                 background:"#c8c8c8", 
