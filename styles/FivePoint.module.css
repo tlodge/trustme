@@ -9,10 +9,10 @@
 }
 
 .outerhex{
-    fill:#61b359;
+    fill:#3c6647;
 }
 .questiontext{ 
-    height:80px; text-align: center; color:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300; 
+     text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;
 }
 
 .scaleline{
@@ -20,7 +20,7 @@
 }
 
 .center{
-    fill:#3c6647;
+    fill:#61b359;
 }
 
 .zerotext{
@@ -28,7 +28,7 @@
 }
 
 .innerhexline{
-    fill:#3c6647;fill-opacity:1;
+    fill:#61b359;fill-opacity:1;
 }
 
 .controlpoint{
@@ -38,3 +38,7 @@
 .rotatepoint{
    fill-opacity:1.0
 }
+
+.value{
+    text-anchor: middle;  font-family: 'Nunito', sans-serif;font-weight:700;font-size:5px;fill:#000;
+  }

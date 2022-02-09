@@ -405,7 +405,7 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
 
     const colourFor = (q, selected)=>{
         if (selected || answered.indexOf(q) != -1){
-            return colorScale(answers[q])
+            return ["q1","q2","q3"].indexOf(q) !== -1 ? colorScale(100-answers[q]) : colorScale(answers[q])
         }
         return "white"
     }
@@ -424,14 +424,16 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
         const q5 = pointfn["q5"](answers["q5"]);
         return `M${q1[0]},${q1[1]}L${q2[0]},${q2[1]}L${q3[0]},${q3[1]}L${q4[0]},${q4[1]}L${q5[0]},${q5[1]}L${q1[0]},${q1[1]}Z`
     }
-    const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
-    return  <div style={{display:"flex", justifyContent:"center", flexDirection:"column"}}>
-                <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
-                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em", marginTop: isMobile ? 20: 40, width: isMobile? 300:500}}>{currentQuestion(answers[selected])}</div>
+  
+    const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-270;
+
+    return  <div style={{display:"flex", justifyContent:"center", flexDirection:"row"}}>
+                 <div style={{display:"flex", padding:"0px 0px 0px 0px",justifyContent:"center", alignItems:"center", width: 400, marginLeft:100}}>
+                    <div className={styles.questiontext} style={{color:colourFor(selected,true), fontSize: isMobile? "1em":"1.5em",}}>{currentQuestion(answers[selected])}</div>
                 </div>
                 <svg ref={hexagon} width="auto" height={SVGHEIGHT}  viewBox="0 0 151 144" className={styles.hexagon}>
                     
-                    <g transform="translate(0,-4)">
+                    <g transform="translate(0,-11) rotate(-90, 75.5, 83)">
                     <g id="bighexagon">
                         <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex}/>
                     
@@ -463,7 +465,7 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
                             </g>
                         </g>
                     </g>
-                    {complete && <g> 
+                    {complete && <g transform="rotate(90, 75.5,83)"> 
                         <circle onClick={next} cx="75.5" cy="83" r="7.012" style={{fill:"#c8c8c8",stroke:"#171834",strokeWidth:0.8}}/>
                         <circle onClick={next}  cx="75.5" cy="83" r="5.5" style={{fill:"#282b55"}}/>
                         <path onClick={next}  d="M74.5,81l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>

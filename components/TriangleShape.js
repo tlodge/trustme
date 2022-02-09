@@ -78,7 +78,7 @@ const TriangleShape = (props) => {
     }
 
     useEffect(() => {
-        const DIMSHAPE = props.deviceType==="mobile" ? window.innerWidth : (window.innerWidth-320)/TOTALSHAPES;
+        const DIMSHAPE = props.deviceType==="mobile" ? window.innerWidth : 300;// (window.innerWidth-320)/TOTALSHAPES;
 
         init(DIMSHAPE, DIMSHAPE-100);
  
@@ -134,7 +134,7 @@ const TriangleShape = (props) => {
    },[props.paths])
 
  const [windowSize, setWindowSize] = useState({width: 500,height: 500});
- const DIMSHAPE = props.deviceType==="mobile"  ? windowSize.width: (windowSize.width-320)/TOTALSHAPES;
+ const DIMSHAPE = props.deviceType==="mobile"  ? windowSize.width:300 /*(windowSize.width-320)/TOTALSHAPES;*/
  
  return (
           <div onClick={props.onClick} style={{display:"flex",justifyContent:"center", ...props.style}}>

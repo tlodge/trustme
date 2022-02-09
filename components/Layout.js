@@ -37,7 +37,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
             alignItems:"center", 
             justifyContent: isMobile ? "center" : "flex-start",
             flexDirection: isMobile ? "row" : "column", 
-            width: isMobile ? "auto" : "280px", 
+            width: isMobile ? "auto" : "200px", 
             alignItems:"center",
             border: !isMobile ? "1px solid #c8c8c8" : "none",
             marginLeft: !isMobile ? 20 : 0,
@@ -53,6 +53,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
     }
     return  <div style={{display:'flex', height:"100vh", width:"100vw", alignItems:"center", background:"black", justifyContent:"center"}}>
                 <div style={{display:"flex", flexDirection: isMobile ? "column":"row", height:"100vh", flex: "1 1 auto", background:"#171834"}}>
+                    
                     <div style={{display:'flex', flex: "1 1 auto", flexDirection:"column"}}>     
                         <div style={{ display:"flex", flexDirection: isMobile ? "column":"row", margin: !isMobile ? "20px": "0px"}}>
                             {isMobile && renderChapters()}

@@ -51,7 +51,7 @@
   stroke-width:0.9px;
 }
 .value{
-  text-anchor: middle;  font-family: 'Nunito', sans-serif;font-weight:700;font-size:7px;fill:#000;
+  text-anchor: middle;  font-family: 'Nunito', sans-serif;font-weight:700;font-size:5px;fill:#000;
 }
 
 .inneroutline{
@@ -67,8 +67,7 @@
 }
 
 .questiontext{
- 
- height:80px;text-align: center; color:#c8c8c8; font-family: 'Nunito', sans-serif; font-weight:300; 
+ text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;
 }
 
 .canvascontainer {

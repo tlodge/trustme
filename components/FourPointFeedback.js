@@ -332,10 +332,10 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
     });
 
     const colourFor = (q, selected)=>{
-        if (selected || answered.indexOf(q) != -1){
-            return colorScale(answers[q])
-        }
-        return "white"
+        //if (selected || answered.indexOf(q) != -1){
+        //    return q == "q4" ?  colorScale(100-answers[q]) : colorScale(answers[q])
+        //}
+        return "#c8c8c8";// "white"
     }
 
     const translatestr = (q)=>{
@@ -353,16 +353,18 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
         return `M${q1[0]},${q1[1]}L${q2[0]},${q2[1]}L${q3[0]},${q3[1]}L${q4[0]},${q4[1]}L${q1[0]},${q1[1]}Z`
     }
 
+    const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-270;
 
-    const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
-    return  <div style={{display:"flex", justifyContent:"center", flexDirection:"column"}}>
-           <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
-                <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em", marginTop: isMobile ? 20: 40, width: isMobile? 300:500}}>{currentQuestion(answers[selected])}</div>
-            </div>
+    //const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
+    return  <div style={{display:"flex", justifyContent:"center", flexDirection:"row"}}>
+           <div style={{display:"flex", padding:"0px 0px 0px 0px",justifyContent:"center", alignItems:"center", width: 400, marginLeft:100}}>
+                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em",}}>{currentQuestion(answers[selected])}</div>
+                </div>
+           
                <svg ref={square} width="auto" height={SVGHEIGHT}  viewBox="0 0 172 145"  className={styles.square}>
                     
-                
-                    <g transform = "translate(22,0)">
+              
+                    <g transform = "translate(22,-4) rotate(-90, 63, 76)">
                     <g id="bigsquare">
                         <path d="M63.349,13.343L0.416,76.275L63.349,139.208L126.281,76.275L63.349,13.343Z" className={styles.outersquare}/>
                         
@@ -390,7 +392,7 @@ const FourPointFeedback = ({answers, questions, setAnswer,colour, deviceType, he
 
                         
                     </g>
-                    {complete && <g> 
+                    {complete && <g transform="translate(0,1) rotate(90, 63,76)"> 
                         <circle onClick={next} cx="63" cy="76" r="7.012" style={{fill:"#c8c8c8",stroke:"#171834",strokeWidth:0.8}}/>
                         <circle onClick={next}  cx="63" cy="76" r="5.5" style={{fill:"#282b55"}}/>
                         <path onClick={next}  d="M62,74l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>

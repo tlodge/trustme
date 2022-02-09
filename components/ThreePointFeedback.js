@@ -289,7 +289,10 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
 
     const TOTALSHAPES = 3;
 
-    const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-(width-300)/TOTALSHAPES - 44;
+    const SVGHEIGHT = deviceType == "mobile" ? height - (width) : height-270;
+    
+    
+    /*height-(width-300)/TOTALSHAPES - 44;*/
 
     const colourFor = (q, selected)=>{
     
@@ -311,15 +314,15 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
         const q3 = pointfn["q3"](answers["q3"]);
         return `M${q3[0]},${q3[1]}L${q1[0]},${q1[1]}L${q2[0]},${q2[1]}Z`
     }
-
-    return  <div style={{display:"flex", justifyContent:"center", flexDirection:"column"}}>
+////142 120
+    return  <div style={{display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"row"}}>
                
-                <div style={{display:"flex", padding:"0px 30px 0px 30px",justifyContent:"center", alignItems:"center", height:80}}>
-                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em", marginTop: isMobile ? 20: 40, width: isMobile? 300:500}}>{currentQuestion(answers[selected])}</div>
+                <div style={{display:"flex", padding:"0px 0px 0px 0px",justifyContent:"center", alignItems:"center", width: 400, marginLeft:100}}>
+                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em",}}>{currentQuestion(answers[selected])}</div>
                 </div>
                 <svg ref={triangle} width='auto' height={SVGHEIGHT}  viewBox="0 0 172 145" className={styles.trianglesvg}>
                   
-                    <g transform="translate(-23,0)">
+                    <g transform="translate(-15,-20) rotate(-90, 109, 90.5)">
                     <g id="bigtriangle">
                         <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{fill:"#69212f"}}/>
                         <path id="dimshape" d={pathstr()} className={styles.innertriangle} style={{fill:"#bb2929"}}/>
@@ -332,20 +335,21 @@ const ThreePointFeedback = ({colour, deviceType, width, height,complete:next, qu
                         <g id="controls">
                             <g id="q1" transform={`${translatestr("q1")} ${rotationFor(selected,"q1")}`}>
                             <circle id="q1"  r={selected==="q1" ? 7: 4} className={selected === "q1" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q1",selected=="q1")}}/>
-                            {/*<text y={2.5} className={styles.value}>{q1value(points.q1.x,points.q1.y)}</text>*/}
+                            {"q1"=== selected && <g transform="rotate(90)"><text y={1.7} className={styles.value}>{answers["q1"]}</text></g>}
                             </g>
                             <g id="q2" transform={`${translatestr("q2")} ${rotationFor(selected,"q2")}`}>
                             <circle id="q2"  r={selected==="q2" ? 7: 4} className={selected === "q2" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q2",selected=="q2")}}/>
-                            {/*<text y={2.5} className={styles.value}>{q2value(points.q2.x,points.q2.y)}</text>*/}
+                            {"q2"=== selected && <g transform="rotate(90)"><text y={1.7} className={styles.value}>{answers["q2"]}</text></g>}
+                          
                             </g>
                             <g id="q3" transform={`${translatestr("q3")}, ${rotationFor(selected,"q3")}`}>
                             <circle id="q3"  r={selected==="q3" ? 7: 4} className={selected === "q3" ? styles.controlpoint : styles.rotatepoint} style={{fill: colourFor("q3",selected=="q3")}}/>
-                            {/*<text y={2.5} className={styles.value}>{q3value(points.q3.x,points.q3.y)}</text>*/}
-                            </g>
+                            {"q3"=== selected && <g transform="rotate(90)"><text y={1.7} className={styles.value}>{answers["q3"]}</text></g>}
+                           </g>
                         </g>
                     </g>
                    
-                    {complete && <g> 
+                    {complete && <g transform="rotate(90, 109.5,92)"> 
                         <circle onClick={next} cx="109.5" cy="92" r="7.012" style={{fill:"#c8c8c8",stroke:"#171834",strokeWidth:0.8}}/>
                         <circle onClick={next}  cx="109.5" cy="92" r="5.5" style={{fill:"#282b55"}}/>
                         <path onClick={next}  d="M108.5,90l2.343,2.153l-2.432,2.209" style={{fill:"none",stroke:"#c8c8c8",strokeWidth:0.82}}/>
