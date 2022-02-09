@@ -429,7 +429,9 @@ const FivePointFeedback = ({answers, setAnswer, questions, colour, deviceType, w
 
     return  <div style={{display:"flex", justifyContent:"center", flexDirection:"row"}}>
                  <div style={{display:"flex", padding:"0px 0px 0px 0px",justifyContent:"center", alignItems:"center", width: 400, marginLeft:100}}>
-                    <div className={styles.questiontext} style={{color:colourFor(selected,true), fontSize: isMobile? "1em":"1.5em",}}>{currentQuestion(answers[selected])}</div>
+                  <div style={{display:"flex", alignItems:"center", padding:10, height:300, border: `3px solid ${colourFor(selected,true)}`}}>  
+                    <div className={styles.questiontext} style={{fontSize: isMobile? "1em":"1.5em"}}>{currentQuestion(answers[selected])}</div>
+                    </div>
                 </div>
                 <svg ref={hexagon} width="auto" height={SVGHEIGHT}  viewBox="0 0 151 144" className={styles.hexagon}>
                     
