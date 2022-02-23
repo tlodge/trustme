@@ -18,19 +18,9 @@
 }
 
 .innertriangle{
- fill-opacity:1;stroke:none;stroke-width:1.09px;
+ fill-opacity:1;fill:#bb2929;stroke: #bb2929; stroke-width:2px;
 }
 
-.zeroline{
-  fill:#bb2929;
-}
-
-.controlpoint{
-  fill:#fff;fill-opacity: 1.0;
-}
-.rotatepoint{
-  fill:#ba2727;fill-opacity: 1.0;
-}
 
 .gamutmenu{
   display: flex;
@@ -67,7 +57,7 @@
 }
 
 .questiontext{
- text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;
+ text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;padding:30px;
 }
 
 .canvascontainer {

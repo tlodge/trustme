@@ -62,7 +62,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
                             </div>
                             {!isMobile && renderChapters()}
                         </div>
-                        <GamutMenu points={points} deviceType={deviceType} chapter={chapter} colours={colours} dimension={dimension} setDimension={setDimension}/>
+                        {/*<GamutMenu points={points} deviceType={deviceType} chapter={chapter} colours={colours} dimension={dimension} setDimension={setDimension}/>*/}
                     </div>
                    
                 </div>

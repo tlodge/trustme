@@ -178,162 +178,162 @@ const initialState: QuestionState = {
     answers: {
         0:{
             "d1":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
-                "q5":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         1:{
             "d1":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
-                "q5":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         2:{
             "d1":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
-                "q5":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         3:{
             "d1":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
-                "q5":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         4:{
             "d1":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
-                "q5":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         5:{
             "d1":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
-                "q5":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         6:{
             "d1":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
-                "q5":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         7:{
             "d1":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":50,
-                "q2":50,
-                "q3":50,
-                "q4":50,
-                "q5":50,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
     },
@@ -376,7 +376,7 @@ export const { setChapter, setDimension, setQuestion, setAnswer } = questionSlic
 
 
 export const selectQuestions = (state: AppState) => state.questions.questions[state.questions.chapter][state.questions.dimension]
-export const selectAnswers = (state: AppState) => state.questions.answers[state.questions.chapter][state.questions.dimension]
+export const selectAnswers = (state: AppState) => state.questions.answers[state.questions.chapter]
 export const selectChapter = (state: AppState) => state.questions.chapter
 export const selectDimension = (state: AppState) => state.questions.dimension
 
@@ -446,7 +446,7 @@ const converttopoints = (dimension, question, answer)=>{
             }
         }
     }
-    return pointfn[dimension][question](answer);
+    return pointfn[dimension] ? pointfn[dimension][question] ? pointfn[dimension][question](answer) : -1 : -1;
 }
 
 export const selectPoints = (state: AppState)=>{

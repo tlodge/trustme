@@ -78,6 +78,7 @@ const TriangleShape = (props) => {
     }
 
     useEffect(() => {
+       
         const DIMSHAPE = props.deviceType==="mobile" ? window.innerWidth : 300;// (window.innerWidth-320)/TOTALSHAPES;
 
         init(DIMSHAPE, DIMSHAPE-100);
@@ -97,17 +98,20 @@ const TriangleShape = (props) => {
                 delete groups[chapter];
             }
             
-            const TOTALCHAPTERS = Math.max(tc,Object.keys(groups).length + 1);
-       
-            
+            const TOTALCHAPTERS = Math.max(tc,Object.keys(groups).length + 1);      
             groups[chapter] = addShapes(path, depths[TOTALCHAPTERS]*chapter, 80/(TOTALCHAPTERS), TOTALCHAPTERS> 1 ? props.selectedColour : colour[0]);
+            //TODO: record resources that are used here then when deleting a group make sure dispose, i.e:
+            //geometry.dispose();
+			///	material.dispose();
+		    //	texture.dispose();
             parent.add(groups[chapter]);
             parent.position.y = ty[TOTALCHAPTERS]
-            parent.position.x = 0; //intercept with axis
-            parent.position.z = -1.5;
-            parent.rotation.x =  Math.PI / 2;
         };
         
+        parent.position.x = 0; //intercept with axis
+        parent.position.z = -1.5;
+        parent.rotation.x =  Math.PI / 2;
+
         shapeRef.current.appendChild(renderer.domElement);
         const _controls = new OrbitControls( camera, renderer.domElement );
      

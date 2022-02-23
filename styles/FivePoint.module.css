@@ -28,7 +28,11 @@
 }
 
 .innerhexline{
-    fill:#61b359;fill-opacity:1;
+    fill:#61b359;
+    stroke:#61b359;
+    stroke-width:2px;
+    /*fill: white;
+    stroke: black;*/
 }
 
 .controlpoint{
