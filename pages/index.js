@@ -18,6 +18,7 @@ import {
 import {
   selectQuestions,
   selectAnswers,
+  selectAllAnswers,
   selectPoints,
   selectChapter,
   selectDimension,
@@ -26,6 +27,7 @@ import {
   setAnswer,
 } from '../features/questions/questionSlice'
 import { compose } from '@reduxjs/toolkit';
+import CompositeShape from '../components/CompositeShape';
 
 export default function Home(props) {
  
@@ -39,6 +41,7 @@ export default function Home(props) {
   //const {shapes:points} = useAppSelector(selectShapes)
   const questions = useAppSelector(selectQuestions);
   const answers = useAppSelector(selectAnswers);
+  const allanswers = useAppSelector(selectAllAnswers);
   const chapter = useAppSelector(selectChapter);
   const dimension = useAppSelector(selectDimension);
 
@@ -117,6 +120,10 @@ const renderDimensions = ()=>{
           <ThreePointFeedback selected={dimension == "d1" ? question: null} answers={answers.d1} clicked={()=>{_setDimension("d1");setQuestion("q1")}}/>
           <FourPointFeedback  selected={dimension == "d2" ? question: null} answers={answers.d2}  clicked={()=>{_setDimension("d2");setQuestion("q1")}}/>
           <FivePointFeedback  selected={dimension == "d3" ? question: null} answers={answers.d3}  clicked={()=>{_setDimension("d3");setQuestion("q1")}}/>
+      </div>
+
+      <div style={{display:"flex", justifyContent:"center", marginBottom:30}}>
+        <CompositeShape answers={allanswers}/>
       </div>
   </div>
 }

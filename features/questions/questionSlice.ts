@@ -377,6 +377,7 @@ export const { setChapter, setDimension, setQuestion, setAnswer } = questionSlic
 
 export const selectQuestions = (state: AppState) => state.questions.questions[state.questions.chapter][state.questions.dimension]
 export const selectAnswers = (state: AppState) => state.questions.answers[state.questions.chapter]
+export const selectAllAnswers = (state: AppState) => state.questions.answers;
 export const selectChapter = (state: AppState) => state.questions.chapter
 export const selectDimension = (state: AppState) => state.questions.dimension
 
