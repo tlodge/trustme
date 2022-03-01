@@ -33,6 +33,8 @@ export default function Home(props) {
  
   const {deviceType} = props; 
   const [windowSize, setWindowSize] = useState({width:0,height:0})
+  const [lastUpdate, setLastUpdate] = useState(0);
+
   const  [view, setView] = useState("player"); //player || feedback!
   
   const dispatch = useAppDispatch()
@@ -47,6 +49,7 @@ export default function Home(props) {
 
   const [question, setQuestion] = useState("q1");
   const [questionText, setQuestionText] = useState(questions.q1[0]);
+  const [latestAnswers, setLatestAnswers] = useState(answers);
 
   const nextQuestion = {
     "d1":{
@@ -72,6 +75,10 @@ export default function Home(props) {
     }
   }
 
+  useEffect(()=>{
+    setLatestAnswers(allanswers);
+  },[lastUpdate])
+
   useEffect(() => {
     setWindowSize({
         width: window.innerWidth,
@@ -94,13 +101,8 @@ export default function Home(props) {
   const questionScale = d3.scaleLinear().clamp(true).domain([0,100]).range([0, questions.q1.length-1]);
   
   const _setAnswer = (answer)=>{
-    console.log("setting question text", dimension, question, Math.ceil(questionScale(answer)));
-
     setQuestionText(questions[question][Math.ceil(questionScale(answer))]);
     dispatch(setAnswer({chapter,dimension,question,answer}))
-    
-   
-    
   }
 
   const threeDcolours = {
@@ -114,7 +116,10 @@ const renderDimensions = ()=>{
   return <div>
     <div className={styles.questiontext}>{questionText}</div>
 
-      <Slider question={question} answer={answers[dimension][question]} setAnswer={(answer)=>_setAnswer(answer)} end={()=>setQuestion(nextQuestion[dimension][question])}/>
+      <Slider question={question} answer={answers[dimension][question]} setAnswer={(answer)=>_setAnswer(answer)} end={()=>{
+          setLastUpdate(Date.now());
+          setQuestion(nextQuestion[dimension][question])}
+      }/>
       
       <div style={{display:"flex", flexDirection:"row"}}>
           <ThreePointFeedback selected={dimension == "d1" ? question: null} answers={answers.d1} clicked={()=>{_setDimension("d1");setQuestion("q1")}}/>
@@ -123,7 +128,7 @@ const renderDimensions = ()=>{
       </div>
 
       <div style={{display:"flex", justifyContent:"center", marginBottom:30}}>
-        <CompositeShape answers={allanswers}/>
+        <CompositeShape answers={latestAnswers}/>
       </div>
   </div>
 }

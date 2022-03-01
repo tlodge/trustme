@@ -3,8 +3,7 @@ import {fullpath} from '../utils/threepoint';
 
 
 const ThreePointFeedback = ({answers, selected, clicked}) => {
-   console.log("selected", selected);
-
+   
    
     const pathstr = (q, deg) =>{
         if (answers[q]== -1) 

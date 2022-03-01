@@ -2,8 +2,8 @@ import * as d3 from 'd3';
 
 const CX = 109.5, CY=90.5;
 
-const q1points = (answer)=>{
-    const q1ToY = d3.scaleLinear().domain([0,100]).range([16.6,85.7]);
+const q1points = (answer,sf=1)=>{
+    const q1ToY = d3.scaleLinear().domain([0,100]).range([Math.min(80,16.6*sf),85.7]);
     return [109.5, q1ToY(answer)];
 }
 
@@ -19,14 +19,14 @@ const rotate = ([x, y], deg)=>{
     return [xn,yn];
 }
 
-const points = (q, deg, answers)=>{  
-    if (answers[q] == -1){
+const points = (q, deg, answers, sf=1)=>{  
+    if (!answers || answers[q] == -1){
         return [[CX,CY],[CX,CY],[CX,CY]];
     }
 
     const theta = 30*(Math.PI/180);
-    const r = CY-q1points(answers[q])[1];
-    const p1 = rotate(q1points(answers[q]),deg);
+    const r = CY-q1points(answers[q],sf)[1];
+    const p1 = rotate(q1points(answers[q],sf),deg);
     const p2 = rotate([CX+ (Math.cos(theta)*r), CY+(Math.sin(theta)*r)],deg);
     const p3 = [CX, CY]  
     return [p1,p2,p3];
@@ -42,9 +42,9 @@ const createpath = (points)=>{
     return `M${start[0]},${start[1]}${path}Z`;
 }
 
-export const fullpath = (answers)=>{
-    const [f1,f2,f3] = points("q1",0, answers);
-    const [f4,f5,f6] = points("q2",120, answers);
-    const [f7,f8,f9] = points("q3",240, answers);
+export const fullpath = (answers, sf=1)=>{
+    const [f1,f2,f3] = points("q1",0, answers, sf);
+    const [f4,f5,f6] = points("q2",120, answers, sf);
+    const [f7,f8,f9] = points("q3",240, answers,sf);
     return createpath([f1,f2,f4,f5,f7,f8]);
 }
