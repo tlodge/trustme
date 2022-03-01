@@ -9,22 +9,22 @@ import React from 'react';
 
 const COLOURS = ["#fff", "#000", "#c8c8c8", "#282b55", "#bb2929","#e19c38","#61b359"];
 
-const allAnswered = (questions)=>{
+const oneAnswered = (questions)=>{
     return Object.keys(questions).reduce((acc, key)=>{
-        return acc || questions[key] != -1;
+        return acc || questions[key] !== -1;
     }, false);
 }
 
-const noEmptyAnswers = (item)=>{
+const atleastOneAnswer = (item)=>{
     return Object.keys(item).reduce((acc, dimension)=>{
-        return acc && true;//allAnswered(item[dimension]);
-    },true);
+        return acc || oneAnswered(item[dimension]);
+    },false);
 } 
 
 const filterEmpty = (_answers)=>{
     
     return (Object.keys(_answers).reduce((acc, key)=>{
-        if (noEmptyAnswers(_answers[key])){
+        if (atleastOneAnswer(_answers[key])){
             return [...acc, _answers[key]]
         }
         return acc;
