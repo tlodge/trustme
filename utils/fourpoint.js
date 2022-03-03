@@ -4,7 +4,7 @@ const CX = 63, CY = 76.6;
 
 const q1points = (answer)=>{
     const q1ToY = d3.scaleLinear().domain([0,100]).range([14,68.3]);
-    return [63.4, q1ToY(answer)];
+    return [64.2, q1ToY(answer)];
 }
 
 const torad = deg => deg * (Math.PI/180);
@@ -49,5 +49,13 @@ export const fullpath = (answers)=>{
     const [f10,f11,f12] = points("q4",270,answers);
 
     return createpath([f1,f2,f4,f5,f7,f8,f10,f11]);
+}
+
+export const segpath = (answers)=>{
+    const [f1,f2,f3] = points("q1",0,answers);
+    const [f4,f5,f6] = points("q2",90,answers);
+    const [f7,f8,f9] = points("q3",180,answers);
+    const [f10,f11,f12] = points("q4",270,answers);
+    return createpath([f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12]);
 }
 

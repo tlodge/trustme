@@ -1,5 +1,5 @@
 import styles from '../styles/FivePoint.module.css'
-import { fullpath } from '../utils/fivepoint';
+import { fullpath, segpath } from '../utils/fivepoint';
 const FivePointFeedback = ({answers, clicked, selected}) => {
     
 
@@ -27,7 +27,7 @@ const FivePointFeedback = ({answers, clicked, selected}) => {
                     <path id="innerhex" d={pathstr(216,"q4")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q4" ? 0.5 : 1:1}}/>
                         <path id="innerhex" d={pathstr(288,"q5")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q5" ? 0.5 : 1: 1}}/>*/}
 
-                    <path id="innerhex" d={fullpath(answers)} className={styles.innerhexline} />
+                    <path id="innerhex" d={segpath(answers)} className={styles.innerhexline} />
                     {/*<g>
                         <rect x={30} y={133} width={130} rx={1} ry={1} height={3} style={{fill:"white"}}></rect>
                         <circle id="dragcircle" cx={85} cy={134.5} r={6} style={{fill:"#282b55", stroke:"white"}}></circle>

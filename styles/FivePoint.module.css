@@ -30,7 +30,8 @@
 .innerhexline{
     fill:#61b359;
     stroke:#61b359;
-    stroke-width:2px;
+    stroke-width:1px;
+    stroke:black;
     /*fill: white;
     stroke: black;*/
 }

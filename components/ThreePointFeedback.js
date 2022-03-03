@@ -1,5 +1,5 @@
 import styles from '../styles/Home.module.css'
-import {fullpath} from '../utils/threepoint';
+import {fullpath, segpath} from '../utils/threepoint';
 
 
 const ThreePointFeedback = ({answers, selected, clicked}) => {
@@ -22,8 +22,8 @@ const ThreePointFeedback = ({answers, selected, clicked}) => {
 
                         {/*<path id="dimshape" d={pathstr("q1",0)} className={styles.innertriangle} style={{ opacity: selected ? selected=="q1" ? 0.5: 1 : 1}}/>
                         <path id="dimshape" d={pathstr("q2",120)} className={styles.innertriangle} style={{opacity: selected ? selected=="q2" ? 0.5: 1 : 1}}/>
-<path id="dimshape" d={pathstr("q3",240)} className={styles.innertriangle} style={{ opacity: selected ? selected=="q3" ? 0.5: 1 : 1}}/>*/}
-                        <path d={fullpath(answers)} className={styles.innertriangle}></path>
+<path id="dimshape" d={pathstr("q3",240)} className={styles.innertriangle} style={{ opacity: selected ? selected=="q3" ? 0.5: 1 : 1}}/> */}    
+                        {<path d={segpath(answers)} className={styles.innertriangle}></path>}
                         {/*<path d="M109.708,17.272L109.527,90.317" className={styles.triangleoutline}/>
                         <path d="M46.236,126.829L109.495,90.306" className={styles.triangleoutline}/>
                         <path d="M172.705,127.087L109.616,90.352" className={styles.triangleoutline}/>*/}

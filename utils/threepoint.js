@@ -19,7 +19,7 @@ const rotate = ([x, y], deg)=>{
     return [xn,yn];
 }
 
-const points = (q, deg, answers, sf=1)=>{  
+export const points = (q, deg, answers, sf=1)=>{  
     if (!answers || answers[q] == -1){
         return [[CX,CY],[CX,CY],[CX,CY]];
     }
@@ -47,4 +47,11 @@ export const fullpath = (answers, sf=1)=>{
     const [f4,f5,f6] = points("q2",120, answers, sf);
     const [f7,f8,f9] = points("q3",240, answers,sf);
     return createpath([f1,f2,f4,f5,f7,f8]);
+}
+
+export const segpath = (answers, sf=1)=>{
+    const [f1,f2,f3] = points("q1",0, answers, sf);
+    const [f4,f5,f6] = points("q2",120, answers, sf);
+    const [f7,f8,f9] = points("q3",240, answers,sf);
+    return createpath([f1,f2,f3,f4,f5,f6,f7,f8,f9]);
 }

@@ -26,7 +26,7 @@
 
 .innersquare{
     fill:#e19c38;fill-opacity:1;
-    stroke:#e19c38;stroke-width:2px;
+    stroke:black;stroke-opacity:1;stroke-width:1px;
 }
 .controlpoint{
     fill:#fff;

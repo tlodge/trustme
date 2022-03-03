@@ -1,5 +1,5 @@
 import styles from '../styles/FourPoint.module.css'
-import { fullpath } from '../utils/fourpoint';
+import { fullpath, segpath } from '../utils/fourpoint';
 const FourPointFeedback = ({answers, clicked, selected}) => {
 
     
@@ -9,7 +9,7 @@ const FourPointFeedback = ({answers, clicked, selected}) => {
                     <g transform="translate(10,5)">
                     <g id="bigsquare">
                         <path d="M63.349,13.343L0.416,76.275L63.349,139.208L126.281,76.275L63.349,13.343Z" className={styles.outersquare} style={{opacity:0.1,fill:"#c8c8c8"}}/>
-                        <path d={fullpath(answers)} className={styles.innersquare} />
+                        <path d={segpath(answers)} className={styles.innersquare} />
 
                         {/*<path d="M63.13,14.163L63.657,139.542" className={styles.scaleline}/>
                         <path d="M0.865,76.474L125.922,76.474" className={styles.scaleline}/>
