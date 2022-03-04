@@ -1,12 +1,118 @@
 import styles from '../styles/FivePoint.module.css'
-import { fullpath, segpath } from '../utils/fivepoint';
+import { fullpath, segpath, shapes } from '../utils/fivepoint';
+import React from 'react';
+import {post,get} from '../utils/net';
+import Image from 'next/image';
+
 const FivePointFeedback = ({answers, clicked, selected}) => {
     
 
- 
+    const API_ENDPOINT = 'https://inputtools.google.com/request?ime=handwriting&app=autodraw&dbg=1&cs=1&oe=UTF-8';
+    const SVG_ENDPOINT = 'https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/'
     const SVGHEIGHT = 300;//deviceType == "mobile" ? height - (width) : height-270;
+    const fivepoint = React.createRef();
+    const mypath = React.createRef();
+    const canvasRef = React.useRef(null)
+    const [image, setImage] = React.useState("");
 
-    return  <svg onClick={clicked} width={SVGHEIGHT} height={SVGHEIGHT}  viewBox="0 0 150 150" className={styles.hexagon}>
+    const getResults =(data)=>{
+        var regex = /SCORESINKS: (.*) Service_Recognize:/
+        try{
+            return JSON.parse(data[1][0][3].debug_info.match(regex)[1])
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    React.useEffect(() => {
+        const path = mypath.current;
+        const length = path.getTotalLength();
+
+        console.log("nice have length", length);
+        let n = 1000;
+        let step = length/n;
+      
+       
+       
+        /*const canvas = canvasRef.current
+        const context = canvas.getContext('2d')
+        //Our first draw
+        context.fillStyle = '#ff0000'
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+        context.fillStyle = '#000000';*/
+        const x = [], y=[], z=[];
+        for(let i= 1; i<=n; i++){
+            let point = path.getPointAtLength(i*step);
+            //context.fillRect(point.x, point.y, 1, 1);
+            x.push(point.x);
+            y.push(point.y);
+            z.push(i*10);
+        }
+
+       const ink = [x,y]//,z];
+       
+        //var path = new Path2D('M 100,100 h 50 v 50 h 50');
+        //var path = new Path2D(segpath(answers));
+        // context.stroke(path);
+        //const _shapes = shapes(answers);
+        //const _shapes2 =  [[1.45,2.45,3.4],[66.90,100.1,82.2],[]];
+        
+        //console.log(_shapes);
+        //console.log(_shapes2);
+        
+        const payload = {
+            input_type:0,
+            requests:[
+                {
+                     language:"autodraw",
+                     writing_guide:{
+                        width:300,
+                        height:300,
+                     },
+                     ink:[ink]
+                 }
+             ]
+         }
+        
+         post(API_ENDPOINT,payload).then(async (data)=>{
+
+            if (data[0] !== 'SUCCESS') {
+              throw new Error(data)
+            }
+  
+            var results = getResults(data);
+ 
+            const bestguess = results.reduce((acc,item)=>{
+                const [picture, score] = item;
+                const [_,max] = acc;
+                if (score < max){
+                    return [picture, score];
+                }
+                return acc;
+            },["",10]);
+           
+
+            //for (const result of results){
+  
+              const  escapedName = bestguess[0].replace(/ /g, '-');
+              try{
+                  const svg1 = await get(SVG_ENDPOINT + escapedName + '-01.svg');
+                  const buff = new Buffer(svg1.value);
+                  const base64data = buff.toString('base64');
+
+                   
+                    setImage(`data:image/svg+xml;base64,${base64data}`)
+              }catch(err){
+                console.log(err);
+              }
+            //}
+          })
+      }, [selected])
+
+    return  <>
+                
+                <Image alt="google interpretation" width={100} height={100} src={image}/>
+                <svg ref={fivepoint} onClick={clicked} width={SVGHEIGHT} height={SVGHEIGHT}  viewBox="0 0 150 150" className={styles.hexagon}>
                     
                     <g transform="translate(0,2)">
                     <g id="bighexagon">
@@ -27,13 +133,14 @@ const FivePointFeedback = ({answers, clicked, selected}) => {
                     <path id="innerhex" d={pathstr(216,"q4")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q4" ? 0.5 : 1:1}}/>
                         <path id="innerhex" d={pathstr(288,"q5")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q5" ? 0.5 : 1: 1}}/>*/}
 
-                    <path id="innerhex" d={segpath(answers)} className={styles.innerhexline} />
+                    <path id="innerhex" ref={mypath} d={fullpath(answers)} className={styles.innerhexline} />
                     {/*<g>
                         <rect x={30} y={133} width={130} rx={1} ry={1} height={3} style={{fill:"white"}}></rect>
                         <circle id="dragcircle" cx={85} cy={134.5} r={6} style={{fill:"#282b55", stroke:"white"}}></circle>
                     </g>*/}
                     </g>
                 </svg>
+            </>
        
 }
 

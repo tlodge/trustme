@@ -61,3 +61,12 @@ export const segpath = (answers)=>{
     return createpath([f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15]);
 }
 
+export const shapes = (answers)=>{
+   return  [
+        ...points("q1",0,answers),
+        ...points("q2",72,answers),
+        ...points("q3",144,answers),
+        ...points("q4",216,answers),
+        ...points("q5",288,answers),
+    ]
+}
