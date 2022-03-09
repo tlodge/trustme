@@ -12,10 +12,6 @@ import styles from '../styles/Home.module.css'
 import * as d3 from 'd3';
 
 import {
-  selectShapes,
-} from '../features/shapes/shapeSlice'
-
-import {
   selectQuestions,
   selectAnswers,
   selectAllAnswers,
@@ -26,7 +22,7 @@ import {
   setDimension,
   setAnswer,
 } from '../features/questions/questionSlice'
-import { compose } from '@reduxjs/toolkit';
+
 import CompositeShape from '../components/CompositeShape';
 
 export default function Home(props) {
@@ -35,7 +31,7 @@ export default function Home(props) {
   const [windowSize, setWindowSize] = useState({width:0,height:0})
   const [lastUpdate, setLastUpdate] = useState(0);
 
-  const  [view, setView] = useState("player"); //player || feedback!
+  const  [view, setView] = useState("feedback"); //player || feedback!
   
   const dispatch = useAppDispatch()
   const points = useAppSelector(selectPoints);
@@ -91,6 +87,7 @@ export default function Home(props) {
   } 
 
   const _setChapter = (chapter)=>{
+    setView("feedback");
     dispatch(setChapter(chapter));
   }
 
@@ -118,7 +115,10 @@ const renderDimensions = ()=>{
 
       <Slider question={question} answer={answers[dimension][question]} setAnswer={(answer)=>_setAnswer(answer)} end={()=>{
           setLastUpdate(Date.now());
-          setQuestion(nextQuestion[dimension][question])}
+          const nq = nextQuestion[dimension][question];
+          setQuestion(nq)
+          setQuestionText(questions[nq][0]);
+        }
       }/>
       
       <div style={{display:"flex", flexDirection:"row"}}>
@@ -127,20 +127,21 @@ const renderDimensions = ()=>{
           <FivePointFeedback  selected={dimension == "d3" ? question: null} answers={answers.d3}  clicked={()=>{_setDimension("d3");setQuestion("q1")}}/>
       </div>
 
-      <div style={{display:"flex", justifyContent:"center", marginBottom:30}}>
-        <CompositeShape answers={latestAnswers}/>
-      </div>
+     
   </div>
 }
 
+const renderFinal = ()=>{ 
+  return  <Layout points={points} deviceType={deviceType} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
+            <CompositeShape answers={latestAnswers}/>
+          </Layout>
+}
 
 const renderFeedback = ()=>{
     if (windowSize.width > 0){
-      return <Layout points={points} deviceType={deviceType} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension}>
+      return <Layout points={points} deviceType={deviceType} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
         {renderDimensions()}
       </Layout>
-     
-   
     }
   }
 
@@ -155,7 +156,8 @@ const renderFeedback = ()=>{
 
   
   return <>
-      {renderFeedback()}
+      {view === "feedback" && renderFeedback()}
+      {view === "final" && renderFinal()}
         {/*view=="feedback" && renderFeedback()*/}
         {/*view=="player" && renderPlayer()*/}
   </>

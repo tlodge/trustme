@@ -3,8 +3,8 @@ import * as d3 from 'd3';
 const CX = 63, CY = 76.6;
 
 const q1points = (answer)=>{
-    const q1ToY = d3.scaleLinear().domain([0,100]).range([14,68.3]);
-    return [64.2, q1ToY(answer)];
+    const q1ToY = d3.scaleLinear().domain([100,0]).range([14,CY]);
+    return [CX, q1ToY(answer)];
 }
 
 const torad = deg => deg * (Math.PI/180);

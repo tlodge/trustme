@@ -1,12 +1,8 @@
 import styles from '../styles/Home.module.css'
-import {
-    useEffect,
-    useState,
-} from 'react';
 import * as d3 from 'd3';
 import useD3 from '../hooks/useD3';
-const qscale = d3.scaleLinear().clamp(true).domain([22, 778]).range([100,0]);
-const ascale = d3.scaleLinear().clamp(true).domain([100,0]).range([22,778]);
+const qscale = d3.scaleLinear().clamp(true).domain([100, 685]).range([0,100]);
+const ascale = d3.scaleLinear().clamp(true).domain([0,100]).range([100,685]);
 
 const Slider = ({end, setAnswer, answer}) => {
    
@@ -32,10 +28,12 @@ const Slider = ({end, setAnswer, answer}) => {
 
     return  <div style={{display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"row"}}>
                 <svg ref={slider} width={800} height={SVGHEIGHT} className={styles.trianglesvg}>
+                    <text x={40} y={30} style={{fill:"white", textAnchor:"middle"}}>Not at all</text>
                     <g>
-                        <rect x={0} y={20} width={800} rx={5} ry={5} height={10} style={{opacity:0.3,fill:"white"}}></rect>
+                        <rect x={100} y={20} width={585} rx={5} ry={5} height={10} style={{opacity:0.3,fill:"white"}}></rect>
                         <circle id="dragcircle" cx={ascale(answer)} cy={25} r={20} style={{fill:"#282b55", strokeWidth:2, stroke:"white"}}></circle>
                     </g>
+                    <text x={755} y={30} style={{fill:"white", textAnchor:"middle"}}>Completely</text>
                 </svg>
             </div>
 }

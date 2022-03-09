@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 const CX = 75.5, CY = 83;
 
 const q1points = (answer)=>{
-    const q1ToY = d3.scaleLinear().domain([0,100]).range([17,73.6]);
+    const q1ToY = d3.scaleLinear().domain([100,0]).range([17,CY]);
     return [CX, q1ToY(answer)];
 }
 

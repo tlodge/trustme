@@ -24,41 +24,20 @@ const FivePointFeedback = ({answers, clicked, selected}) => {
         }
     }
 
-    React.useEffect(() => {
+    /*React.useEffect(() => {
         const path = mypath.current;
         const length = path.getTotalLength();
-
-        console.log("nice have length", length);
         let n = 1000;
         let step = length/n;
-      
-       
-       
-        /*const canvas = canvasRef.current
-        const context = canvas.getContext('2d')
-        //Our first draw
-        context.fillStyle = '#ff0000'
-        context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-        context.fillStyle = '#000000';*/
         const x = [], y=[], z=[];
         for(let i= 1; i<=n; i++){
             let point = path.getPointAtLength(i*step);
-            //context.fillRect(point.x, point.y, 1, 1);
             x.push(point.x);
             y.push(point.y);
             z.push(i*10);
         }
 
-       const ink = [x,y]//,z];
-       
-        //var path = new Path2D('M 100,100 h 50 v 50 h 50');
-        //var path = new Path2D(segpath(answers));
-        // context.stroke(path);
-        //const _shapes = shapes(answers);
-        //const _shapes2 =  [[1.45,2.45,3.4],[66.90,100.1,82.2],[]];
-        
-        //console.log(_shapes);
-        //console.log(_shapes2);
+        const ink = [x,y];
         
         const payload = {
             input_type:0,
@@ -91,27 +70,22 @@ const FivePointFeedback = ({answers, clicked, selected}) => {
                 return acc;
             },["",10]);
            
-
-            //for (const result of results){
-  
-              const  escapedName = bestguess[0].replace(/ /g, '-');
-              try{
-                  const svg1 = await get(SVG_ENDPOINT + escapedName + '-01.svg');
-                  const buff = new Buffer(svg1.value);
-                  const base64data = buff.toString('base64');
-
-                   
-                    setImage(`data:image/svg+xml;base64,${base64data}`)
-              }catch(err){
+            const  escapedName = bestguess[0].replace(/ /g, '-');
+            try{
+                const svg1 = await get(SVG_ENDPOINT + escapedName + '-01.svg');
+                const buff = new Buffer(svg1.value);
+                const base64data = buff.toString('base64');
+                setImage(`data:image/svg+xml;base64,${base64data}`)
+            }catch(err){
                 console.log(err);
-              }
-            //}
+            }
+            
           })
-      }, [selected])
+      }, [selected])*/
 
     return  <>
                 
-                <Image alt="google interpretation" width={100} height={100} src={image}/>
+                {/*<Image alt="google interpretation" width={100} height={100} src={image || "/"}/>*/}
                 <svg ref={fivepoint} onClick={clicked} width={SVGHEIGHT} height={SVGHEIGHT}  viewBox="0 0 150 150" className={styles.hexagon}>
                     
                     <g transform="translate(0,2)">
@@ -133,7 +107,7 @@ const FivePointFeedback = ({answers, clicked, selected}) => {
                     <path id="innerhex" d={pathstr(216,"q4")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q4" ? 0.5 : 1:1}}/>
                         <path id="innerhex" d={pathstr(288,"q5")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q5" ? 0.5 : 1: 1}}/>*/}
 
-                    <path id="innerhex" ref={mypath} d={fullpath(answers)} className={styles.innerhexline} />
+                    <path id="innerhex" ref={mypath} d={segpath(answers)} className={styles.innerhexline} />
                     {/*<g>
                         <rect x={30} y={133} width={130} rx={1} ry={1} height={3} style={{fill:"white"}}></rect>
                         <circle id="dragcircle" cx={85} cy={134.5} r={6} style={{fill:"#282b55", stroke:"white"}}></circle>

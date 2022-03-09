@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 const CX = 109.5, CY=90.5;
 
 const q1points = (answer,sf=1)=>{
-    const q1ToY = d3.scaleLinear().domain([0,100]).range([Math.min(80,16.6*sf),85.7]);
+    const q1ToY = d3.scaleLinear().domain([100,0]).range([Math.min(CX,16.6*sf),CY]);
     return [109.5, q1ToY(answer)];
 }
 

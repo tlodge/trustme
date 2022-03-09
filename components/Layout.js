@@ -7,13 +7,13 @@ import {
 
 
 
-const Layout = ({points,children,dimension, chapter, colours, setChapter, setDimension, deviceType}) => {
+const Layout = ({points,children,dimension, chapter, colours, setChapter, setDimension, deviceType, onComplete}) => {
 
     const isMobile = deviceType === "mobile";
 
     const chapters = ()=>{
         
-        return [0,1,2,3,4,5,6,7].map((c)=>{
+        return [0,1,2,3,4,5,6,7,8].map((c)=>{
             const chstyle = {
                 fontFamily: "'Nunito', sans-serif",
                 fontSize:isMobile ? "0.8em" : "1.5em", 
@@ -27,7 +27,18 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
                 height: isMobile ? 30 : 50, 
                 borderRadius: isMobile ? 15 : 25, 
             }
-            return <div key={c} style={chstyle} onClick={()=>setChapter(c)}>{c+1}</div>
+            const fstyle = {
+                fontFamily: "'Nunito', sans-serif",
+                fontSize:isMobile ? "0.8em" : "1.5em", 
+                paddingTop: isMobile ? 7 : 9, 
+                margin:isMobile ? 4 : 10,
+                color:"#171834", 
+                opacity:0.5, 
+                textAlign:"center", 
+                height: isMobile ? 30 : 50, 
+            }
+            return c <= 7 ? <div key={c} style={chstyle} onClick={()=>setChapter(c)}>{c+1}</div>
+            : <div key={c} style={fstyle} onClick={()=>onComplete()}>see final</div>
         });
     }
 
