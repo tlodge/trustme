@@ -43,21 +43,13 @@ export async function  fetchGuess(path){
     return post(API_ENDPOINT,payload).then(async (data)=>{
 
         if (data[0] !== 'SUCCESS') {
+            console.log("error getting img");
           throw new Error(data)
         }
-
         var results = getResults(data);
-
-        /*const bestguess = results.reduce((acc,item)=>{
-            const [picture, score] = item;
-            const [_,max] = acc;
-            if (score < max){
-                return [picture, score];
-            }
-            return acc;
-        },["",10]);*/
         
         let url;
+        
         for (const svg of results){
             const [picture, score] = svg;
             const escapedName = picture.replace(/ /g, '-').toLowerCase();

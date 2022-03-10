@@ -19,6 +19,7 @@ import {
     toggleOption,
     setOptions,
 } from '../features/shapes/shapeSlice'
+import { compose } from '@reduxjs/toolkit';
 
 const COLOURS = ["#fff", "#000", "#c8c8c8", "#282b55", "#bb2929","#e19c38","#61b359"];
 
@@ -68,15 +69,13 @@ const CompositeShape = ({answers}) => {
 
 
     const _setOptions = (attr,value)=>{
-        console.log("seen a set optopns", attr, value)
         dispatch(setOptions(attr,value));
     }
 
     const fni = [fp3,fp4,fp5];
     const cli = ["#bb2929","#e19c38","#61b359"];
     
-    const SVGWIDTH = 450;
-    const SVGHEIGHT = 800;
+   
     const center = {
         "d1":[109.5,90.5],
         "d2":[63,76.6],
@@ -128,20 +127,26 @@ const CompositeShape = ({answers}) => {
         const cp = center[dimension];
         return [am,cp[0],cp[1]];
     }   
-   
-    
+    const TRANSDELAY = 100;
+    const YDELTA = 30;
+
     //Quite neat nested interleaving with d3
     const interleaved = useD3((root)=>{
         
         const mydata = dataRef.current;
+
+
         const rows = root.selectAll("g.interleave").data(mydata);
-    
+        
         rows.exit().remove();
 
         const newrows = rows.enter()
             .append("g")
             .attr("class", "interleave")
            
+           
+        newrows.attr("transform",  `translate(12,${options.grid ? -15: 0})`);
+
         const paths = rows.merge(newrows).selectAll("path.d1").data((d,i)=>{
             return [{d:d.d1,chapter:i}, {d:d.d2, chapter:i}, {d:d.d3,chapter:i}];
         })
@@ -149,56 +154,96 @@ const CompositeShape = ({answers}) => {
         
         const newpaths = paths.enter()
             .append("path")
+           
             .attr("class", "d1")
-            .attr("transform", (d,i,j)=>{
+            /*.attr("transform", (d,i,j)=>{
                 const [x,y] = translatefn(i);
                 const rotation = rotationfor(d.chapter,`d${i+1}`);
                 return  `translate(${x},${y}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})`
-            })
-            .attr("d", (d,i)=>{
-                return fni[i](d.d);
-            })
-            .style("stroke", (d,i)=>colours[`d${i+1}`])
-            .style("fill-opacity", (d,i)=>{
-                return options.grid ? 1.0 : options.fillopacity;
-            })
-            .style("stroke-opacity", (d,i)=>{
-                return options.strokeopacity;
-            })
-            .style("stroke-width", (d,i)=>{
+            }).*/
+           .attr("opacity",0)
+           .style("stroke-width", (d,i)=>{
                 return options.strokewidth;
             })
-            .style("opacity", (d,i)=>{
-                return options[`d${i+1}`] ? 1.0 : 0.0
-            })
-            .style("fill", (d,i)=>{
-                return options.fill ? cli[i] : "none"
-            }) 
-            .style("stroke", (d,i)=>{
-                return options[`d${i+1}stroke`] || "none" 
-            }).attr("transform", (d,i)=>{
+            .attr("transform", (d,i)=>{
                 const rotation = rotationfor(d.chapter,`d${i+1}`);
                 const [x,y] = translatefn(i);
                 const [x1,y1] = gridtranslate(i,d.chapter);
                 if (options.rotate){
-                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `scale(1.0) translate(${x},${y}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
+                    return options.grid ? `rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
                 }else{
-                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x},${y}) `
+                    return options.grid ? `translate(${x+80+x1},${y-150+d.chapter*150})` : `translate(${x},${y+50}) `
+                }
+            })
+            .transition().duration(500).delay(function(d, i) {
+                return (d.chapter* 3) * TRANSDELAY + (i*TRANSDELAY)
+            })
+            .attr("transform", (d,i)=>{
+                const rotation = rotationfor(d.chapter,`d${i+1}`);
+                const [x,y] = translatefn(i);
+                const [x1,y1] = gridtranslate(i,d.chapter);
+                if (options.rotate){
+                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
+                }else{
+                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x+50},${y+YDELTA}) `
+                }
+            })
+            .style("fill", (d,i)=>{
+                return options.fill ? cli[i] : "none"
+            })
+            .attr("d", (d,i)=>{
+                return fni[i](d.d);
+            })
+            .style("stroke", (d,i)=>{
+                return options[`d${i+1}stroke`] || "none" 
+            })
+            
+            .style("fill-opacity", (d,i)=>{
+                return options.grid ? 1.0 : options.fillopacity;
+            })
+            .style("stroke-opacity", (d,i)=>{
+                return options.strokeopacity;
+            })
+            .style("opacity", (d,i)=>{
+                return options[`d${i+1}`] ? 1.0 : 0.0
+            }).each(async (d,i,n)=>{
+                const path = n[i];
+                
+                if (path && path.getTotalLength() > 0){
+                    const sum = Object.keys(answers[d.chapter][`d${i+1}`]).reduce((acc,key)=>{
+                        return acc+answers[d.chapter][`d${i+1}`][key];
+                    },0);
+                    if (options.autodraw){
+                        dispatch(guessShape(d.chapter, i, `${sum.toFixed(2)}`, path));
+                    }
                 }
             });
+           
+            
         
         const _paths = paths.merge(newpaths)
         
-      
-        _paths.transition().duration(1000)
+        
+
+        /*
+        delay(function(d, i) {
+            return (d.chapter* 3) * TRANSDELAY + (i*TRANSDELAY)
+        })*/
+        _paths
             .attr("d", (d,i)=>{
                 return fni[i](d.d);
+            })
+            .transition().duration(500).delay(function(d, i) {
+                return (d.chapter* 3) * TRANSDELAY + (i*TRANSDELAY)
             })
             .style("fill-opacity", (d,i)=>{
                 return options.grid ? 1.0 : options.fillopacity;
             })
             .style("stroke-opacity", (d,i)=>{
                 return options.strokeopacity;
+            })
+            .style("stroke", (d,i)=>{
+                return options[`d${i+1}stroke`] || "none" 
             })
             .style("stroke-width", (d,i)=>{
                 return options.strokewidth;
@@ -209,17 +254,15 @@ const CompositeShape = ({answers}) => {
             .style("fill", (d,i)=>{
                 return options.fill ? options[`d${i+1}fill`] ||cli[i] : "none"
             }) 
-            .style("stroke", (d,i)=>{
-                return options[`d${i+1}stroke`] || "none" 
-            })
+            
             .attr("transform", (d,i)=>{
                 const rotation = rotationfor(d.chapter,`d${i+1}`);
                 const [x,y] = translatefn(i);
                 const [x1,y1] = gridtranslate(i,d.chapter);
                 if (options.rotate){
-                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `scale(1.0) translate(${x},${y}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
+                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
                 }else{
-                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x},${y}) `
+                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x},${y+YDELTA}) `
                 }
             }).each(async (d,i,n)=>{
                 const path = n[i];
@@ -228,9 +271,10 @@ const CompositeShape = ({answers}) => {
                     const sum = Object.keys(answers[d.chapter][`d${i+1}`]).reduce((acc,key)=>{
                         return acc+answers[d.chapter][`d${i+1}`][key];
                     },0);
-                    dispatch(guessShape(d.chapter, i, `${sum.toFixed(2)}`, path));
+                    if (options.autodraw){
+                        dispatch(guessShape(d.chapter, i, `${sum.toFixed(2)}`, path));
+                    }
                 }
-                
             });
             
     
@@ -255,7 +299,14 @@ const CompositeShape = ({answers}) => {
             {!options["grid"] && <circle onClick={()=>_toggleOption("grid")} cx={60} cy={10} r={2.5}  style={{fill:"#282b55"}}></circle>}
             <text   onClick={()=>_toggleOption("grid")} x={60} y={22} style={{fill:"#c8c8c8", fontSize:"0.3em", textAnchor:"middle"}}>grid</text>
         </g>
-        return <g>{filters}{expand}</g>
+
+        const autodraw = <g>
+            <circle onClick={()=>_toggleOption("autodraw")} cx={80} cy={10} r={4} style={{fill:"#c8c8c8"}}></circle>
+            {!options["autodraw"] && <circle onClick={()=>_toggleOption("autodraw")} cx={80} cy={10} r={2.5}  style={{fill:"#282b55"}}></circle>}
+            <text   onClick={()=>_toggleOption("autodraw")} x={80} y={22} style={{fill:"#c8c8c8", fontSize:"0.3em", textAnchor:"middle"}}>autodraw</text>
+        </g>
+
+        return <g>{filters}{expand}{autodraw}</g>
     }
     
     
@@ -343,6 +394,21 @@ const CompositeShape = ({answers}) => {
         })
     }
 
+    const renderChapterLabels = ()=>{
+        return [0,1,2,3,4,5,6,7].map(c=>{
+            return <text key={c} x={10} y={-30 + (c*31)} style={{fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>{`c${c+1}`}</text>
+        })
+    }
+    const renderGridAxes = ()=>{
+        return  <g>
+                    {options.grid && renderChapterLabels()}
+                    <text onClick={()=>_toggleOption("d1")} x={40} y={205} style={{opacity: options["d1"] ? 1 : 0.2, fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>knowledge</text>
+                    <text onClick={()=>_toggleOption("d2")} x={77} y={205} style={{opacity: options["d2"] ? 1 : 0.2,fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>choice</text>
+                    <text onClick={()=>_toggleOption("d3")} x={112} y={205} style={{opacity: options["d3"] ? 1 : 0.2,fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>risk</text>
+                </g>
+    }
+
+   
     const renderRows = ()=>{
         const renderImages = (row)=>{
             return row.map((imgsrc,i)=>{
@@ -357,15 +423,24 @@ const CompositeShape = ({answers}) => {
            
         })
     }
-   
+    const SVGWIDTH = 450; const SVGHEIGHT = 800;
+
     return <div style={{display:"flex", flexDirection:"column"}}>
-        <div style={{display:"flex", flexDirection:"row"}}>
-            <svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox="0 0 150 150"  className={styles.square}> 
-                <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform="translate(10,-10)"></g>
-            </svg>
-            {options.grid && <div style={{display:"flex", flexDirection:"column", marginTop:60}}>
+        <div style={{display:"flex", flexDirection:"row", margin:20}}>
+            {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox="0 0 150 150"  className={styles.square}> 
+                <g >
+               
+                <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform="translate(0,0)"></g>
+                {renderGridAxes()}
+
+                </g>
+            </svg>}
+            {options.autodraw && <div style={{display:"flex", flexDirection:"column", marginTop:60}}>
                 {renderRows()}
             </div>}
+        </div>
+        <div style={{color:"white", fontSize:20, margin: "0px 0px 30px 190px"}} onClick={()=>_toggleOption("grid")}>
+            {`${options.grid? "view my shape" : "view as grid"}`}
         </div>
         {<div style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
         {controls && renderControls()}

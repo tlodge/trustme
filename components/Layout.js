@@ -17,7 +17,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
             const chstyle = {
                 fontFamily: "'Nunito', sans-serif",
                 fontSize:isMobile ? "0.8em" : "1.5em", 
-                paddingTop: isMobile ? 7 : 9, 
+                paddingTop: isMobile ? 7 : 11, 
                 margin:isMobile ? 4 : 10,
                 color:"#171834", 
                 background:"#c8c8c8", 
@@ -68,7 +68,7 @@ const Layout = ({points,children,dimension, chapter, colours, setChapter, setDim
                     <div style={{display:'flex', flex: "1 1 auto", flexDirection:"column"}}>     
                         <div style={{ display:"flex", flexDirection: isMobile ? "column":"row", margin: !isMobile ? "20px": "0px"}}>
                             {isMobile && renderChapters()}
-                            <div style={{border: isMobile?"none":"1px solid #c8c8c8", background:"#2b2b55", display:"flex", justifyContent:"center",flex: "1 1 auto"}}>
+                            <div style={{border: isMobile?"none":"1px solid #c8c8c8", background:"#2b2b55", display:"flex", alignItems:"center",justifyContent:"center",flex: "1 1 auto"}}>
                                 {children}
                             </div>
                             {!isMobile && renderChapters()}

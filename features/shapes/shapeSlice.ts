@@ -18,6 +18,8 @@ const initialState: ShapeState = {
     d1:true,
     d2:true,
     d3:true, 
+    grid: true,
+    autodraw:false,
     fill:true,
     rotate:true,
     opacity:1,

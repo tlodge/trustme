@@ -20,13 +20,11 @@ export function put(url="", data={}){
 
 export function get(url, query, accept="*/*"){
     return new Promise((resolve, reject) => {
-      //console.log("querying", url);
+      
       request.get(url)
           .query(query)
           .set('Accept', accept)
           .then((res)=>{
-  
-            console.log(res);
             if (res.type === "text/html" || res.type==="image/svg+xml"){
               resolve({value:res.text});
             }
@@ -37,7 +35,6 @@ export function get(url, query, accept="*/*"){
               resolve(res.xhr._response);
             }
           }, (err) => {
-            //console.log("rooror", err);
             reject();
           });
       });

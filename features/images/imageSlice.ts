@@ -53,17 +53,16 @@ export const selectImages = (state: AppState) => state.images.images
 export const guessShape =
   (chapter, dimension, key, path): AppThunk =>
   
+  
   async (dispatch, getState) => {
-    
-    let _paths  = getState().images.paths;
-    let _images = getState().images.images;
+   
+    if (getState().images.paths[chapter][dimension] != key){
 
-    if (_paths[chapter][dimension] != key){
-
-        console.log("have key", key , " and ", _paths[chapter][dimension]);
+        //console.log("have key", key , " and ", _paths[chapter][dimension]);
         const url = await fetchGuess(path);
         
-        dispatch(setPaths(_paths.map((row,i)=>{
+
+        dispatch(setPaths(getState().images.paths.map((row,i)=>{
             if (i == chapter){
                 return row.map((_d, j)=>{
                     if (j===dimension){
@@ -74,7 +73,8 @@ export const guessShape =
             }
             return row;
         })));
-        dispatch(setImages(_images.map((row,i)=>{
+
+        dispatch(setImages(getState().images.images.map((row,i)=>{
             if (i == chapter){
                 return row.map((_url, j)=>{
                     if (j===dimension){
@@ -85,6 +85,7 @@ export const guessShape =
             }
             return row;
         })));
+
     }   
 }
 
