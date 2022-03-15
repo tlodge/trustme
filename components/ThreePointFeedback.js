@@ -1,8 +1,8 @@
 import styles from '../styles/Home.module.css'
-import {fullpath, segpath} from '../utils/threepoint';
+import {fullpath, seppath, segpath} from '../utils/threepoint';
 
-
-const ThreePointFeedback = ({answers, selected, clicked}) => {
+const SVGHEIGHT = 300;
+const ThreePointFeedback = ({answers, selected, clicked, width=SVGHEIGHT, height=SVGHEIGHT}) => {
    
    
     const pathstr = (q, deg) =>{
@@ -12,10 +12,15 @@ const ThreePointFeedback = ({answers, selected, clicked}) => {
         return `M${p1[0]},${p1[1]}L${p2[0]},${p2[1]}L${p3[0]},${p3[1]}Z`
     }
 
-    const SVGHEIGHT = 300;//deviceType == "mobile" ? height - (width) : height-270;
-    return <svg  onClick={clicked} width={SVGHEIGHT} height={SVGHEIGHT}   viewBox="0 0 150 150" className={styles.trianglesvg}>
+    const _sindex = selected ? selected[1]-1 : -1;
+    const paths = seppath(answers);
+    const opacity = selected ? 0.3 : 1;
+
+    //deviceType == "mobile" ? height - (width) : height-270;
+    return <svg  onClick={clicked} width={width} height={height} viewBox="0 0 150 150" className={styles.trianglesvg}>
+   
                     <g transform="translate(-33,5)">
-                        
+                    
                         <g id="bigtriangle">
                             <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{opacity:0.1,fill:"#c8c8c8"}}/>
                         </g> 
@@ -23,7 +28,11 @@ const ThreePointFeedback = ({answers, selected, clicked}) => {
                         {/*<path id="dimshape" d={pathstr("q1",0)} className={styles.innertriangle} style={{ opacity: selected ? selected=="q1" ? 0.5: 1 : 1}}/>
                         <path id="dimshape" d={pathstr("q2",120)} className={styles.innertriangle} style={{opacity: selected ? selected=="q2" ? 0.5: 1 : 1}}/>
 <path id="dimshape" d={pathstr("q3",240)} className={styles.innertriangle} style={{ opacity: selected ? selected=="q3" ? 0.5: 1 : 1}}/> */}    
-                        {<path d={segpath(answers)} className={styles.innertriangle}></path>}
+                        {/*<path d={segpath(answers)} className={styles.innertriangle}></path>*/}
+                        {paths.map((p,i)=>{
+                            return <path key={i} d={p} className={styles.innertriangle} style={{opacity}}></path>
+                        })}
+                        {_sindex >= 0 && <path d={paths[_sindex||0]} className={styles.innertriangle} style={{opacity:1}}></path>}
                         {/*<path d="M109.708,17.272L109.527,90.317" className={styles.triangleoutline}/>
                         <path d="M46.236,126.829L109.495,90.306" className={styles.triangleoutline}/>
                         <path d="M172.705,127.087L109.616,90.352" className={styles.triangleoutline}/>*/}

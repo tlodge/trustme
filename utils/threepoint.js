@@ -49,6 +49,13 @@ export const fullpath = (answers, sf=1)=>{
     return createpath([f1,f2,f4,f5,f7,f8]);
 }
 
+export const seppath = (answers, sf=1)=>{
+    const [f1,f2,f3] = points("q1",0, answers, sf);
+    const [f4,f5,f6] = points("q2",120, answers, sf);
+    const [f7,f8,f9] = points("q3",240, answers,sf);
+    return [createpath([f1,f2,f3]),createpath([f4,f5,f6]), createpath([f7,f8,f9])]
+}
+
 export const segpath = (answers, sf=1)=>{
     const [f1,f2,f3] = points("q1",0, answers, sf);
     const [f4,f5,f6] = points("q2",120, answers, sf);

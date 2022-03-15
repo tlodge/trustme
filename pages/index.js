@@ -132,14 +132,14 @@ const renderDimensions = ()=>{
 }
 
 const renderFinal = ()=>{ 
-  return  <Layout points={points} deviceType={deviceType} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
+  return  <Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
             <CompositeShape answers={latestAnswers}/>
           </Layout>
 }
 
 const renderFeedback = ()=>{
     if (windowSize.width > 0){
-      return <Layout points={points} deviceType={deviceType} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
+      return <Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
         {renderDimensions()}
       </Layout>
     }

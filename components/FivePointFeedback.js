@@ -1,15 +1,13 @@
 import styles from '../styles/FivePoint.module.css'
-import { fullpath, segpath, shapes } from '../utils/fivepoint';
+import { fullpath, segpath, seppath, shapes } from '../utils/fivepoint';
 import React from 'react';
-import {post,get} from '../utils/net';
-import Image from 'next/image';
-
-const FivePointFeedback = ({answers, clicked, selected}) => {
+const SVGHEIGHT = 300;
+const FivePointFeedback = ({answers, clicked, selected, width=SVGHEIGHT, height=SVGHEIGHT}) => {
     
 
     const API_ENDPOINT = 'https://inputtools.google.com/request?ime=handwriting&app=autodraw&dbg=1&cs=1&oe=UTF-8';
     const SVG_ENDPOINT = 'https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/'
-    const SVGHEIGHT = 300;//deviceType == "mobile" ? height - (width) : height-270;
+//deviceType == "mobile" ? height - (width) : height-270;
     const fivepoint = React.createRef();
     const mypath = React.createRef();
     const canvasRef = React.useRef(null)
@@ -82,11 +80,14 @@ const FivePointFeedback = ({answers, clicked, selected}) => {
             
           })
       }, [selected])*/
-
+    
+    const _sindex = selected ? selected[1]-1 : -1;
+    const paths = seppath(answers);
+    const opacity = selected ? 0.3 : 1;
     return  <>
                 
                 {/*<Image alt="google interpretation" width={100} height={100} src={image || "/"}/>*/}
-                <svg ref={fivepoint} onClick={clicked} width={SVGHEIGHT} height={SVGHEIGHT}  viewBox="0 0 150 150" className={styles.hexagon}>
+                <svg ref={fivepoint} onClick={clicked} width={width} height={height}  viewBox="0 0 150 150" className={styles.hexagon}>
                     
                     <g transform="translate(0,2)">
                     <g id="bighexagon">
@@ -107,7 +108,12 @@ const FivePointFeedback = ({answers, clicked, selected}) => {
                     <path id="innerhex" d={pathstr(216,"q4")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q4" ? 0.5 : 1:1}}/>
                         <path id="innerhex" d={pathstr(288,"q5")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q5" ? 0.5 : 1: 1}}/>*/}
 
-                    <path id="innerhex" ref={mypath} d={segpath(answers)} className={styles.innerhexline} />
+                    {/*<path id="innerhex" ref={mypath} d={segpath(answers)} className={styles.innerhexline} />*/}
+                    {paths.map((p,i)=>{
+                            return <path key={i} d={p} className={styles.innerhexline} style={{opacity}}></path>
+                        })}
+                        {_sindex >= 0 && <path d={paths[_sindex||0]} className={styles.innerhexline} style={{opacity: 1.0}}></path>}
+
                     {/*<g>
                         <rect x={30} y={133} width={130} rx={1} ry={1} height={3} style={{fill:"white"}}></rect>
                         <circle id="dragcircle" cx={85} cy={134.5} r={6} style={{fill:"#282b55", stroke:"white"}}></circle>
