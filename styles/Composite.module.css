@@ -1,0 +1,22 @@
+.square{
+    display: block;
+}
+.stylecontainer{
+    display: block;
+}
+
+.gridcategories{
+    opacity: 1.0;
+}
+
+@media print {
+    .square{
+        display: none;
+    }
+    .stylecontainer{
+        display: none;
+    }
+    .gridcategories{
+        opacity: 0;
+    }
+}

@@ -5,6 +5,7 @@
   src:  url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
 }
 
+
 .trianglesvg{
   fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;
 }
@@ -181,6 +182,8 @@
   height: 1em;
   margin-left: 0.5rem;
 }
+
+
 
 @media (max-width: 600px) {
   .grid {

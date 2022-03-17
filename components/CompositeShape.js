@@ -1,4 +1,4 @@
-import styles from '../styles/FourPoint.module.css'
+import styles from '../styles/Composite.module.css'
 import * as d3 from 'd3';
 import { segpath as fp3 } from '../utils/threepoint';
 import { segpath as fp4 } from '../utils/fourpoint';
@@ -19,7 +19,8 @@ import {
     toggleOption,
     setOptions,
 } from '../features/shapes/shapeSlice'
-import { compose } from '@reduxjs/toolkit';
+
+
 
 const COLOURS = ["#fff", "#000", "#c8c8c8", "#282b55", "#bb2929","#e19c38","#61b359"];
 
@@ -51,7 +52,7 @@ const colours = {
     "d3":"#61b359"
 }
 
-const CompositeShape = ({answers}) => {
+const CompositeShape = ({questions, answers}) => {
    
     const images = useAppSelector(selectImages);
     const options = useAppSelector(selectStyles);
@@ -59,15 +60,26 @@ const CompositeShape = ({answers}) => {
     const dispatch = useAppDispatch()
     const [data, _setData] = React.useState(filterEmpty(answers));
     const [controls, showControls] = React.useState(false);
+    const [printView, setPrintView] = React.useState(false);
+
     const dataRef = React.useRef(data);
- 
+    
+    window.onafterprint = function(){
+        setPrintView(false);
+    }
+
     React.useEffect(()=>{
         const data = filterEmpty(answers)
         dataRef.current = data;
         _setData(data);    
     },[answers])
 
-
+    React.useEffect(()=>{
+        if (printView){
+            window.print();
+        }
+    },[printView]);
+    
     const _setOptions = (attr,value)=>{
         dispatch(setOptions(attr,value));
     }
@@ -145,22 +157,22 @@ const CompositeShape = ({answers}) => {
             .attr("class", "interleave")
            
            
-        newrows.attr("transform",  `translate(12,${options.grid ? -15: 0})`);
+        //newrows.attr("transform",  `translate(12,${options.grid ? -15: 0})`);
 
         const paths = rows.merge(newrows).selectAll("path.d1").data((d,i)=>{
-            return [{d:d.d1,chapter:i}, {d:d.d2, chapter:i}, {d:d.d3,chapter:i}];
+            return [{d:d.d1,chapter:i, dim:"d1"}, {d:d.d2, chapter:i, dim:"d2"}, {d:d.d3,chapter:i, dim:"d2"}];
         })
         paths.exit().remove();
         
         const newpaths = paths.enter()
             .append("path")
-           
+            .on("mouseover", (e,d)=>{
+                console.log("mouseover", d);
+                console.log("questions", questions[d.chapter][d.dim]);
+            }).on("mouseout", (d,i)=>{
+                console.log("mouseout", d);
+            })
             .attr("class", "d1")
-            /*.attr("transform", (d,i,j)=>{
-                const [x,y] = translatefn(i);
-                const rotation = rotationfor(d.chapter,`d${i+1}`);
-                return  `translate(${x},${y}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})`
-            }).*/
            .attr("opacity",0)
            .style("stroke-width", (d,i)=>{
                 return options.strokewidth;
@@ -206,7 +218,8 @@ const CompositeShape = ({answers}) => {
             })
             .style("opacity", (d,i)=>{
                 return options[`d${i+1}`] ? 1.0 : 0.0
-            }).each(async (d,i,n)=>{
+            })
+            .each(async (d,i,n)=>{
                 const path = n[i];
                 
                 if (path && path.getTotalLength() > 0){
@@ -218,8 +231,7 @@ const CompositeShape = ({answers}) => {
                     }
                 }
             });
-           
-            
+    
         
         const _paths = paths.merge(newpaths)
         
@@ -394,13 +406,19 @@ const CompositeShape = ({answers}) => {
         })
     }
 
+    const print = ()=>{
+        setPrintView(true);
+    }
+
     const renderChapterLabels = ()=>{
         return [0,1,2,3,4,5,6,7].map(c=>{
-            return <text key={c} x={10} y={-30 + (c*31)} style={{fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>{`c${c+1}`}</text>
+            return <image key={c} xlinkHref="c1thumb.png" width="15px" height="15px" x={0} y={-40 + (c*31)}  />
+      
+            //return <text key={c} x={10} y={-30 + (c*31)} style={{fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>{`c${c+1}`}</text>
         })
     }
     const renderGridAxes = ()=>{
-        return  <g>
+        return  <g className={styles.gridcategories}>
                     {options.grid && renderChapterLabels()}
                     <text onClick={()=>_toggleOption("d1")} x={40} y={205} style={{opacity: options["d1"] ? 1 : 0.2, fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>knowledge</text>
                     <text onClick={()=>_toggleOption("d2")} x={77} y={205} style={{opacity: options["d2"] ? 1 : 0.2,fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>choice</text>
@@ -423,17 +441,16 @@ const CompositeShape = ({answers}) => {
            
         })
     }
-    const SVGWIDTH = 450; const SVGHEIGHT = 800;
+    const SVGWIDTH = 450; const SVGHEIGHT = printView ? 400: 800;
+    const tx = options.grid ? 10 : printView ? 160 : 15;
+    const ty = options.grid ? -15 : printView ? -10 : 0;
 
+//320 works
     return <div style={{display:"flex", flexDirection:"column"}}>
         <div style={{display:"flex", flexDirection:"row", margin:20}}>
-            {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox="0 0 150 150"  className={styles.square}> 
-                <g >
-               
-                <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform="translate(0,0)"></g>
+            {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${printView? 350:150} ${printView? 350:150}`}> 
+                <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
                 {renderGridAxes()}
-
-                </g>
             </svg>}
             {options.autodraw && <div style={{display:"flex", flexDirection:"column", marginTop:60}}>
                 {renderRows()}
@@ -442,8 +459,9 @@ const CompositeShape = ({answers}) => {
         <div style={{color:"white", fontSize:20, margin: "0px 0px 30px 190px"}} onClick={()=>_toggleOption("grid")}>
             {`${options.grid? "view my shape" : "view as grid"}`}
         </div>
-        {<div style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
-        {controls && renderControls()}
+        {<div style={{textAlign:"center", color:"white", padding:7}} onClick={print}>print!</div>}
+        {!printView &&  <div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
+        {controls && !printView && renderControls()}
                     
         </div>
 }

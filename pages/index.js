@@ -13,6 +13,7 @@ import * as d3 from 'd3';
 
 import {
   selectQuestions,
+  selectAllQuestions,
   selectAnswers,
   selectAllAnswers,
   selectPoints,
@@ -38,6 +39,7 @@ export default function Home(props) {
 
   //const {shapes:points} = useAppSelector(selectShapes)
   const questions = useAppSelector(selectQuestions);
+  const allquestions = useAppSelector(selectAllQuestions);
   const answers = useAppSelector(selectAnswers);
   const allanswers = useAppSelector(selectAllAnswers);
   const chapter = useAppSelector(selectChapter);
@@ -82,6 +84,10 @@ export default function Home(props) {
       });
   }, []);
 
+  useEffect(()=>{
+    setQuestionText(questions[question][0]);
+  },[chapter]);
+
   const _setDimension = (dimension)=>{
     dispatch(setDimension(dimension));
   } 
@@ -89,10 +95,6 @@ export default function Home(props) {
   const _setChapter = (chapter)=>{
     setView("feedback");
     dispatch(setChapter(chapter));
-  }
-
-  const currentQuestion = (value)=>{
-    return questions[selected][Math.ceil(questionScale(value))];
   }
 
   const questionScale = d3.scaleLinear().clamp(true).domain([0,100]).range([0, questions.q1.length-1]);
@@ -133,7 +135,7 @@ const renderDimensions = ()=>{
 
 const renderFinal = ()=>{ 
   return  <Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
-            <CompositeShape answers={latestAnswers}/>
+            <CompositeShape answers={latestAnswers} questions={allquestions}/>
           </Layout>
 }
 

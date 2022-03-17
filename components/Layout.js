@@ -1,11 +1,8 @@
-import GamutMenu from '../components/GamutMenu';
-import { useAppSelector, useAppDispatch } from '../hooks/useRedux'
+
+import styles from '../styles/Layout.module.css'
 import ThreePointFeedback  from './ThreePointFeedback';
 import FivePointFeedback from './FivePointFeedback';
 import FourPointFeedback from './FourPointFeedback';
-import {
-  selectQuestions
-} from '../features/questions/questionSlice'
 
 
 
@@ -39,8 +36,8 @@ const Layout = ({points,children,dimension, chapter, colours, answers, setChapte
                 textAlign:"center", 
                 height: isMobile ? 30 : 50, 
             }
-            return c <= 7 ? <div style={{display: "flex", flexDirection:"row", padding:8}}>
-                    <div key={c} style={chstyle} onClick={()=>setChapter(c)}>{c+1}</div>
+            return c <= 7 ? <div key={c} style={{display: "flex", flexDirection:"row", padding:8}}>
+                    <div  style={chstyle} onClick={()=>setChapter(c)}>{c+1}</div>
                     <div style={{display:"flex", flexDirection:"row"}}>
                         <ThreePointFeedback selected={false} answers={answers[c].d1} clicked={()=>{}} width={50} height={50}/>
                         <FourPointFeedback selected={false} answers={answers[c].d2} clicked={()=>{}} width={50} height={50}/>
@@ -53,7 +50,7 @@ const Layout = ({points,children,dimension, chapter, colours, answers, setChapte
 
     const renderChapters = ()=>{
         const cstyle = {
-            display:"flex", 
+           
             alignItems:"center", 
             justifyContent: isMobile ? "center" : "flex-start",
             flexDirection: isMobile ? "row" : "column", 
@@ -65,24 +62,22 @@ const Layout = ({points,children,dimension, chapter, colours, answers, setChapte
             padding: isMobile ? 15: 0,
         }
 
-        return <div style={cstyle}>
+        return <div  style={cstyle} className={styles.chaptercontainer}>
                 {!isMobile && <div style={{fontFamily: "'Nunito', sans-serif", margin:20,fontWeight:300,fontSize:"1.5em",color:"#c8c8c8"}}>Chapter</div>}
                 {chapters()}
            
         </div>
     }
-    return  <div style={{display:'flex', height:"100vh", width:"100vw", alignItems:"center", background:"black", justifyContent:"center"}}>
-                <div style={{display:"flex", flexDirection: isMobile ? "column":"row", height:"100vh", flex: "1 1 auto", background:"#171834"}}>
-                    
+    return  <div className={styles.screen}>
+                <div className={styles.outercontainer} style={{ flexDirection: isMobile ? "column":"row"}}>
                     <div style={{display:'flex', flex: "1 1 auto", flexDirection:"column"}}>     
                         <div style={{ display:"flex", flexDirection: isMobile ? "column":"row", margin: !isMobile ? "20px": "0px"}}>
                             {isMobile && renderChapters()}
-                            <div style={{border: isMobile?"none":"1px solid #c8c8c8", background:"#2b2b55", display:"flex", alignItems:"center",justifyContent:"center",flex: "1 1 auto"}}>
+                            <div className={styles.innercontainer} style={{border: isMobile?"none":"1px solid #c8c8c8"}}>
                                 {children}
                             </div>
                             {!isMobile && renderChapters()}
                         </div>
-                        {/*<GamutMenu points={points} deviceType={deviceType} chapter={chapter} colours={colours} dimension={dimension} setDimension={setDimension}/>*/}
                     </div>
                    
                 </div>
