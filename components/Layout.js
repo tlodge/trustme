@@ -6,7 +6,7 @@ import FourPointFeedback from './FourPointFeedback';
 
 
 
-const Layout = ({points,children,dimension, chapter, colours, answers, setChapter, setDimension, deviceType, onComplete}) => {
+const Layout = ({children, chapter, colours, answers, setChapter, setDimension, deviceType, onComplete}) => {
 
     const isMobile = deviceType === "mobile";
 
@@ -48,6 +48,8 @@ const Layout = ({points,children,dimension, chapter, colours, answers, setChapte
         });
     }
 
+   
+
     const renderChapters = ()=>{
         const cstyle = {
            
@@ -65,7 +67,6 @@ const Layout = ({points,children,dimension, chapter, colours, answers, setChapte
         return <div  style={cstyle} className={styles.chaptercontainer}>
                 {!isMobile && <div style={{fontFamily: "'Nunito', sans-serif", margin:20,fontWeight:300,fontSize:"1.5em",color:"#c8c8c8"}}>Chapter</div>}
                 {chapters()}
-           
         </div>
     }
     return  <div className={styles.screen}>

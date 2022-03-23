@@ -11,6 +11,8 @@
     "@react-three/fiber": "^7.0.21",
     "@reduxjs/toolkit": "^1.7.1",
     "d3": "^7.2.0",
+    "googleapis": "^97.0.0",
+    "marked": "^4.0.12",
     "next": "12.0.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as d3 from 'd3';
-
+import { post } from '../../utils/net';
 import type { AppState, AppThunk } from '../../app/store'
 
 export interface QuestionState {
@@ -363,7 +363,7 @@ export const questionSlice = createSlice({
                 ...(state.answers[action.payload['chapter']] || {}),
                 [action.payload['dimension']] : {
                     ...((state.answers[action.payload['chapter']] || {})[action.payload['dimension']] || {}),
-                    [action.payload['question']] : action.payload['answer']
+                    [action.payload['question']] : action.payload['answer'].toFixed(1)
                 }
             }
         }
@@ -450,6 +450,13 @@ const converttopoints = (dimension, question, answer)=>{
     return pointfn[dimension] ? pointfn[dimension][question] ? pointfn[dimension][question](answer) : -1 : -1;
 }
 
+export const saveShape = (): AppThunk => async (dispatch, getState) => {  
+    const answers = getState().questions.answers;
+    console.log("nice, have answers", answers);
+    await post("/api/save", answers);
+    console.log("posted!!");
+} 
+  
 export const selectPoints = (state: AppState)=>{
     return Object.keys(state.questions.answers).reduce((acc,k1)=>{
         return {

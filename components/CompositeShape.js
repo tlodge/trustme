@@ -10,6 +10,10 @@ import Image from 'next/image';
 import { useAppSelector, useAppDispatch } from '../hooks/useRedux'
 
 import {
+    saveShape
+} from '../features/questions/questionSlice';
+
+import {
     selectImages,
     guessShape,
 } from '../features/images/imageSlice'
@@ -94,6 +98,9 @@ const CompositeShape = ({questions, answers}) => {
         "d3":[75.5, 83]
     }
 
+    const save = ()=>{
+        dispatch(saveShape());
+    }
 
     const translatefn = (dim)=>{
         const tmatrix = [[-46.5,-14],[0,0],[-12.5,-6.5]]
@@ -460,6 +467,8 @@ const CompositeShape = ({questions, answers}) => {
             {`${options.grid? "view my shape" : "view as grid"}`}
         </div>
         {<div style={{textAlign:"center", color:"white", padding:7}} onClick={print}>print!</div>}
+        {<div style={{textAlign:"center", color:"white", padding:7}} onClick={save}>save!</div>}
+
         {!printView &&  <div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
         {controls && !printView && renderControls()}
                     
