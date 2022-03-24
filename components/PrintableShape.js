@@ -2,35 +2,13 @@ import { segpath as fp3 } from '../utils/threepoint';
 import { segpath as fp4 } from '../utils/fourpoint';
 import { segpath as fp5 } from '../utils/fivepoint';
 import useD3 from '../hooks/useD3';
-import useInterval from '../hooks/useInterval';
 import React from 'react';
-import styles from '../styles/Gallery.module.css';
 
-const colours = {
-    "d1":"#bb2929",
-    "d2":"#e19c38",
-    "d3":"#61b359"
-}
+import { useAppSelector } from '../hooks/useRedux'
 
-const _options = {
-    d1:true,
-    d2:false,
-    d3:false, 
-    grid: false,
-    autodraw:false,
-    fill:true,
-    rotate:false,
-    opacity:1,
-    fillopacity:0.8, 
-    strokeopacity:0.5, 
-    strokewidth:1,
-    d1stroke:"white",
-    d2stroke:"white",
-    d3stroke:"white",
-    d1fill:colours["d1"],
-    d2fill:colours["d2"],
-    d3fill:colours["d3"],
-}
+import {
+    selectStyles,
+} from '../features/shapes/shapeSlice'
 
 const oneAnswered = (questions)=>{
     return Object.keys(questions).reduce((acc, key)=>{
@@ -54,46 +32,35 @@ const filterEmpty = (_answers)=>{
     },[]))
 }
 
-const states = [[true, false, false],[false, true, false],[false,false,true],[true,true, true]];//, [true, true, false], [true,false,true],[true,true,true]];
-
-const GalleryShape = ({ts, answers}) => {
-
+const PrintableShape = ({questions, answers}) => {
+   
+    const options = useAppSelector(selectStyles);
     const [data, _setData] = React.useState(filterEmpty(answers));
-    const [options, setOptions] = React.useState(_options);
+
     const dataRef = React.useRef(data);
-    const [stateIndex, setStateIndex] = React.useState(1);
+
     React.useEffect(()=>{
         const data = filterEmpty(answers)
         dataRef.current = data;
         _setData(data);    
     },[answers])
 
-   
-    useInterval(()=>{
-        const state = states[stateIndex];
-        setOptions({
-            ...options,
-            d1: state[0],
-            d2: state[1],
-            d3: state[2],
-        })
-        setStateIndex(++stateIndex % states.length);
-    }, 5000)
-
     const fni = [fp3,fp4,fp5];
     const cli = ["#bb2929","#e19c38","#61b359"];
     
+   
     const center = {
         "d1":[109.5,90.5],
         "d2":[63,76.6],
         "d3":[75.5, 83]
     }
 
+
     const translatefn = (dim)=>{
         const tmatrix = [[-46.5,-14],[0,0],[-12.5,-6.5]]
         return tmatrix[dim]
     }
-
+  
     const rotationfor = (chapter, dimension)=>{
         const am = 45 * chapter;
         const cp = center[dimension];
@@ -106,14 +73,15 @@ const GalleryShape = ({ts, answers}) => {
     const interleaved = useD3((root)=>{
         
         const mydata = dataRef.current;
+
+
         const rows = root.selectAll("g.interleave").data(mydata);
+        
         rows.exit().remove();
 
         const newrows = rows.enter()
             .append("g")
             .attr("class", "interleave")
-           
-        //newrows.attr("transform",  `translate(12,${options.grid ? -15: 0})`);
 
         const paths = rows.merge(newrows).selectAll("path.d1").data((d,i)=>{
             return [{d:d.d1,chapter:i, dim:"d1"}, {d:d.d2, chapter:i, dim:"d2"}, {d:d.d3,chapter:i, dim:"d2"}];
@@ -122,6 +90,12 @@ const GalleryShape = ({ts, answers}) => {
         
         const newpaths = paths.enter()
             .append("path")
+            .on("mouseover", (e,d)=>{
+                console.log("mouseover", d);
+                console.log("questions", questions[d.chapter][d.dim]);
+            }).on("mouseout", (d,i)=>{
+                console.log("mouseout", d);
+            })
             .attr("class", "d1")
            .attr("opacity",0)
            .style("stroke-width", (d,i)=>{
@@ -131,19 +105,17 @@ const GalleryShape = ({ts, answers}) => {
                 const rotation = rotationfor(d.chapter,`d${i+1}`);
                 const [x,y] = translatefn(i);
                 if (options.rotate){
-                    return `rotate(${rotation[0]},${rotation[1]},${rotation[2]})`
+                    return  `rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
                 }else{
-                    return `translate(${x},${y+50}) `
+                    return  `translate(${x},${y+50}) `
                 }
             })
-            
             .transition().duration(500).delay(function(d, i) {
                 return (d.chapter* 3) * TRANSDELAY + (i*TRANSDELAY)
             })
             .attr("transform", (d,i)=>{
                 const rotation = rotationfor(d.chapter,`d${i+1}`);
                 const [x,y] = translatefn(i);
-            
                 if (options.rotate){
                     return `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
                 }else{
@@ -158,8 +130,7 @@ const GalleryShape = ({ts, answers}) => {
             })
             .style("stroke", (d,i)=>{
                 return options[`d${i+1}stroke`] || "none" 
-            })
-            
+            })          
             .style("fill-opacity", (d,i)=>{
                 return options.grid ? 1.0 : options.fillopacity;
             })
@@ -173,12 +144,10 @@ const GalleryShape = ({ts, answers}) => {
         
         const _paths = paths.merge(newpaths)
         
-    
         _paths
             .attr("d", (d,i)=>{
                 return fni[i](d.d);
             })
-           
             .transition().duration(500).delay(function(d, i) {
                 return (d.chapter* 3) * TRANSDELAY + (i*TRANSDELAY)
             })
@@ -204,38 +173,28 @@ const GalleryShape = ({ts, answers}) => {
             .attr("transform", (d,i)=>{
                 const rotation = rotationfor(d.chapter,`d${i+1}`);
                 const [x,y] = translatefn(i);
-              
+                const [x1,y1] = gridtranslate(i,d.chapter);
                 if (options.rotate){
-                    return  `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})`
+                    return `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
                 }else{
-                    return  `scale(1.0) translate(${x},${y+YDELTA})`
+                    return `scale(1.0) translate(${x},${y+YDELTA}) `
                 }
             });
             
     
     }, [data, options])
 
-    const pad = (num)=>{
-        if (num < 10)
-            return `0${num}`
-        return `${num}`
-    }
+    const SVGWIDTH = 450; const SVGHEIGHT = 400
+    const tx =  160 ;
+    const ty =  -10 ;
 
-    const formatDate = (ts)=>{
-        const d = new Date(ts*1);
-       // return  d.getDate()  + "-" + (pad(d.getMonth()+1)) + "-" + (d.getFullYear()-2000) + " " + pad(d.getHours()) + ":" + pad(d.getMinutes());
-        return pad(d.getHours()) + ":" + pad(d.getMinutes());
-
-    }
-    const SVGWIDTH = 300; const SVGHEIGHT = 300;
-    const [tx,ty] = [10,-32];
-    console.log("ts is", ts);
-    return <div style={{margin:40}}>
-            {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
-                <g ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
+    return <div style={{display:"flex", flexDirection:"column"}}>
+        <div style={{display:"flex", flexDirection:"row", margin:20}}>
+            {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${350} ${350}`}> 
+                <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
             </svg>}
-            <div className={styles.label}>{formatDate(ts)}</div>
-        </div>      
+        </div>
+        </div>
 }
 
-export default GalleryShape;
+export default PrintableShape;

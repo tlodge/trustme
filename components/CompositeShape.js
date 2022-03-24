@@ -23,6 +23,7 @@ import {
     toggleOption,
     setOptions,
 } from '../features/shapes/shapeSlice'
+import PrintableShape from './PrintableShape';
 
 
 
@@ -227,7 +228,7 @@ const CompositeShape = ({questions, answers}) => {
                 return options[`d${i+1}`] ? 1.0 : 0.0
             })
             .each(async (d,i,n)=>{
-                const path = n[i];
+                /*const path = n[i];
                 
                 if (path && path.getTotalLength() > 0){
                     const sum = Object.keys(answers[d.chapter][`d${i+1}`]).reduce((acc,key)=>{
@@ -236,7 +237,7 @@ const CompositeShape = ({questions, answers}) => {
                     if (options.autodraw){
                         dispatch(guessShape(d.chapter, i, `${sum.toFixed(2)}`, path));
                     }
-                }
+                }*/
             });
     
         
@@ -284,7 +285,7 @@ const CompositeShape = ({questions, answers}) => {
                     return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x},${y+YDELTA}) `
                 }
             }).each(async (d,i,n)=>{
-                const path = n[i];
+                /*const path = n[i];
                 
                 if (path && path.getTotalLength() > 0){
                     const sum = Object.keys(answers[d.chapter][`d${i+1}`]).reduce((acc,key)=>{
@@ -293,7 +294,7 @@ const CompositeShape = ({questions, answers}) => {
                     if (options.autodraw){
                         dispatch(guessShape(d.chapter, i, `${sum.toFixed(2)}`, path));
                     }
-                }
+                }*/
             });
             
     
@@ -452,8 +453,8 @@ const CompositeShape = ({questions, answers}) => {
     const tx = options.grid ? 10 : printView ? 160 : 15;
     const ty = options.grid ? -15 : printView ? -10 : 0;
 
-//320 works
-    return <div style={{display:"flex", flexDirection:"column"}}>
+    const renderDisplayView = ()=>{
+        return <div style={{display:"flex", flexDirection:"column"}}>
         <div style={{display:"flex", flexDirection:"row", margin:20}}>
             {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${printView? 350:150} ${printView? 350:150}`}> 
                 <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
@@ -469,10 +470,21 @@ const CompositeShape = ({questions, answers}) => {
         {<div style={{textAlign:"center", color:"white", padding:7}} onClick={print}>print!</div>}
         {<div style={{textAlign:"center", color:"white", padding:7}} onClick={save}>save!</div>}
 
-        {!printView &&  <div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
-        {controls && !printView && renderControls()}
+        {<div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
+        {controls && renderControls()}
                     
         </div>
+    }
+
+    const renderPrintview = ()=>{
+        return <PrintableShape questions={questions} answers={answers}/>
+    }
+
+    return <>
+        {printView && renderPrintview()}
+        {!printView && renderDisplayView()}
+    </>
+   
 }
 
 export default CompositeShape;

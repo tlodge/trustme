@@ -1,0 +1,13 @@
+.gallerycontainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: black;
+    width: 100vw;
+}
+
+.label{
+    text-align: center;
+    font-weight: 700;
+    color:white;
+}

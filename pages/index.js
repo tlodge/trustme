@@ -24,11 +24,9 @@ import {
   setAnswer,
 } from '../features/questions/questionSlice'
 
-import { getWhyNextReasons } from '../lib/api';
 import CompositeShape from '../components/CompositeShape';
 
 export default function Home(props) {
-  console.log("am in home with props",props);
 
   const {deviceType} = props; 
   const [windowSize, setWindowSize] = useState({width:0,height:0})
@@ -166,38 +164,4 @@ const renderFeedback = ()=>{
         {/*view=="player" && renderPlayer()*/}
   </>
 
-}
-
-
-
-/*export async function getServerSideProps(context) {
-  const UA = context.req.headers['user-agent'];
-  const isMobile = Boolean(UA.match(
-    /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-  ))
-  
-  return {
-    props: {
-      deviceType: isMobile ? 'mobile' : 'desktop'
-    }
-  }
-}*/
-
-export async function getStaticProps(context) {
-  const reasons = await getWhyNextReasons();
-  //const UA = context.req.headers['user-agent'];
-  //const isMobile = Boolean(UA.match(
-   // /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-  //))
-
-  return {
-    props: {
-      reasons,
-      deviceType:  'desktop'
-    },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every second
-    revalidate: 1, // In seconds
-  };
 }
