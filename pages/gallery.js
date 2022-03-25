@@ -14,8 +14,9 @@ export default function Gallery({answers:_answers}) {
 }
 
 export async function getStaticProps(context) {
-  const answers = await getAnswers();
- 
+  const _answers = await getAnswers();
+  const answers = _answers || [];
+  
   return {
     props: {
       answers,
