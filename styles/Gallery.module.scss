@@ -1,8 +1,8 @@
 @import "../theme/colours.scss";
 
 .container{
-    height:100vh;
-    background-color: #3A3845;
+    min-height:100vh;
+    background-color: $gallerybackground;
 }
 .gallerycontainer{
     display: flex;
@@ -19,7 +19,23 @@
     font-size: 30px;
     letter-spacing: 3px;
 }
-@font-face {
+
+.heading {
+    text-align: center;
+    font-weight: 700;
+    color:white;
     font-family: 'Headline';
-    src: url('/fonts/HEADTH__.TTF')  format('truetype');
+    font-size: 70px;
+    letter-spacing: 3px;
 }
+
+.logocontainer{
+    position: fixed;
+    bottom:0px;
+    height: 120px;
+    width:100vw;
+    padding-bottom:20px;
+    background: $gallerybackground;
+}
+
+

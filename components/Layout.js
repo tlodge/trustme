@@ -56,7 +56,7 @@ const Layout = ({children, chapter, colours, answers, setChapter, setDimension, 
         }
 
         return <div  style={cstyle} className={styles.chaptercontainer}>
-                {!isMobile && <div style={{fontFamily: "'Nunito', sans-serif", margin:20,fontWeight:300,fontSize:"1.5em",color:"#c8c8c8"}}>Chapter</div>}
+                {!isMobile && <div style={{fontFamily: "Headline-Light", letterSpacing: "2px", margin:20,fontWeight:300,fontSize:"1.5em",color:"#c8c8c8"}}>Chapter</div>}
                 {chapters()}
         </div>
     }

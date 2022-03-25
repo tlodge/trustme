@@ -10,13 +10,16 @@ export default function Gallery({answers:_answers}) {
     })
     return <div className={styles.container}>
         <div className={styles.gallerycontainer}>{images}</div>
+        <div className={styles.logocontainer}>
+                <div className={styles.heading}>The Shape of Trust</div>
+            </div>
         </div>
 }
 
 export async function getStaticProps(context) {
   const _answers = await getAnswers();
   const answers = _answers || [];
-  
+
   return {
     props: {
       answers,

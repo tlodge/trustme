@@ -409,7 +409,11 @@ const CompositeShape = ({questions, answers}) => {
 
     const renderChapterLabels = ()=>{
         return [0,1,2,3,4,5,6,7].map(c=>{
-            return <image key={c} xlinkHref="c1thumb.png" width="15px" height="15px" x={0} y={-40 + (c*31)}  />
+            return <g key={c}>
+               
+                    <image  xlinkHref={`Chapter ${c+1}.PNG`}  width="18px" x={1} y={-40 + (c*31)}  />
+                    <rect x={1} y={-40 + (c*31)} width={18} height={12} style={{strokeWidth:"0.5px", stroke:"#2a3747", fill:"none"}}/>
+                </g>
       
             //return <text key={c} x={10} y={-30 + (c*31)} style={{fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>{`c${c+1}`}</text>
         })

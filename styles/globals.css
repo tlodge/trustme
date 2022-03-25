@@ -21,3 +21,13 @@ a {
 h1 {
   color: white;
 }
+
+@font-face {
+  font-family: 'Headline';
+  src: url('/fonts/HEADTH__.TTF')  format('truetype');
+}
+
+@font-face {
+  font-family: 'Headline-Light';
+  src: url('/fonts/HEADOH__.TTF')  format('truetype');
+}

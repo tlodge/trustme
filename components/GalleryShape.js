@@ -236,6 +236,7 @@ const GalleryShape = ({ts, answers}) => {
                 <g ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
             </svg>}
             <div className={styles.label}>{formatDate(ts)}</div>
+           
         </div>      
 }
 

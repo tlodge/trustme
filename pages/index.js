@@ -115,7 +115,7 @@ const renderDimensions = ()=>{
   return <div>
     <div className={styles.questiontext}>{questionText}</div>
 
-      <Slider question={question} answer={answers[dimension][question]} setAnswer={(answer)=>_setAnswer(answer)} end={()=>{
+      <Slider dim={dimension} question={question} answer={answers[dimension][question]} setAnswer={(answer)=>_setAnswer(answer)} end={()=>{
           setLastUpdate(Date.now());
           const nq = nextQuestion[dimension][question];
           setQuestion(nq)
