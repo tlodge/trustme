@@ -1,5 +1,5 @@
 import TriangleShape from '../components/TriangleShape';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Home.module.scss';
 
 const dimensions = ["d1","d2","d3"];
 const d1CX = 109, d1CY = 89; 

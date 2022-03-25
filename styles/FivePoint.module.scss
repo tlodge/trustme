@@ -1,3 +1,4 @@
+@import "../theme/colours.scss";
 
 @font-face {
     font-family: 'Avenir';
@@ -5,15 +6,17 @@
   }
 
   
-.square {
+.hexagon {
     fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;
 }
 
-.outersquare{
-    fill:#7c5a36;stroke-width:1.15px;
+.outerhex{
+    fill:$outershape;
+    opacity:0.5;
 }
-.questiontext{
-    text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;
+
+.questiontext{ 
+     text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;
 }
 
 .scaleline{
@@ -21,19 +24,25 @@
 }
 
 .center{
-    fill:#e19c38
+    fill:#61b359;
 }
 
-.innersquare{
-    fill:#e19c38;fill-opacity:1;
-    stroke:black;stroke-opacity:1;stroke-width:1px;
+.zerotext{
+    font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;
 }
+
+.innerhexline{
+    fill:$d3;
+    stroke-width:1px;
+    stroke:black;
+}
+
 .controlpoint{
     fill:#fff;
 }
 
 .rotatepoint{
-    fill:#fff;
+   fill-opacity:1.0
 }
 
 .value{

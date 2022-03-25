@@ -3,7 +3,7 @@ import {
 } from 'react';
 
 import useVideoPlayer  from '/hooks/useVideoPlayer';
-import styles from '../styles/Chapters.module.css'
+import styles from '../styles/Chapters.module.scss'
 
 
 

@@ -1,4 +1,4 @@
-import styles from '../styles/Composite.module.css'
+import styles from '../styles/Composite.module.scss'
 import * as d3 from 'd3';
 import { segpath as fp3 } from '../utils/threepoint';
 import { segpath as fp4 } from '../utils/fourpoint';
@@ -51,12 +51,6 @@ const filterEmpty = (_answers)=>{
     },[]))
 }
 
-const colours = {
-    "d1":"#bb2929",
-    "d2":"#e19c38",
-    "d3":"#61b359"
-}
-
 const CompositeShape = ({questions, answers}) => {
    
     const images = useAppSelector(selectImages);
@@ -79,18 +73,13 @@ const CompositeShape = ({questions, answers}) => {
         _setData(data);    
     },[answers])
 
-    React.useEffect(()=>{
-        if (printView){
-            window.print();
-        }
-    },[printView]);
     
     const _setOptions = (attr,value)=>{
         dispatch(setOptions(attr,value));
     }
 
     const fni = [fp3,fp4,fp5];
-    const cli = ["#bb2929","#e19c38","#61b359"];
+    const cli =  ["#e5efc1","#a2d5ab","#39aea9"];
     
    
     const center = {
@@ -100,7 +89,7 @@ const CompositeShape = ({questions, answers}) => {
     }
 
     const save = ()=>{
-        dispatch(saveShape());
+        dispatch(saveShape())
     }
 
     const translatefn = (dim)=>{
@@ -228,7 +217,7 @@ const CompositeShape = ({questions, answers}) => {
                 return options[`d${i+1}`] ? 1.0 : 0.0
             })
             .each(async (d,i,n)=>{
-                /*const path = n[i];
+                const path = n[i];
                 
                 if (path && path.getTotalLength() > 0){
                     const sum = Object.keys(answers[d.chapter][`d${i+1}`]).reduce((acc,key)=>{
@@ -237,7 +226,7 @@ const CompositeShape = ({questions, answers}) => {
                     if (options.autodraw){
                         dispatch(guessShape(d.chapter, i, `${sum.toFixed(2)}`, path));
                     }
-                }*/
+                }
             });
     
         
@@ -285,7 +274,7 @@ const CompositeShape = ({questions, answers}) => {
                     return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x},${y+YDELTA}) `
                 }
             }).each(async (d,i,n)=>{
-                /*const path = n[i];
+                const path = n[i];
                 
                 if (path && path.getTotalLength() > 0){
                     const sum = Object.keys(answers[d.chapter][`d${i+1}`]).reduce((acc,key)=>{
@@ -294,7 +283,7 @@ const CompositeShape = ({questions, answers}) => {
                     if (options.autodraw){
                         dispatch(guessShape(d.chapter, i, `${sum.toFixed(2)}`, path));
                     }
-                }*/
+                }
             });
             
     
@@ -453,38 +442,38 @@ const CompositeShape = ({questions, answers}) => {
     const tx = options.grid ? 10 : printView ? 160 : 15;
     const ty = options.grid ? -15 : printView ? -10 : 0;
 
-    const renderDisplayView = ()=>{
-        return <div style={{display:"flex", flexDirection:"column"}}>
-        <div style={{display:"flex", flexDirection:"row", margin:20}}>
-            {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${printView? 350:150} ${printView? 350:150}`}> 
-                <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
-                {renderGridAxes()}
-            </svg>}
-            {options.autodraw && <div style={{display:"flex", flexDirection:"column", marginTop:60}}>
-                {renderRows()}
-            </div>}
-        </div>
-        <div style={{color:"white", fontSize:20, margin: "0px 0px 30px 190px"}} onClick={()=>_toggleOption("grid")}>
-            {`${options.grid? "view my shape" : "view as grid"}`}
-        </div>
-        {<div style={{textAlign:"center", color:"white", padding:7}} onClick={print}>print!</div>}
-        {<div style={{textAlign:"center", color:"white", padding:7}} onClick={save}>save!</div>}
+    const renderScreenView = ()=>{
+            return <div style={{display:"flex", flexDirection:"column"}}>
+                <div style={{display:"flex", flexDirection:"row", margin:20}}>
+                    {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${printView? 350:150} ${printView? 350:150}`}> 
+                        <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
+                        {renderGridAxes()}
+                    </svg>}
+                    {options.autodraw && <div style={{display:"flex", flexDirection:"column", marginTop:60}}>
+                        {renderRows()}
+                    </div>}
+                
+                </div>
+                <div style={{color:"white", fontSize:20, margin: "0px 0px 30px 190px"}} onClick={()=>_toggleOption("grid")}>
+                    {`${options.grid? "view my shape" : "view as grid"}`}
+                </div>
+                {<div style={{textAlign:"center", color:"white", padding:7}} onClick={print}>print!</div>}
+                {<div style={{textAlign:"center", color:"white", padding:7}} onClick={save}>save!</div>}
 
-        {<div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
-        {controls && renderControls()}
-                    
-        </div>
+                {!printView &&  <div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
+                {controls && !printView && renderControls()}                     
+            </div>
     }
 
-    const renderPrintview = ()=>{
+    const renderPrintView = ()=>{
         return <PrintableShape questions={questions} answers={answers}/>
     }
 
-    return <>
-        {printView && renderPrintview()}
-        {!printView && renderDisplayView()}
-    </>
    
+    return <>
+        {printView && renderPrintView()}
+        {!printView && renderScreenView()}
+    </>
 }
 
 export default CompositeShape;

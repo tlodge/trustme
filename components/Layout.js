@@ -1,5 +1,5 @@
 
-import styles from '../styles/Layout.module.css'
+import styles from '../styles/Layout.module.scss'
 import ThreePointFeedback  from './ThreePointFeedback';
 import FivePointFeedback from './FivePointFeedback';
 import FourPointFeedback from './FourPointFeedback';
@@ -26,16 +26,7 @@ const Layout = ({children, chapter, colours, answers, setChapter, setDimension, 
                 height: isMobile ? 30 : 40, 
                 borderRadius: isMobile ? 15 : 20, 
             }
-            const fstyle = {
-                fontFamily: "'Nunito', sans-serif",
-                fontSize:isMobile ? "0.8em" : "1.5em", 
-                paddingTop: isMobile ? 7 : 9, 
-                margin:isMobile ? 4 : 10,
-                color:"#171834", 
-                opacity:0.5, 
-                textAlign:"center", 
-                height: isMobile ? 30 : 50, 
-            }
+           
             return c <= 7 ? <div key={c} style={{display: "flex", flexDirection:"row", padding:8}}>
                     <div  style={chstyle} onClick={()=>setChapter(c)}>{c+1}</div>
                     <div style={{display:"flex", flexDirection:"row"}}>
@@ -44,7 +35,7 @@ const Layout = ({children, chapter, colours, answers, setChapter, setDimension, 
                         <FivePointFeedback selected={false} answers={answers[c].d3} clicked={()=>{}} width={50} height={50}/>
                     </div>
             </div>
-            : <div key={c} style={fstyle} onClick={()=>onComplete()}>see final</div>
+            : <div key={c} className={styles.chaptersidebar} onClick={()=>onComplete()}>see final</div>
         });
     }
 
@@ -60,7 +51,7 @@ const Layout = ({children, chapter, colours, answers, setChapter, setDimension, 
             alignItems:"center",
             border: !isMobile ? "1px solid #c8c8c8" : "none",
             marginLeft: !isMobile ? 20 : 0,
-            background: "#2b2b55",
+            
             padding: isMobile ? 15: 0,
         }
 

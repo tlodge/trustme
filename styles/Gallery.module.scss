@@ -1,0 +1,25 @@
+@import "../theme/colours.scss";
+
+.container{
+    height:100vh;
+    background-color: #3A3845;
+}
+.gallerycontainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100vw;
+}
+
+.label{
+    text-align: center;
+    font-weight: 700;
+    color:white;
+    font-family: 'Headline';
+    font-size: 30px;
+    letter-spacing: 3px;
+}
+@font-face {
+    font-family: 'Headline';
+    src: url('/fonts/HEADTH__.TTF')  format('truetype');
+}

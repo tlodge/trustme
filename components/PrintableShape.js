@@ -3,12 +3,38 @@ import { segpath as fp4 } from '../utils/fourpoint';
 import { segpath as fp5 } from '../utils/fivepoint';
 import useD3 from '../hooks/useD3';
 import React from 'react';
+import styles from '../styles/Printable.module.scss'
+const colours = {
+    "d1":"#e5efc1",
+    "d2":"#a2d5ab",
+    "d3":"#39aea9"
+}
 
-import { useAppSelector } from '../hooks/useRedux'
+const _options = {
+    d1:true,
+    d2:true,
+    d3:true, 
+    grid: false,
+    autodraw:false,
+    fill:true,
+    rotate:false,
+    opacity:1,
+    fillopacity:1, 
+    strokeopacity:1, 
+    strokewidth:1,
+    d1stroke:"black",
+    d2stroke:"black",
+    d3stroke:"black",
+    d1fill:colours["d1"],
+    d2fill:colours["d2"],
+    d3fill:colours["d3"],
+}
 
-import {
-    selectStyles,
-} from '../features/shapes/shapeSlice'
+const center = {
+    "d1":[109.5,90.5],
+    "d2":[63,76.6],
+    "d3":[75.5, 83]
+}
 
 const oneAnswered = (questions)=>{
     return Object.keys(questions).reduce((acc, key)=>{
@@ -32,10 +58,17 @@ const filterEmpty = (_answers)=>{
     },[]))
 }
 
+const rotationfor = (chapter, dimension)=>{
+    const am = 90;
+    const cp = center[dimension];
+    return [am,cp[0],cp[1]];
+}   
+
 const PrintableShape = ({questions, answers}) => {
    
-    const options = useAppSelector(selectStyles);
+    const options = _options;
     const [data, _setData] = React.useState(filterEmpty(answers));
+    const [printView, setPrintView] = React.useState(false);
 
     const dataRef = React.useRef(data);
 
@@ -45,9 +78,14 @@ const PrintableShape = ({questions, answers}) => {
         _setData(data);    
     },[answers])
 
-    const fni = [fp3,fp4,fp5];
-    const cli = ["#bb2929","#e19c38","#61b359"];
+    const fni = {d1:fp3,d2:fp4,d3:fp5};
+    const cli = {d1:colours["d1"],d2:colours["d2"],d3:colours["d3"]};
     
+    React.useEffect(()=>{
+        if (printView){
+            window.print();
+        }
+    },[printView]);
    
     const center = {
         "d1":[109.5,90.5],
@@ -57,15 +95,10 @@ const PrintableShape = ({questions, answers}) => {
 
 
     const translatefn = (dim)=>{
-        const tmatrix = [[-46.5,-14],[0,0],[-12.5,-6.5]]
+        const tmatrix = {d1:[-46.5,-14],d2:[0,0],d3:[-12.5,-6.5]}
         return tmatrix[dim]
     }
   
-    const rotationfor = (chapter, dimension)=>{
-        const am = 45 * chapter;
-        const cp = center[dimension];
-        return [am,cp[0],cp[1]];
-    }   
     const TRANSDELAY = 100;
     const YDELTA = 30;
 
@@ -73,128 +106,146 @@ const PrintableShape = ({questions, answers}) => {
     const interleaved = useD3((root)=>{
         
         const mydata = dataRef.current;
-
-
         const rows = root.selectAll("g.interleave").data(mydata);
-        
         rows.exit().remove();
 
-        const newrows = rows.enter()
-            .append("g")
-            .attr("class", "interleave")
-
+        const newrows = rows.enter().append("g").attr("class", "interleave")
+        
         const paths = rows.merge(newrows).selectAll("path.d1").data((d,i)=>{
-            return [{d:d.d1,chapter:i, dim:"d1"}, {d:d.d2, chapter:i, dim:"d2"}, {d:d.d3,chapter:i, dim:"d2"}];
+            return [{d:d.d1,chapter:i, dim:"d1"}, {d:d.d2, chapter:i, dim:"d2"}, {d:d.d3,chapter:i, dim:"d3"}];
         })
         paths.exit().remove();
         
-        const newpaths = paths.enter()
+        paths.enter()
             .append("path")
-            .on("mouseover", (e,d)=>{
-                console.log("mouseover", d);
-                console.log("questions", questions[d.chapter][d.dim]);
-            }).on("mouseout", (d,i)=>{
-                console.log("mouseout", d);
-            })
             .attr("class", "d1")
-           .attr("opacity",0)
-           .style("stroke-width", (d,i)=>{
-                return options.strokewidth;
-            })
-            .attr("transform", (d,i)=>{
-                const rotation = rotationfor(d.chapter,`d${i+1}`);
-                const [x,y] = translatefn(i);
-                if (options.rotate){
-                    return  `rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
-                }else{
-                    return  `translate(${x},${y+50}) `
-                }
-            })
-            .transition().duration(500).delay(function(d, i) {
-                return (d.chapter* 3) * TRANSDELAY + (i*TRANSDELAY)
-            })
-            .attr("transform", (d,i)=>{
-                const rotation = rotationfor(d.chapter,`d${i+1}`);
-                const [x,y] = translatefn(i);
-                if (options.rotate){
-                    return `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
-                }else{
-                    return `scale(1.0) translate(${x+50},${y+YDELTA}) `
-                }
-            })
-            .style("fill", (d,i)=>{
-                return options.fill ? cli[i] : "none"
-            })
-            .attr("d", (d,i)=>{
-                return fni[i](d.d);
-            })
-            .style("stroke", (d,i)=>{
-                return options[`d${i+1}stroke`] || "none" 
-            })          
-            .style("fill-opacity", (d,i)=>{
-                return options.grid ? 1.0 : options.fillopacity;
-            })
-            .style("stroke-opacity", (d,i)=>{
-                return options.strokeopacity;
-            })
-            .style("opacity", (d,i)=>{
-                return options[`d${i+1}`] ? 1.0 : 0.0
-            });
+            .attr("opacity",0)
+            .style("stroke-width", options.strokewidth)
+            .attr("transform", (d,i)=>{const [x,y] = translatefn(d.dim);return `scale(1.0) translate(${x+50},${y+YDELTA})`})
+            .style("fill", (d,i)=>cli[d.dim])
+            .attr("d", (d,i)=>fni[d.dim](d.d))
+            .style("stroke", (d,i)=>options[`${d.dim}stroke`] || "none")          
+            .style("fill-opacity", options.fillopacity)
+            .style("stroke-opacity", options.strokeopacity)
+            .style("opacity", (d,i)=>options[d.dim] ? 1.0 : 0.0);
     
+       
+    }, [data, options]);
+
+    const triangle = useD3((root)=>{
         
-        const _paths = paths.merge(newpaths)
+        const mydata = dataRef.current;
+        const rows = root.selectAll("g.interleave").data(mydata);
+        rows.exit().remove();
+
+        const newrows = rows.enter().append("g").attr("class", "interleave")
         
-        _paths
-            .attr("d", (d,i)=>{
-                return fni[i](d.d);
-            })
-            .transition().duration(500).delay(function(d, i) {
-                return (d.chapter* 3) * TRANSDELAY + (i*TRANSDELAY)
-            })
-            .style("fill-opacity", (d,i)=>{
-                return options.grid ? 1.0 : options.fillopacity;
-            })
-            .style("stroke-opacity", (d,i)=>{
-                return options.strokeopacity;
-            })
-            .style("stroke", (d,i)=>{
-                return options[`d${i+1}stroke`] || "none" 
-            })
-            .style("stroke-width", (d,i)=>{
-                return options.strokewidth;
-            })
-            .style("opacity", (d,i)=>{
-                return options[`d${i+1}`] ? 1.0 : 0.0
-            })
-            .style("fill", (d,i)=>{
-                return options.fill ? options[`d${i+1}fill`] ||cli[i] : "none"
-            }) 
-            
-            .attr("transform", (d,i)=>{
-                const rotation = rotationfor(d.chapter,`d${i+1}`);
-                const [x,y] = translatefn(i);
-                const [x1,y1] = gridtranslate(i,d.chapter);
-                if (options.rotate){
-                    return `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
-                }else{
-                    return `scale(1.0) translate(${x},${y+YDELTA}) `
-                }
-            });
-            
+        const paths = rows.merge(newrows).selectAll("path.d1").data((d,i)=>{
+            return [{d:d.d1,chapter:i, dim:"d1"}];
+        })
+        paths.exit().remove();
+        
+        paths.enter().append("path").attr("class", "d1").attr("opacity",0).style("stroke-width", options.strokewidth)
+            .attr("transform", (d,i)=>{const rotation = rotationfor(d.chapter,d.dim); return `rotate(${rotation[0]},${rotation[1]},${rotation[2]})`})
+            .attr("transform", (d,i)=>{const [x,y] = translatefn(d.dim);return  `translate(${x},${y+50})`})
+            .attr("transform", (d,i)=>{const [x,y] = translatefn(d.dim);return `scale(1.0) translate(${x+50},${y+YDELTA})`})
+          
+            .style("fill", (d,i)=>cli[d.dim])
+            .attr("d", (d,i)=>fni[d.dim](d.d))
+            .style("stroke", (d,i)=>options[`${d.dim}stroke`] || "none")          
+            .style("fill-opacity", options.fillopacity)
+            .style("stroke-opacity", options.strokeopacity)
+            .style("opacity", (d,i)=>options[d.dim] ? 1.0 : 0.0);
     
-    }, [data, options])
+    }, [data, options]);
 
-    const SVGWIDTH = 450; const SVGHEIGHT = 400
-    const tx =  160 ;
-    const ty =  -10 ;
+    const square = useD3((root)=>{
+        
+        const mydata = dataRef.current;
+        const rows = root.selectAll("g.interleave").data(mydata);
+        rows.exit().remove();
 
-    return <div style={{display:"flex", flexDirection:"column"}}>
-        <div style={{display:"flex", flexDirection:"row", margin:20}}>
-            {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${350} ${350}`}> 
-                <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
-            </svg>}
-        </div>
-        </div>
+        const newrows = rows.enter().append("g").attr("class", "interleave")
+        
+        const paths = rows.merge(newrows).selectAll("path.d1").data((d,i)=>{
+            return [ {d:d.d2, chapter:i, dim:"d2"}];
+        })
+        paths.exit().remove();
+        
+        paths.enter().append("path").attr("class", "d1").attr("opacity",0).style("stroke-width", options.strokewidth)
+            .attr("transform", (d,i)=>{const [x,y] = translatefn(d.dim);return  `translate(${x},${y+50})`})
+            .attr("transform", (d,i)=>{const [x,y] = translatefn(d.dim);return `scale(1.0) translate(${x+50},${y+YDELTA})`})
+            .style("fill", (d,i)=>cli[d.dim])
+            .attr("d", (d,i)=>fni[d.dim](d.d))
+            .style("stroke", (d,i)=>options[`${d.dim}stroke`] || "none")          
+            .style("fill-opacity", options.fillopacity)
+            .style("stroke-opacity", options.strokeopacity)
+            .style("opacity", (d,i)=>options[d.dim] ? 1.0 : 0.0);
+    
+       
+    }, [data, options]);
+
+    const pentagon = useD3((root)=>{
+        
+        const mydata = dataRef.current;
+        const rows = root.selectAll("g.interleave").data(mydata);
+        rows.exit().remove();
+
+        const newrows = rows.enter().append("g").attr("class", "interleave")
+        
+        const paths = rows.merge(newrows).selectAll("path.d1").data((d,i)=>{
+            return [{d:d.d3,chapter:i, dim:"d3"}];
+        })
+        paths.exit().remove();
+        
+        paths.enter().append("path").attr("class", "d1").attr("opacity",0).style("stroke-width", options.strokewidth)
+            .attr("transform", (d,i)=>{const [x,y] = translatefn(d.dim);return  `translate(${x},${y+50})`})
+            .attr("transform", (d,i)=>{const [x,y] = translatefn(d.dim);return `scale(1.0) translate(${x+50},${y+YDELTA})`})
+            .style("fill", (d,i)=>cli[d.dim])
+            .attr("d", (d,i)=>fni[d.dim](d.d))
+            .style("stroke", (d,i)=>options[`${d.dim}stroke`] || "none")          
+            .style("fill-opacity", options.fillopacity)
+            .style("stroke-opacity", options.strokeopacity)
+            .style("opacity", (d,i)=>options[d.dim] ? 1.0 : 0.0);
+    
+    }, [data, options]);
+
+    
+    const SVGWIDTH = 300; const SVGHEIGHT = 300
+    const tx =  -20 ;
+    const ty =  -30 ;
+
+    const renderText = ()=>{
+        
+        const ox = 84;
+        const oy = 80;
+        const spacing = 26;
+        
+        return ["THE", "SHAPE", "OF", "TRUST"].map((t,i)=>{
+            return <text key={t} className={styles.logo}  x={i == 2 ? ox+13: ox} y={oy + i*spacing}>{t}</text>
+        })
+    }
+    return  <div onClick={()=>{setPrintView(true)}} style={{marginLeft:180, marginTop:300, display:"flex", flexDirection:"column"}}>
+                <div style={{display:"flex", flexDirection:"column", margin:0}}>
+                    <svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
+                        
+                        
+                        <g ref={interleaved} id="container" transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}></g>
+                        <g transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}>
+                       {renderText()}
+                        </g>
+                    </svg>
+                    <svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
+                        <g ref={triangle} id="container" transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}></g>
+                    </svg>
+                    <svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
+                        <g ref={square} id="container" transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}></g>
+                    </svg>
+                    <svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
+                        <g ref={pentagon} id="container" transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}></g>
+                    </svg>
+                </div>
+            </div>
 }
 
 export default PrintableShape;

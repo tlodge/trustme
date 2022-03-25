@@ -1,18 +1,23 @@
+
+@import "../theme/colours.scss";
+
 @font-face {
     font-family: 'Avenir';
     src:  url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
   }
 
   
-.hexagon {
+.square {
     fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;
 }
 
-.outerhex{
-    fill:#3c6647;
+.outersquare{
+    stroke-width:1.15px;
+    fill:$outershape;
+    opacity:0.5;
 }
-.questiontext{ 
-     text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;
+.questiontext{
+    text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;
 }
 
 .scaleline{
@@ -20,30 +25,24 @@
 }
 
 .center{
-    fill:#61b359;
+    fill:#a2d5ab
 }
 
-.zerotext{
-    font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:5.811px;
+.innersquare{
+    fill:$d2;
+    fill-opacity:1;
+    stroke:black;stroke-opacity:1;stroke-width:1px;
 }
-
-.innerhexline{
-    fill:#61b359;
-    stroke:#61b359;
-    stroke-width:1px;
-    stroke:black;
-    /*fill: white;
-    stroke: black;*/
-}
-
 .controlpoint{
     fill:#fff;
 }
 
 .rotatepoint{
-   fill-opacity:1.0
+    fill:#fff;
 }
 
 .value{
     text-anchor: middle;  font-family: 'Nunito', sans-serif;font-weight:700;font-size:5px;fill:#000;
   }
+
+ 

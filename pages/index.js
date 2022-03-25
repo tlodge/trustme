@@ -8,7 +8,7 @@ import FourPointFeedback from '../components/FourPointFeedback';
 import Slider from '../components/Slider';
 import VideoPlayer from '../components/VideoPlayer';
 import { useAppSelector, useAppDispatch } from '../hooks/useRedux'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
 import * as d3 from 'd3';
 
 import {

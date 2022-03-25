@@ -1,7 +1,6 @@
 import { getAnswers,  } from '../lib/api';
 import GalleryShape from '../components/GalleryShape';
-import styles from '../styles/Gallery.module.css';
-
+import styles from '../styles/Gallery.module.scss';
 
 export default function Gallery({answers:_answers}) {
 
@@ -9,7 +8,9 @@ export default function Gallery({answers:_answers}) {
         const {ts, answers} = a;
         return <GalleryShape key={i} ts={ts} answers={answers}/>
     })
-    return <div className={styles.gallerycontainer}>{images}</div>
+    return <div className={styles.container}>
+        <div className={styles.gallerycontainer}>{images}</div>
+        </div>
 }
 
 export async function getStaticProps(context) {

@@ -1,4 +1,4 @@
-import styles from '../styles/FourPoint.module.css'
+import styles from '../styles/FourPoint.module.scss'
 import { fullpath, seppath, segpath } from '../utils/fourpoint';
 const SVGHEIGHT = 300;
 
@@ -12,7 +12,7 @@ const FourPointFeedback = ({answers, clicked, selected, width=SVGHEIGHT, height=
     return <svg onClick={clicked}  width={width} height={height}   viewBox="0 0 150 150"  className={styles.square}> 
                     <g transform="translate(10,5)">
                     <g id="bigsquare">
-                        <path d="M63.349,13.343L0.416,76.275L63.349,139.208L126.281,76.275L63.349,13.343Z" className={styles.outersquare} style={{opacity:0.1,fill:"#c8c8c8"}}/>
+                        <path d="M63.349,13.343L0.416,76.275L63.349,139.208L126.281,76.275L63.349,13.343Z" className={styles.outersquare}/>
                         {/*<path d={segpath(answers)} className={styles.innersquare} />*/}
                         {paths.map((p,i)=>{
                             return <path key={i} d={p} className={styles.innersquare} style={{opacity}}></path>

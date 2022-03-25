@@ -4,12 +4,13 @@ import { segpath as fp5 } from '../utils/fivepoint';
 import useD3 from '../hooks/useD3';
 import useInterval from '../hooks/useInterval';
 import React from 'react';
-import styles from '../styles/Gallery.module.css';
+import styles from '../styles/Gallery.module.scss';
+
 
 const colours = {
-    "d1":"#bb2929",
-    "d2":"#e19c38",
-    "d3":"#61b359"
+    "d1":"#e5efc1",
+    "d2":"#a2d5ab",
+    "d3":"#39aea9"
 }
 
 const _options = {
@@ -21,12 +22,12 @@ const _options = {
     fill:true,
     rotate:false,
     opacity:1,
-    fillopacity:0.8, 
+    fillopacity:0.9, 
     strokeopacity:0.5, 
     strokewidth:1,
-    d1stroke:"white",
-    d2stroke:"white",
-    d3stroke:"white",
+    d1stroke:"black",
+    d2stroke:"black",
+    d3stroke:"black",
     d1fill:colours["d1"],
     d2fill:colours["d2"],
     d3fill:colours["d3"],

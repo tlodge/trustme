@@ -1,4 +1,4 @@
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
 import * as d3 from 'd3';
 import useD3 from '../hooks/useD3';
 const qscale = d3.scaleLinear().clamp(true).domain([100, 685]).range([0,100]);

@@ -8,10 +8,10 @@ export interface ShapeState {
 }
 
 const colours = {
-  "d1":"#bb2929",
-  "d2":"#e19c38",
-  "d3":"#61b359"
-}
+  "d1":"#e5efc1",
+  "d2":"#a2d5ab",
+  "d3":"#39aea9"
+};
 
 const initialState: ShapeState = {
   style:{
