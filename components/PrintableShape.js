@@ -64,8 +64,11 @@ const rotationfor = (chapter, dimension)=>{
     return [am,cp[0],cp[1]];
 }   
 
-const PrintableShape = ({questions, answers}) => {
-   
+const PrintableShape = ({answers, id}) => {
+
+
+    console.log("nice in printable shape with id", id);
+    
     const options = _options;
     const [data, _setData] = React.useState(filterEmpty(answers));
     const [printView, setPrintView] = React.useState(false);
@@ -84,6 +87,10 @@ const PrintableShape = ({questions, answers}) => {
     React.useEffect(()=>{
         if (printView){
             window.print();
+        }
+        window.onafterprint = function(){
+            console.log("finished printing");
+            //setPrintView(false);
         }
     },[printView]);
    
@@ -225,11 +232,9 @@ const PrintableShape = ({questions, answers}) => {
             return <text key={t} className={styles.logo}  x={i == 2 ? ox+13: ox} y={oy + i*spacing}>{t}</text>
         })
     }
-    return  <div onClick={()=>{setPrintView(true)}} style={{marginLeft:180, marginTop:300, display:"flex", flexDirection:"column"}}>
-                <div style={{display:"flex", flexDirection:"column", margin:0}}>
+    return  <div onClick={()=>{setPrintView(!printView)}} style={{marginLeft:0, marginTop:90, background:"white",display:"flex", flexDirection:"column"}}>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", margin:0}}>
                     <svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
-                        
-                        
                         <g ref={interleaved} id="container" transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}></g>
                         <g transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}>
                        {renderText()}

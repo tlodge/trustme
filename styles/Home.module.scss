@@ -171,6 +171,19 @@
   fill:$d3;
 }
 
+.nextChapter{
+  font-family: 'Headline-Light';
+  font-size: 1.5em;
+  
+  margin:20px;
+  opacity:0.5;
+  height: 50px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;

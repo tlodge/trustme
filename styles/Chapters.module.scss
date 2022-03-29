@@ -7,13 +7,14 @@
     width: 100vw;
     height: 100vh;
     flex-direction: column;
+    background: black;
 }
 
 .heading{
-    font-family:'Helvetica-Bold', 'Helvetica'; 
+    font-family:'Headline'; 
     color:white;
     font-weight:700;
     font-size:1.5em;
     padding:10px;
-  text-transform: uppercase;
+    text-transform: uppercase;
 }

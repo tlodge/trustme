@@ -15,7 +15,7 @@ const ThreePointFeedback = ({answers, selected, clicked, width=SVGHEIGHT, height
                     <g transform="translate(-33,5)">
                     
                         <g id="bigtriangle">
-                            <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle}/>
+                            <path d="M45.884,127.352L109.629,17.053L172.902,127.352L45.884,127.352Z" className={styles.outertriangle} style={{stroke: selected ? "white": "none"}}/>
                         </g> 
 
                       
@@ -24,10 +24,6 @@ const ThreePointFeedback = ({answers, selected, clicked, width=SVGHEIGHT, height
                         })}
                         {_sindex >= 0 && <path d={paths[_sindex||0]} className={styles.innertriangle} style={{opacity:1}}></path>}
                     </g>
-                    {/*<g>
-                        <rect x={30} y={120} width={130} rx={1} ry={1} height={3} style={{fill:"white"}}></rect>
-                        <circle id="dragcircle" cx={85} cy={121.5} r={6} style={{fill:"#282b55", stroke:"white"}}></circle>
-                    </g>*/}
                 </svg>
           
 }

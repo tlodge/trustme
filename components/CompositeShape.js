@@ -23,9 +23,6 @@ import {
     toggleOption,
     setOptions,
 } from '../features/shapes/shapeSlice'
-import PrintableShape from './PrintableShape';
-
-
 
 const COLOURS = ["#fff", "#000", "#c8c8c8", "#282b55", "#bb2929","#e19c38","#61b359"];
 
@@ -51,7 +48,7 @@ const filterEmpty = (_answers)=>{
     },[]))
 }
 
-const CompositeShape = ({questions, answers}) => {
+const CompositeShape = ({questions, answers, onPrint}) => {
    
     const images = useAppSelector(selectImages);
     const options = useAppSelector(selectStyles);
@@ -59,13 +56,9 @@ const CompositeShape = ({questions, answers}) => {
     const dispatch = useAppDispatch()
     const [data, _setData] = React.useState(filterEmpty(answers));
     const [controls, showControls] = React.useState(false);
-    const [printView, setPrintView] = React.useState(false);
-
+   
     const dataRef = React.useRef(data);
     
-    window.onafterprint = function(){
-        setPrintView(false);
-    }
 
     React.useEffect(()=>{
         const data = filterEmpty(answers)
@@ -73,7 +66,13 @@ const CompositeShape = ({questions, answers}) => {
         _setData(data);    
     },[answers])
 
+    React.useEffect(()=>{
+        console.log("saving shape");
+        dispatch(saveShape())
+    },[]);
     
+   
+
     const _setOptions = (attr,value)=>{
         dispatch(setOptions(attr,value));
     }
@@ -81,15 +80,10 @@ const CompositeShape = ({questions, answers}) => {
     const fni = [fp3,fp4,fp5];
     const cli =  ["#e5efc1","#a2d5ab","#39aea9"];
     
-   
     const center = {
         "d1":[109.5,90.5],
         "d2":[63,76.6],
         "d3":[75.5, 83]
-    }
-
-    const save = ()=>{
-        dispatch(saveShape())
     }
 
     const translatefn = (dim)=>{
@@ -403,16 +397,14 @@ const CompositeShape = ({questions, answers}) => {
         })
     }
 
-    const print = ()=>{
-        setPrintView(true);
-    }
-
+  
+ //`thumbs/c${c+1}.PNG`
     const renderChapterLabels = ()=>{
         return [0,1,2,3,4,5,6,7].map(c=>{
             return <g key={c}>
-               
-                    <image  xlinkHref={`Chapter ${c+1}.PNG`}  width="18px" x={1} y={-40 + (c*31)}  />
-                    <rect x={1} y={-40 + (c*31)} width={18} height={12} style={{strokeWidth:"0.5px", stroke:"#2a3747", fill:"none"}}/>
+              
+                    <image  xlinkHref={`thumbs/c${c+1}a.PNG`}  width="19px" height="19px"x={1} y={-40 + (c*31)}  />
+                   
                 </g>
       
             //return <text key={c} x={10} y={-30 + (c*31)} style={{fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>{`c${c+1}`}</text>
@@ -442,14 +434,15 @@ const CompositeShape = ({questions, answers}) => {
            
         })
     }
-    const SVGWIDTH = 450; const SVGHEIGHT = printView ? 400: 800;
-    const tx = options.grid ? 10 : printView ? 160 : 15;
-    const ty = options.grid ? -15 : printView ? -10 : 0;
+    const SVGWIDTH = 450; const SVGHEIGHT = 800;
+    const tx = options.grid ? 10 : 15;
+    const ty = options.grid ? -15 :  0;
 
     const renderScreenView = ()=>{
             return <div style={{display:"flex", flexDirection:"column"}}>
+                
                 <div style={{display:"flex", flexDirection:"row", margin:20}}>
-                    {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${printView? 350:150} ${printView? 350:150}`}> 
+                    {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
                         <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
                         {renderGridAxes()}
                     </svg>}
@@ -461,23 +454,18 @@ const CompositeShape = ({questions, answers}) => {
                 <div style={{color:"white", fontSize:20, margin: "0px 0px 30px 190px"}} onClick={()=>_toggleOption("grid")}>
                     {`${options.grid? "view my shape" : "view as grid"}`}
                 </div>
-                {<div style={{textAlign:"center", color:"white", padding:7}} onClick={print}>print!</div>}
-                {<div style={{textAlign:"center", color:"white", padding:7}} onClick={save}>save!</div>}
-
-                {!printView &&  <div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>}
-                {controls && !printView && renderControls()}                     
+                <img target="_blank" onClick={()=>onPrint()} alt={"print image"} src={"/print.png"} width={22} height={22}/>
+                {/*<div style={{textAlign:"center", color:"white", padding:7}} onClick={print}>print!</div>*/}
+                {/*<div style={{textAlign:"center", color:"white", padding:7}} onClick={save}>save!</div>*/}
+                {/*!printView &&  <div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>*/}
+                {/*controls && !printView && renderControls()*/}                     
             </div>
     }
 
-    const renderPrintView = ()=>{
-        return <PrintableShape questions={questions} answers={answers}/>
-    }
-
+  
    
-    return <>
-        {printView && renderPrintView()}
-        {!printView && renderScreenView()}
-    </>
+    return renderScreenView()
+
 }
 
 export default CompositeShape;

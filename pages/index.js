@@ -22,20 +22,24 @@ import {
   setChapter,
   setDimension,
   setAnswer,
+  selectComplete,
+  selectSavedId,
 } from '../features/questions/questionSlice'
 
 import CompositeShape from '../components/CompositeShape';
+import PrintableShape from '../components/PrintableShape';
 
 export default function Home(props) {
 
   const {deviceType} = props; 
   const [windowSize, setWindowSize] = useState({width:0,height:0})
   const [lastUpdate, setLastUpdate] = useState(0);
-
-  const  [view, setView] = useState("feedback"); //player || feedback!
+  const  [view, setView] = useState("player"); //player || feedback!
   
   const dispatch = useAppDispatch()
   const points = useAppSelector(selectPoints);
+  const complete = useAppSelector(selectComplete);
+  const id = useAppSelector(selectSavedId);
 
   //const {shapes:points} = useAppSelector(selectShapes)
   const questions = useAppSelector(selectQuestions);
@@ -85,7 +89,8 @@ export default function Home(props) {
   }, []);
 
   useEffect(()=>{
-    setQuestionText(questions[question][0]);
+    setQuestionText(questions["q1"][0]);
+   
   },[chapter]);
 
   const _setDimension = (dimension)=>{
@@ -93,8 +98,10 @@ export default function Home(props) {
   } 
 
   const _setChapter = (chapter)=>{
-    setView("feedback");
+    setQuestion("q1");
+    _setDimension("d1");
     dispatch(setChapter(chapter));
+    setView("player");
   }
 
   const questionScale = d3.scaleLinear().clamp(true).domain([0,100]).range([0, questions.q1.length-1]);
@@ -110,6 +117,13 @@ export default function Home(props) {
     "d3":[0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647]
 };
 
+
+const renderNavigation = ()=>{
+  if (chapter >= 7){
+    return <div className={styles.nextChapter} onClick={()=>{setView("final")}}>View your final shape!</div>
+  }
+  return <div className={styles.nextChapter} onClick={()=>{_setChapter(chapter+1)}}>{complete ? "Go to next chapter" : ""}</div>
+}
 
 const renderDimensions = ()=>{
   return <div>
@@ -128,15 +142,20 @@ const renderDimensions = ()=>{
           <FourPointFeedback  selected={dimension == "d2" ? question: null} answers={answers.d2}  clicked={()=>{_setDimension("d2");setQuestion("q1")}}/>
           <FivePointFeedback  selected={dimension == "d3" ? question: null} answers={answers.d3}  clicked={()=>{_setDimension("d3");setQuestion("q1")}}/>
       </div>
-
-     
+      <div>
+    {renderNavigation()}
+      </div>
+          
   </div>
 }
 
 const renderFinal = ()=>{ 
-  return  <Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
+  return   <div style={{display:"flex", width:"100vw", height:"100vh", justifyContent:"center", background:"black"}}>
+    <CompositeShape answers={latestAnswers} questions={allquestions} onPrint={()=>setView("print")}/> 
+  {/*<Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
             <CompositeShape answers={latestAnswers} questions={allquestions}/>
-          </Layout>
+</Layout>*/}
+</div>
 }
 
 const renderFeedback = ()=>{
@@ -156,12 +175,15 @@ const renderFeedback = ()=>{
     </div>
   }
 
-  
+  const renderPrint = ()=>{
+    return <PrintableShape answers={latestAnswers} questions={allquestions} id={id}/>
+  }
+
   return <>
       {view === "feedback" && renderFeedback()}
       {view === "final" && renderFinal()}
-        {/*view=="feedback" && renderFeedback()*/}
-        {/*view=="player" && renderPlayer()*/}
+      {view === "print" && renderPrint()}
+      {view ==  "player" && renderPlayer()}
   </>
 
 }

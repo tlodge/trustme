@@ -19,7 +19,7 @@ const VideoPlayer = ({amFinished, chapter, width}) => {
 
     return  <div className={styles.container}>
         <div className={styles.heading}>{`chapter ${chapter}`}</div>
-        <video ref={videoElement} onPlaying={handleOnPlay} onEnded={handleOnEnded.bind(this,()=>{amFinished(true)})} width={width} height="auto" src="scene_1.mp4" controls> 
+        <video ref={videoElement} onPlaying={handleOnPlay} autoPlay onEnded={handleOnEnded.bind(this,()=>{amFinished(true)})} width={width} height="auto" src={`videos/c${chapter}.mp4`} controls> 
             Sorry, your browser does not support HTML5 <code>video</code>
         </video>
     </div>

@@ -1,13 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { compose, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as d3 from 'd3';
 import { post } from '../../utils/net';
 import type { AppState, AppThunk } from '../../app/store'
+import { setOptions } from '../shapes/shapeSlice';
 
 export interface QuestionState {
     questions: Object,
     chapter: any,
     dimension:string,
     answers: Object,
+    savedId: Number,
 }
 
 const initialState: QuestionState = {
@@ -178,167 +180,168 @@ const initialState: QuestionState = {
     answers: {
         0:{
             "d1":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
-                "q5":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         1:{
             "d1":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
-                "q5":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         2:{
             "d1":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
-                "q5":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         3:{
             "d1":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
-                "q5":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         4:{
             "d1":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
-                "q5":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         5:{
             "d1":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
-                "q5":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         6:{
             "d1":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
-                "q5":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
         7:{
             "d1":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
             },
             "d2":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
             },
             "d3":{
-                "q1":0,
-                "q2":0,
-                "q3":0,
-                "q4":0,
-                "q5":0,
+                "q1":-1,
+                "q2":-1,
+                "q3":-1,
+                "q4":-1,
+                "q5":-1,
             }
         },
     },
     chapter: 0,
     dimension: "d1",
+    savedId:0,
 }
 
 export const questionSlice = createSlice({
@@ -347,8 +350,11 @@ export const questionSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     
-    setQuestion: (state, action:PayloadAction<Object>)=>{
-        state.questions = action.payload;
+    //setQuestion: (state, action:PayloadAction<Object>)=>{
+     //   state.questions = action.payload;
+    //},
+    saved : (state, action:PayloadAction<Number>)=>{
+        state.savedId = action.payload;
     },
     setChapter: (state, action:PayloadAction<Number>)=>{
         state.chapter = action.payload;
@@ -356,7 +362,7 @@ export const questionSlice = createSlice({
     setDimension: (state, action:PayloadAction<string>)=>{
         state.dimension = action.payload;
     },
-    setAnswer: (state, action:PayloadAction<Object>)=>{
+    _setAnswer: (state, action:PayloadAction<Object>)=>{
         state.answers = {
             ...state.answers,
             [action.payload['chapter']]: {
@@ -372,15 +378,26 @@ export const questionSlice = createSlice({
   }
 })
 
-export const { setChapter, setDimension, setQuestion, setAnswer } = questionSlice.actions
+export const { setChapter, setDimension, _setAnswer, saved } = questionSlice.actions
+
+const answeredEverything = (answers) : boolean=>{
+    return Object.keys(answers).reduce((acc,key)=>{
+        return acc && answers[key] != -1;
+    },true);
+}
 
 
+export const selectSavedId = (state: AppState) => state.questions.savedId;
 export const selectQuestions = (state: AppState) => state.questions.questions[state.questions.chapter][state.questions.dimension]
 export const selectAllQuestions = (state: AppState) => state.questions.questions;
 export const selectAnswers = (state: AppState) => state.questions.answers[state.questions.chapter]
 export const selectAllAnswers = (state: AppState) => state.questions.answers;
 export const selectChapter = (state: AppState) => state.questions.chapter
 export const selectDimension = (state: AppState) => state.questions.dimension
+
+export const selectComplete = (state: AppState)=> Object.keys(state.questions.answers[state.questions.chapter]).reduce((acc:boolean, key:string)=>{
+    return acc && answeredEverything(state.questions.answers[state.questions.chapter][key]);
+}, true);
 
 const converttopoints = (dimension, question, answer)=>{
     
@@ -450,11 +467,42 @@ const converttopoints = (dimension, question, answer)=>{
     return pointfn[dimension] ? pointfn[dimension][question] ? pointfn[dimension][question](answer) : -1 : -1;
 }
 
+
+export const setAnswer = (payload): AppThunk => async (dispatch, getState) => {  
+    await dispatch(_setAnswer(payload));
+    const _state = getState().questions;
+
+    const chaptercomplete = Object.keys(_state.answers[_state.chapter]).reduce((acc:boolean, key:string)=>{
+        return acc && answeredEverything(_state.answers[_state.chapter][key]);
+    }, true);
+
+    const dimensioncomplete = answeredEverything(_state.answers[_state.chapter][_state.dimension]);
+
+    if (chaptercomplete){
+        return;
+    }
+
+    if (dimensioncomplete){
+       
+        if (_state.dimension === "d1"){
+            await dispatch(setDimension("d2"));
+           
+        }
+        if (_state.dimension === "d2"){
+            await dispatch(setDimension("d3"));
+        }
+        if (_state.dimension === "d3"){
+            await dispatch(setDimension("d1"));
+            //await dispatch(setChapter(_state.chapter+1))
+        }
+    }
+}
+
 export const saveShape = (): AppThunk => async (dispatch, getState) => {  
     const answers = getState().questions.answers;
-    console.log("nice, have answers", answers);
-    await post("/api/save", answers);
-    console.log("posted!!");
+    const result = await post("/api/save", answers);
+    const {id} = result;
+    dispatch(saved(id));
 } 
   
 export const selectPoints = (state: AppState)=>{

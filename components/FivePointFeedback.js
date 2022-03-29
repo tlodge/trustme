@@ -91,7 +91,7 @@ const FivePointFeedback = ({answers, clicked, selected, width=SVGHEIGHT, height=
                     
                     <g transform="translate(0,2)">
                     <g id="bighexagon">
-                        <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex}/>
+                        <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex} style={{stroke: selected ? "white": "none"}}/>
                         <g><text x="73.922px" y="85.036px" className={styles.zerotext}></text></g>
                         
                         {/*<path d="M75.508,83.474L75.63,17.067" className={styles.scaleline} />

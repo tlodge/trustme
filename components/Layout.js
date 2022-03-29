@@ -12,7 +12,7 @@ const Layout = ({children, chapter, colours, answers, setChapter, setDimension, 
 
     const chapters = ()=>{
         
-        return [0,1,2,3,4,5,6,7,8].map((c)=>{
+        return [0,1,2,3,4,5,6,7].map((c)=>{
             const chstyle = {
                 fontFamily: "'Nunito', sans-serif",
                 fontSize:isMobile ? "0.8em" : "1.5em", 
@@ -27,15 +27,22 @@ const Layout = ({children, chapter, colours, answers, setChapter, setDimension, 
                 borderRadius: isMobile ? 15 : 20, 
             }
            
-            return c <= 7 ? <div key={c} style={{display: "flex", flexDirection:"row", padding:8}}>
-                    <div  style={chstyle} onClick={()=>setChapter(c)}>{c+1}</div>
+            /*return c <= 7 ? <div key={c} style={{display: "flex", flexDirection:"row", padding:8}}>
+                    {<div  style={chstyle} onClick={()=>setChapter(c)}>{c+1}</div>}
                     <div style={{display:"flex", flexDirection:"row"}}>
                         <ThreePointFeedback selected={false} answers={answers[c].d1} clicked={()=>{}} width={50} height={50}/>
                         <FourPointFeedback selected={false} answers={answers[c].d2} clicked={()=>{}} width={50} height={50}/>
                         <FivePointFeedback selected={false} answers={answers[c].d3} clicked={()=>{}} width={50} height={50}/>
                     </div>
             </div>
-            : <div key={c} className={styles.chaptersidebar} onClick={()=>onComplete()}>see final</div>
+            : <div key={c} className={styles.chaptersidebar} onClick={()=>onComplete()}>see final</div>*/
+            return <div key={c} onClick={()=>setChapter(c)} style={{display:"flex", flexDirection:"row", paddingTop:10, paddingBottom:10}}>
+                        <ThreePointFeedback selected={false} answers={answers[c].d1} clicked={()=>{}} width={50} height={50}/>
+                        <FourPointFeedback selected={false} answers={answers[c].d2} clicked={()=>{}} width={50} height={50}/>
+                        <FivePointFeedback selected={false} answers={answers[c].d3} clicked={()=>{}} width={50} height={50}/>
+                    </div>
+        
+
         });
     }
 
@@ -52,16 +59,16 @@ const Layout = ({children, chapter, colours, answers, setChapter, setDimension, 
             border: !isMobile ? "1px solid #c8c8c8" : "none",
             marginLeft: !isMobile ? 20 : 0,
             
-            padding: isMobile ? 15: 0,
+            padding: isMobile ? 15: 20,
         }
 
         return <div  style={cstyle} className={styles.chaptercontainer}>
-                {!isMobile && <div style={{fontFamily: "Headline-Light", letterSpacing: "2px", margin:20,fontWeight:300,fontSize:"1.5em",color:"#c8c8c8"}}>Chapter</div>}
+                {/* !isMobile && <div style={{fontFamily: "Headline-Light", letterSpacing: "2px", margin:20,fontWeight:300,fontSize:"1.5em",color:"#c8c8c8"}}>Chapter</div>*/}
                 {chapters()}
         </div>
     }
     return  <div className={styles.screen}>
-                <div className={styles.outercontainer} style={{ flexDirection: isMobile ? "column":"row"}}>
+                <div className={styles.outercontainer} style={{ flexDirection: isMobile ? "column":"row", alignItems:"center"}}>
                     <div style={{display:'flex', flex: "1 1 auto", flexDirection:"column"}}>     
                         <div style={{ display:"flex", flexDirection: isMobile ? "column":"row", margin: !isMobile ? "20px": "0px"}}>
                             {isMobile && renderChapters()}

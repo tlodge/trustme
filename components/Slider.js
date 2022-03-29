@@ -14,7 +14,7 @@ const Slider = ({end, setAnswer, answer, dim}) => {
     const slider = useD3((root)=>{
      
         const controller = root.select("circle#dragcircle");
-        controller.attr("cx", ascale(answer == -1 ? 50: answer));
+        controller.attr("cx", ascale(answer == -1 ? 0: answer));
 
         controller.call(d3.drag().on("drag", (e)=>{
             e.sourceEvent.stopPropagation();

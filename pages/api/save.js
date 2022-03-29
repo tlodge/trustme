@@ -14,15 +14,16 @@ const rows = (data)=>{
     return `[${_rows.toString()}]`;
 }
 
-const flattened = (data)=>{
+const flattened = (data,id)=>{
     return Object.keys(data).reduce((acc, key)=>{
         return [...acc, rows(data[key])]
-    },[Date().toString(),Date.now()])
+    },[id,Date().toString(),Date.now()])
 }
+
 export default function handler(req, res) {
+  const id = Math.round(Math.random()  * 80000)
   const data = req.body;
-  console.log('nice have data', data);
-  const items = flattened(data);
+  const items = flattened(data,id);
   append(items);
-  res.status(200).json({ success:true })
+  res.status(200).json({ id })
 }
