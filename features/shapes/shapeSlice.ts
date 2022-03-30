@@ -21,7 +21,7 @@ const initialState: ShapeState = {
     grid: false,
     autodraw:false,
     fill:true,
-    rotate:true,
+    rotate:false,
     opacity:1,
     fillopacity:0.3, 
     strokeopacity:1, 

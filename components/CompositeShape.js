@@ -390,8 +390,6 @@ const CompositeShape = ({questions, answers, onPrint}) => {
         })
     }
 
-  
- //`thumbs/c${c+1}.PNG`
     const renderChapterLabels = ()=>{
         return [0,1,2,3,4,5,6,7].map(c=>{
             return <g key={c}>
@@ -399,10 +397,9 @@ const CompositeShape = ({questions, answers, onPrint}) => {
                     <image  xlinkHref={`/thumbs/c${c+1}a.png`}  width="12px" height="12px"x={1} y={-40 + (c*31)}  />
                    
                 </g>
-      
-            //return <text key={c} x={10} y={-30 + (c*31)} style={{fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>{`c${c+1}`}</text>
         })
     }
+    
     const renderGridAxes = ()=>{
         return  <g className={styles.gridcategories}>
                     {options.grid && renderChapterLabels()}
