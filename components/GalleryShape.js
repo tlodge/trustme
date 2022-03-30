@@ -57,7 +57,7 @@ const filterEmpty = (_answers)=>{
 
 const states = [[true, false, false],[false, true, false],[false,false,true],[true,true, true]];//, [true, true, false], [true,false,true],[true,true,true]];
 
-const GalleryShape = ({ts, answers}) => {
+const GalleryShape = ({ts, answers, id}) => {
 
     const [data, _setData] = React.useState(filterEmpty(answers));
     const [options, setOptions] = React.useState(_options);
@@ -235,7 +235,9 @@ const GalleryShape = ({ts, answers}) => {
             {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
                 <g ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
             </svg>}
-            <div className={styles.label}>{formatDate(ts)}</div>
+            <div style={{textAlign:"center"}}>
+                <a href={`/shape/${id}`} className={styles.label}>{formatDate(ts)}</a>
+            </div>
            
         </div>      
 }

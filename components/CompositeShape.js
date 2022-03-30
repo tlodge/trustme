@@ -64,14 +64,7 @@ const CompositeShape = ({questions, answers, onPrint}) => {
         const data = filterEmpty(answers)
         dataRef.current = data;
         _setData(data);    
-    },[answers])
-
-    React.useEffect(()=>{
-        console.log("saving shape");
-        dispatch(saveShape())
-    },[]);
-    
-   
+    },[answers])  
 
     const _setOptions = (attr,value)=>{
         dispatch(setOptions(attr,value));
@@ -402,8 +395,8 @@ const CompositeShape = ({questions, answers, onPrint}) => {
     const renderChapterLabels = ()=>{
         return [0,1,2,3,4,5,6,7].map(c=>{
             return <g key={c}>
-              
-                    <image  xlinkHref={`thumbs/c${c+1}a.PNG`}  width="19px" height="19px"x={1} y={-40 + (c*31)}  />
+                    <circle cx={7} cy={-34 + (c*31)} r={6} style={{stroke:"#fff", strokeWidth:1}}></circle>
+                    <image  xlinkHref={`/thumbs/c${c+1}a.PNG`}  width="12px" height="12px"x={1} y={-40 + (c*31)}  />
                    
                 </g>
       
@@ -464,7 +457,9 @@ const CompositeShape = ({questions, answers, onPrint}) => {
 
   
    
-    return renderScreenView()
+    return <div className={styles.container}>
+        {renderScreenView()}
+    </div>
 
 }
 

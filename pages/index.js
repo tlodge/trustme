@@ -24,6 +24,7 @@ import {
   setAnswer,
   selectComplete,
   selectSavedId,
+  saveShape
 } from '../features/questions/questionSlice'
 
 import CompositeShape from '../components/CompositeShape';
@@ -117,10 +118,13 @@ export default function Home(props) {
     "d3":[0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647,0x3c6647]
 };
 
-
+const moveToFinal = ()=>{
+    dispatch(saveShape())
+    setView("final")
+}
 const renderNavigation = ()=>{
   if (chapter >= 7){
-    return <div className={styles.nextChapter} onClick={()=>{setView("final")}}>View your final shape!</div>
+    return <div className={styles.nextChapter} onClick={moveToFinal}>{complete ? "View your final shape" : ""}</div>
   }
   return <div className={styles.nextChapter} onClick={()=>{_setChapter(chapter+1)}}>{complete ? "Go to next chapter" : ""}</div>
 }
@@ -150,12 +154,10 @@ const renderDimensions = ()=>{
 }
 
 const renderFinal = ()=>{ 
-  return   <div style={{display:"flex", width:"100vw", height:"100vh", justifyContent:"center", background:"black"}}>
-    <CompositeShape answers={latestAnswers} questions={allquestions} onPrint={()=>setView("print")}/> 
+  return   <CompositeShape answers={latestAnswers} questions={allquestions} onPrint={()=>setView("print")}/> 
   {/*<Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
             <CompositeShape answers={latestAnswers} questions={allquestions}/>
 </Layout>*/}
-</div>
 }
 
 const renderFeedback = ()=>{

@@ -1,5 +1,4 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { csvParseRows } from "d3";
 import { append } from "../../lib/api"
 
 const items = (data)=>{
@@ -25,5 +24,5 @@ export default function handler(req, res) {
   const data = req.body;
   const items = flattened(data,id);
   append(items);
-  res.status(200).json({ id })
+  res.status(200).json({ id:  `${process.env.VERCEL_URL}/shape/${id}`})
 }

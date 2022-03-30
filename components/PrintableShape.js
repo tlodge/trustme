@@ -4,6 +4,8 @@ import { segpath as fp5 } from '../utils/fivepoint';
 import useD3 from '../hooks/useD3';
 import React from 'react';
 import styles from '../styles/Printable.module.scss'
+import QRCode from "react-qr-code";
+
 const colours = {
     "d1":"#e5efc1",
     "d2":"#a2d5ab",
@@ -66,9 +68,6 @@ const rotationfor = (chapter, dimension)=>{
 
 const PrintableShape = ({answers, id}) => {
 
-
-    console.log("nice in printable shape with id", id);
-    
     const options = _options;
     const [data, _setData] = React.useState(filterEmpty(answers));
     const [printView, setPrintView] = React.useState(false);
@@ -219,7 +218,7 @@ const PrintableShape = ({answers, id}) => {
 
     
     const SVGWIDTH = 300; const SVGHEIGHT = 300
-    const tx =  -20 ;
+    const tx =  -30 ;
     const ty =  -30 ;
 
     const renderText = ()=>{
@@ -233,7 +232,11 @@ const PrintableShape = ({answers, id}) => {
         })
     }
     return  <div onClick={()=>{setPrintView(!printView)}} style={{marginLeft:0, marginTop:90, background:"white",display:"flex", flexDirection:"column"}}>
+                
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", margin:0}}>
+                    <div style={{position:"absolute", top: 280, left: 24}}>
+                        <QRCode value={id} size={44}/>
+                    </div>
                     <svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
                         <g ref={interleaved} id="container" transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}></g>
                         <g transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}>
