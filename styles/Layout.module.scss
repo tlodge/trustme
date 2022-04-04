@@ -13,11 +13,23 @@
     align-items:center;
     justify-content:center;
     flex: 1 1 auto;
+    flex-direction: column;
+    padding:20px;
 }
 
 .chaptercontainer{
     display:flex;
     background: $container;
+}
+
+.chaptertext{
+    padding:30px;
+    margin-bottom:10px; 
+    font-size:1em; 
+    color:white; 
+    font-weight: 600;
+    font-family: "Avenir", sans-serif;
+    /*border-bottom: 1px solid #2a3747;*/
 }
 
 
@@ -28,6 +40,7 @@
     align-items:center;
     background:$outershape;
     justify-content:center;
+    flex-direction: column;
 }
 
 .chaptersidebar{

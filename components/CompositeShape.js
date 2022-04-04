@@ -10,10 +10,6 @@ import Image from 'next/image';
 import { useAppSelector, useAppDispatch } from '../hooks/useRedux'
 
 import {
-    saveShape
-} from '../features/questions/questionSlice';
-
-import {
     selectImages,
     guessShape,
 } from '../features/images/imageSlice'
@@ -451,9 +447,7 @@ const CompositeShape = ({questions, answers, onPrint}) => {
                 {/*controls && !printView && renderControls()*/}                     
             </div>
     }
-
   
-   
     return <div className={styles.container}>
         {renderScreenView()}
     </div>

@@ -6,15 +6,28 @@
     src:  url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
   }
 
+
+.ghost{
+    fill-opacity:0.2;
+    fill:white;
+}
+
   
 .square {
     fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;
 }
-
+.label{
+    fill:white;
+    opacity: 0.8;
+    text-anchor:middle;
+    font-size:0.48em;
+    font-family:Avenir;
+  }
+  
 .outersquare{
     stroke-width:1.15px;
     fill:$outershape;
-    opacity:0.5;
+    opacity:0.8;
 }
 .questiontext{
     text-align: center; color:white; font-family: 'Nunito', sans-serif; font-weight:300; line-height: 1.5em;

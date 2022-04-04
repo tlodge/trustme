@@ -12,7 +12,19 @@ export interface QuestionState {
     savedId: Number,
 }
 
+const _chaptertext = {
+    0: "This is some chapter text for chapter one and it will give some information on what needs to be done",
+    1: "This is some chapter text for chapter two and it will give some information on what needs to be done",
+    2: "This is some chapter text for chapter three and it will give some information on what needs to be done",
+    3: "This is some chapter text for chapter four and it will give some information on what needs to be done",
+    4: "This is some chapter text for chapter five and it will give some information on what needs to be done",
+    5: "This is some chapter text for chapter six and it will give some information on what needs to be done",
+    6: "This is some chapter text for chapter seven and it will give some information on what needs to be done",
+    7: "This is some chapter text for chapter eight and it will give some information on what needs to be done",
+};
+
 const initialState: QuestionState = {
+   
     questions: {
         0 : {
             "d1":{
@@ -62,7 +74,7 @@ const initialState: QuestionState = {
             },
             "d2":{
                 "q1":["I have a choice about this AV using AI navigation"],
-                "q2":["I think the AI nabigation in an AV is useful"],
+                "q2":["I think the AI navigation in an AV is useful"],
                 "q3":["I would prefer an AV to use AI navigation"],
                 "q4":["I would recommend AI navigation to others"]
             },
@@ -381,12 +393,13 @@ export const questionSlice = createSlice({
 export const { setChapter, setDimension, _setAnswer, saved } = questionSlice.actions
 
 const answeredEverything = (answers) : boolean=>{
-    return Object.keys(answers).reduce((acc,key)=>{
+    return Object.keys(answers).reduce((acc,key,i)=>{
         return acc && answers[key] != -1;
     },true);
 }
 
 
+export const selectChapterText = (state: AppState) => _chaptertext[state.questions.chapter];
 export const selectSavedId = (state: AppState) => state.questions.savedId;
 export const selectQuestions = (state: AppState) => state.questions.questions[state.questions.chapter][state.questions.dimension]
 export const selectAllQuestions = (state: AppState) => state.questions.questions;
@@ -398,6 +411,12 @@ export const selectDimension = (state: AppState) => state.questions.dimension
 export const selectComplete = (state: AppState)=> Object.keys(state.questions.answers[state.questions.chapter]).reduce((acc:boolean, key:string)=>{
     return acc && answeredEverything(state.questions.answers[state.questions.chapter][key]);
 }, true);
+
+
+export const selectAnsweredEveything = (state: AppState) => {
+    const _state = state.questions; 
+    return answeredEverything(_state.answers[_state.chapter][_state.dimension]);
+}
 
 const converttopoints = (dimension, question, answer)=>{
     
@@ -472,30 +491,30 @@ export const setAnswer = (payload): AppThunk => async (dispatch, getState) => {
     await dispatch(_setAnswer(payload));
     const _state = getState().questions;
 
-    const chaptercomplete = Object.keys(_state.answers[_state.chapter]).reduce((acc:boolean, key:string)=>{
-        return acc && answeredEverything(_state.answers[_state.chapter][key]);
-    }, true);
+   // const chaptercomplete = Object.keys(_state.answers[_state.chapter]).reduce((acc:boolean, key:string)=>{
+   //     return acc && answeredEverything(_state.answers[_state.chapter][key]);
+   // }, true);
 
-    const dimensioncomplete = answeredEverything(_state.answers[_state.chapter][_state.dimension]);
+   // const dimensioncomplete = answeredEverything(_state.answers[_state.chapter][_state.dimension]);
 
-    if (chaptercomplete){
-        return;
-    }
+    //if (chaptercomplete){
+  //      return;
+  //  }
 
-    if (dimensioncomplete){
+ //  if (dimensioncomplete){
        
         if (_state.dimension === "d1"){
-            await dispatch(setDimension("d2"));
+           // await dispatch(setDimension("d2"));
            
         }
         if (_state.dimension === "d2"){
-            await dispatch(setDimension("d3"));
+           // await dispatch(setDimension("d3"));
         }
         if (_state.dimension === "d3"){
-            await dispatch(setDimension("d1"));
-            //await dispatch(setChapter(_state.chapter+1))
+           // await dispatch(setDimension("d1"));
+           
         }
-    }
+  //  }
 }
 
 export const saveShape = (): AppThunk => async (dispatch, getState) => {  

@@ -2,7 +2,7 @@ import styles from '../styles/FivePoint.module.scss'
 import { fullpath, segpath, seppath, shapes } from '../utils/fivepoint';
 import React from 'react';
 const SVGHEIGHT = 300;
-const FivePointFeedback = ({answers, clicked, selected, width=SVGHEIGHT, height=SVGHEIGHT}) => {
+const FivePointFeedback = ({answers, previous, clicked, selected, width=SVGHEIGHT, height=SVGHEIGHT}) => {
     
 
     const API_ENDPOINT = 'https://inputtools.google.com/request?ime=handwriting&app=autodraw&dbg=1&cs=1&oe=UTF-8';
@@ -84,6 +84,25 @@ const FivePointFeedback = ({answers, clicked, selected, width=SVGHEIGHT, height=
     const _sindex = selected ? selected[1]-1 : -1;
     const paths = seppath(answers);
     const opacity = selected ? 0.3 : 1;
+
+    const renderGhosts = ()=>{
+        return Object.keys(previous||{}).map((k,i)=>{
+            return <path key={i} d={fullpath(previous[k].d2)} className={styles.ghost} style={{opacity}}></path> 
+        });
+    }
+
+    const renderLabels = (index)=>{
+    
+
+        return <g>
+                <text x={112} y={32} className={styles.label}  style={{opacity: index==0 ? 1.0 : 0.4}}  transform="rotate(36,105,30)">reliable</text>
+                <text x={130} y={114} className={styles.label}  style={{opacity: index==1 ? 1.0 : 0.4}}transform="rotate(-72,125,105)">my safety</text>
+                <text x={75} y={146.2}className={styles.label} style={{opacity: index==2 ? 1.0 : 0.4}} transform="rotate(0,75,146)">others' safety</text>
+                <text x={30} y={102} className={styles.label}  style={{opacity: index==3 ? 1.0 : 0.4}}transform="rotate(-108,25,105)">better</text>
+                <text x={40} y={40} className={styles.label}  style={{opacity: index==4 ? 1.0 : 0.4}}transform="rotate(-36,35,40)">liability</text>
+            </g>
+    }
+
     return  <>
                 
                 {/*<Image alt="google interpretation" width={100} height={100} src={image || "/"}/>*/}
@@ -93,31 +112,16 @@ const FivePointFeedback = ({answers, clicked, selected, width=SVGHEIGHT, height=
                     <g id="bighexagon">
                         <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex} style={{stroke: selected ? "white": "none"}}/>
                         <g><text x="73.922px" y="85.036px" className={styles.zerotext}></text></g>
-                        
-                        {/*<path d="M75.508,83.474L75.63,17.067" className={styles.scaleline} />
-                            <path d="M75.6,83.5L138.2,62.7" className={styles.scaleline}  />
-                            <path d="M75.4,83.1L114.4,136.8" className={styles.scaleline} />
-                            <path d="M75.3,83.3L36.6,137.0" className={styles.scaleline} />
-                            <path d="M75.8,83.3L12.8,63.3" className={styles.scaleline} />*/}
-                        
-                    </g>            
+                    </g>         
                 
-                    {/*<path id="innerhex" d={pathstr(0,"q1")} className={styles.innerhexline} style={{opacity: selected ? selected=="q1" ? 0.5 : 1 : 1}}/>
-                    <path id="innerhex" d={pathstr(72,"q2")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q2" ? 0.5 : 1: 1}}/>
-                    <path id="innerhex" d={pathstr(144,"q3")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q3" ?0.5 : 1: 1}}/>
-                    <path id="innerhex" d={pathstr(216,"q4")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q4" ? 0.5 : 1:1}}/>
-                        <path id="innerhex" d={pathstr(288,"q5")} className={styles.innerhexline} style={{ opacity: selected ? selected=="q5" ? 0.5 : 1: 1}}/>*/}
-
-                    {/*<path id="innerhex" ref={mypath} d={segpath(answers)} className={styles.innerhexline} />*/}
+                    {selected && renderLabels(_sindex)}
+                    {renderGhosts()}
                     {paths.map((p,i)=>{
                             return <path key={i} d={p} className={styles.innerhexline} style={{opacity}}></path>
                         })}
                         {_sindex >= 0 && <path d={paths[_sindex||0]} className={styles.innerhexline} style={{opacity: 1.0}}></path>}
 
-                    {/*<g>
-                        <rect x={30} y={133} width={130} rx={1} ry={1} height={3} style={{fill:"white"}}></rect>
-                        <circle id="dragcircle" cx={85} cy={134.5} r={6} style={{fill:"#282b55", stroke:"white"}}></circle>
-                    </g>*/}
+                   
                     </g>
                 </svg>
             </>

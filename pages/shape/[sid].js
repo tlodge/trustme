@@ -168,8 +168,6 @@ const QUESTIONS = {
 };
 
 const Shape = ({answers, id}) => {
-  //const {answers} = data;
-  console.log("have answers",answers);
 
   const [view, setView] = useState("shape");
 

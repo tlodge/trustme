@@ -12,6 +12,7 @@ import styles from '../styles/Home.module.scss'
 import * as d3 from 'd3';
 
 import {
+  selectChapterText,
   selectQuestions,
   selectAllQuestions,
   selectAnswers,
@@ -24,7 +25,8 @@ import {
   setAnswer,
   selectComplete,
   selectSavedId,
-  saveShape
+  saveShape,
+  selectAnsweredEveything
 } from '../features/questions/questionSlice'
 
 import CompositeShape from '../components/CompositeShape';
@@ -34,7 +36,8 @@ export default function Home(props) {
 
   const {deviceType} = props; 
   const [windowSize, setWindowSize] = useState({width:0,height:0})
-  const [lastUpdate, setLastUpdate] = useState(0);
+  const [ended, setEnded] = useState(false);
+
   const  [view, setView] = useState("player"); //player || feedback!
   
   const dispatch = useAppDispatch()
@@ -42,18 +45,31 @@ export default function Home(props) {
   const complete = useAppSelector(selectComplete);
   const id = useAppSelector(selectSavedId);
 
-  //const {shapes:points} = useAppSelector(selectShapes)
+  const chaptertext = useAppSelector(selectChapterText);
   const questions = useAppSelector(selectQuestions);
   const allquestions = useAppSelector(selectAllQuestions);
   const answers = useAppSelector(selectAnswers);
   const allanswers = useAppSelector(selectAllAnswers);
   const chapter = useAppSelector(selectChapter);
   const dimension = useAppSelector(selectDimension);
+  const answeredAll = useAppSelector(selectAnsweredEveything);
 
   const [question, setQuestion] = useState("q1");
   const [questionText, setQuestionText] = useState(questions.q1[0]);
-  const [latestAnswers, setLatestAnswers] = useState(answers);
 
+
+  const previous = Array.from(Array(chapter).keys()).reduce((acc, c)=>{
+    return {
+      ...acc,
+      [c] : allanswers[c],
+    }
+  },{});
+
+  const nextDimension = {
+    d1:"d2",
+    d2:"d3",
+    d3:"d1",
+  }
   const nextQuestion = {
     "d1":{
       "q1": "q2",
@@ -79,8 +95,16 @@ export default function Home(props) {
   }
 
   useEffect(()=>{
-    setLatestAnswers(allanswers);
-  },[lastUpdate])
+    if (ended){
+     
+       const nq = nextQuestion[dimension][question];
+       setQuestion(nq)
+       setQuestionText(questions[nq][0]);
+       if (answeredAll){
+          dispatch(setDimension(nextDimension[dimension]));
+       }
+    }
+  },[ended])
 
   useEffect(() => {
     setWindowSize({
@@ -110,6 +134,7 @@ export default function Home(props) {
   const _setAnswer = (answer)=>{
     setQuestionText(questions[question][Math.ceil(questionScale(answer))]);
     dispatch(setAnswer({chapter,dimension,question,answer}))
+    setEnded(false);
   }
 
   const threeDcolours = {
@@ -130,39 +155,41 @@ const renderNavigation = ()=>{
 }
 
 const renderDimensions = ()=>{
-  return <div>
+  return <div style={{background: "rgba(255,255,255,0.05)", padding:20, borderRadius:8}}>
     <div className={styles.questiontext}>{questionText}</div>
 
       <Slider dim={dimension} question={question} answer={answers[dimension][question]} setAnswer={(answer)=>_setAnswer(answer)} end={()=>{
-          setLastUpdate(Date.now());
-          const nq = nextQuestion[dimension][question];
-          setQuestion(nq)
-          setQuestionText(questions[nq][0]);
-        }
-      }/>
+         setEnded(true);
+      }}/>
       
       <div style={{display:"flex", flexDirection:"row"}}>
-          <ThreePointFeedback selected={dimension == "d1" ? question: null} answers={answers.d1} clicked={()=>{_setDimension("d1");setQuestion("q1")}}/>
-          <FourPointFeedback  selected={dimension == "d2" ? question: null} answers={answers.d2}  clicked={()=>{_setDimension("d2");setQuestion("q1")}}/>
-          <FivePointFeedback  selected={dimension == "d3" ? question: null} answers={answers.d3}  clicked={()=>{_setDimension("d3");setQuestion("q1")}}/>
+          <div className={styles.feedbackcontainer}>
+            <ThreePointFeedback selected={dimension == "d1" ? question: null} answers={answers.d1} previous={previous} clicked={()=>{_setDimension("d1");setQuestion("q1")}}/>
+            <div className={styles.feedbacktext} style={{opacity: dimension == "d1" ? 1.0: 0.5}}>Knowledge</div>
+          </div>
+          <div className={styles.feedbackcontainer}>
+            <FourPointFeedback  selected={dimension == "d2" ? question: null} answers={answers.d2}  previous={previous} clicked={()=>{_setDimension("d2");setQuestion("q1")}}/>
+            <div className={styles.feedbacktext} style={{opacity: dimension == "d2" ? 1.0: 0.5}}>Choice</div>
+          </div>
+          <div className={styles.feedbackcontainer}>
+            <FivePointFeedback  selected={dimension == "d3" ? question: null} answers={answers.d3} previous={previous}  clicked={()=>{_setDimension("d3");setQuestion("q1")}}/>
+            <div className={styles.feedbacktext} style={{opacity: dimension == "d3" ? 1.0: 0.5}}>Risk</div>
+          </div>
       </div>
       <div>
-    {renderNavigation()}
+        {renderNavigation()}
       </div>
           
   </div>
 }
 
 const renderFinal = ()=>{ 
-  return   <CompositeShape answers={latestAnswers} questions={allquestions} onPrint={()=>setView("print")}/> 
-  {/*<Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
-            <CompositeShape answers={latestAnswers} questions={allquestions}/>
-</Layout>*/}
+  return   <CompositeShape answers={allanswers} questions={allquestions} onPrint={()=>setView("print")}/> 
 }
 
 const renderFeedback = ()=>{
     if (windowSize.width > 0){
-      return <Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} onComplete={()=>setView("final")}>
+      return <Layout points={points} deviceType={deviceType} answers={allanswers} dimension={dimension} colours={threeDcolours} chapter={chapter} setChapter={_setChapter} setDimension={_setDimension} chapterText={chaptertext} onComplete={()=>setView("final")}>
         {renderDimensions()}
       </Layout>
     }
@@ -178,7 +205,7 @@ const renderFeedback = ()=>{
   }
 
   const renderPrint = ()=>{
-    return <PrintableShape answers={latestAnswers} questions={allquestions} id={id}/>
+    return <PrintableShape answers={allanswers} questions={allquestions} id={id}/>
   }
 
   return <>

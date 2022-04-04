@@ -28,12 +28,12 @@ const Slider = ({end, setAnswer, answer, dim}) => {
 
     return  <div style={{display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"row"}}>
                 <svg ref={slider} width={800} height={SVGHEIGHT} className={styles.trianglesvg}>
-                    <text className={styles.sliderlabel} x={40} y={30} style={{fill:"white", textAnchor:"middle"}}>Not at all</text>
+                    <text className={styles.sliderlabel} x={45} y={30} style={{fontSize:"0.9em",fill:"white", textAnchor:"middle"}}>Not at all</text>
                     <g>
                         <rect x={100} y={20} width={585} rx={5} ry={5} height={10} style={{opacity:0.3,fill:"white"}}></rect>
-                        <circle id="dragcircle" cx={ascale(answer)} cy={25} r={20} className={styles[`fill${dim}`]} style={{strokeWidth:2, stroke:"black"}}></circle>
+                        <circle id="dragcircle" cx={ascale(answer)} cy={25} r={17} className={styles[`fill${dim}`]} style={{strokeWidth:2, stroke:"black"}}></circle>
                     </g>
-                    <text x={755} y={30} className={styles.sliderlabel} style={{fill:"white", textAnchor:"middle"}}>Completely</text>
+                    <text x={750} y={30} className={styles.sliderlabel} style={{fontSize:"0.9em",fill:"white", textAnchor:"middle"}}>Completely</text>
                 </svg>
             </div>
 }
