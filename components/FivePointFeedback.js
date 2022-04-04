@@ -97,7 +97,7 @@ const FivePointFeedback = ({answers, previous, clicked, selected, width=SVGHEIGH
         return <g>
                 <text x={112} y={32} className={styles.label}  style={{opacity: index==0 ? 1.0 : 0.4}}  transform="rotate(36,105,30)">reliable</text>
                 <text x={130} y={114} className={styles.label}  style={{opacity: index==1 ? 1.0 : 0.4}}transform="rotate(-72,125,105)">my safety</text>
-                <text x={75} y={146.2}className={styles.label} style={{opacity: index==2 ? 1.0 : 0.4}} transform="rotate(0,75,146)">others' safety</text>
+                <text x={75} y={146.2}className={styles.label} style={{opacity: index==2 ? 1.0 : 0.4}} transform="rotate(0,75,146)">{`others' safety`}</text>
                 <text x={30} y={102} className={styles.label}  style={{opacity: index==3 ? 1.0 : 0.4}}transform="rotate(-108,25,105)">better</text>
                 <text x={40} y={40} className={styles.label}  style={{opacity: index==4 ? 1.0 : 0.4}}transform="rotate(-36,35,40)">liability</text>
             </g>
