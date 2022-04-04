@@ -20,9 +20,12 @@ const flattened = (data,id)=>{
 }
 
 export default function handler(req, res) {
+    console.log("seen a request to save");
   const id = Math.round(Math.random()  * 80000)
   const data = req.body;
   const items = flattened(data,id);
+  console.log("appending items", JSON.stringify(items));
   append(items);
+  console.log("returning", `${process.env.VERCEL_URL}/shape/${id}`);
   res.status(200).json({ id:  `${process.env.VERCEL_URL}/shape/${id}`})
 }
