@@ -144,6 +144,7 @@ export default function Home(props) {
 };
 
 const moveToFinal = ()=>{
+    console.log("dispatching save shape!!");
     dispatch(saveShape())
     setView("final")
 }

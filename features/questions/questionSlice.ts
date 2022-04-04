@@ -518,6 +518,7 @@ export const setAnswer = (payload): AppThunk => async (dispatch, getState) => {
 }
 
 export const saveShape = (): AppThunk => async (dispatch, getState) => {  
+    console.log("SVING SHAPE!!");
     const answers = getState().questions.answers;
     const result = await post("/api/save", answers);
     const {id} = result;
