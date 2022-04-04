@@ -19,13 +19,13 @@ const flattened = (data,id)=>{
     },[id,Date().toString(),Date.now()])
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
     console.log("seen a request to save");
   const id = Math.round(Math.random()  * 80000)
   const data = req.body;
   const items = flattened(data,id);
   console.log("appending items", JSON.stringify(items));
-  append(items);
+  await append(items);
   console.log("returning", `${process.env.VERCEL_URL}/shape/${id}`);
   res.status(200).json({ id:  `${process.env.VERCEL_URL}/shape/${id}`})
 }
