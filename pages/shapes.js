@@ -105,8 +105,9 @@ export default function Home(props) {
          dispatch(setDimension(nd));
          setQuestion("q1");
          setQuestionText(allquestions[chapter][nd]["q1"]);
-         console.log("SET COMPLETED TO TRUE");
-         setCompleted(true);
+         if (nd === "d1"){
+          setCompleted(true);
+         }
        }else{
         setQuestion(nq)
         setQuestionText(questions[nq][0]);
@@ -154,7 +155,6 @@ export default function Home(props) {
 };
 
 const moveToFinal = ()=>{
-    console.log("dispatching save shape!!");
     dispatch(saveShape())
     setView("final")
 }
@@ -169,9 +169,9 @@ const renderDimensions = ()=>{
 
 
   return <div style={{background: "rgba(255,255,255,0.05)", padding:20, borderRadius:8}}>
-    <div className={styles.questiontext} dangerouslySetInnerHTML={{__html:questionText}}></div>
+      <div className={styles.questiontext} dangerouslySetInnerHTML={{__html: completed ? "" : questionText}}></div>
 
-      <Slider dim={dimension} question={question} answer={answers[dimension][question]} setAnswer={(answer)=>_setAnswer(answer)} end={()=>{
+      <Slider dim={dimension} question={question} enabled={!completed} answer={answers[dimension][question]} setAnswer={(answer)=>_setAnswer(answer)} end={()=>{
          setEnded(true);
       }}/>
       
