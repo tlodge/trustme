@@ -230,7 +230,7 @@ const GalleryShape = ({ts, answers, id}) => {
     }
     const SVGWIDTH = 300; const SVGHEIGHT = 300;
     const [tx,ty] = [10,-32];
-    console.log("ts is", ts);
+   
     return <div style={{margin:40}}>
             {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
                 <g ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>

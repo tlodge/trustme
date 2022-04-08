@@ -13,14 +13,14 @@ export interface QuestionState {
 }
 
 const _chaptertext = {
-    0: "This is some chapter text for chapter one and it will give some information on what needs to be done",
-    1: "This is some chapter text for chapter two and it will give some information on what needs to be done",
-    2: "This is some chapter text for chapter three and it will give some information on what needs to be done",
-    3: "This is some chapter text for chapter four and it will give some information on what needs to be done",
-    4: "This is some chapter text for chapter five and it will give some information on what needs to be done",
-    5: "This is some chapter text for chapter six and it will give some information on what needs to be done",
-    6: "This is some chapter text for chapter seven and it will give some information on what needs to be done",
-    7: "This is some chapter text for chapter eight and it will give some information on what needs to be done",
+    0: "After each chapter we are going to ask your some questions. We will use your answers to build your Shape of Trust. Please use the slider the answer the questions.",
+    1: "You're on your way in the self-driving taxi! How do you feel about the taxi's ability to control its speed? Please use the slider to answer the questions below.",
+    2: "The taxi starts taking a different route to the one you usually take. How do you feel about the automatic navigation system? Use the sliders to answer the questions below.",
+    3: "An old, person-driven motorbike comes past breaking the speed limit. Because self-driving cars are all connected to each other they all slow down to let the biker pass safely—but how do you feel about being part of an extended network ecosystem?",
+    4: "In some circumstances self-driving cars may override what you want. In this example the car won't let you outside, even though the traffic isn't moving. How does the car's ability to override you make you feel?",
+    5: "The taxi manages to avoid hitting a child because the relevant Machine Learning model recognised the danger. Use the sliders to answer the questions about Machine Learning.",
+    6: "Self-driving cars rely on a wide range of different sensing technologies to operate effectively. Please use the sliders to answer questions about the car's sensors.",
+    7: "Autonomous systems like the self-driving taxi, are actually all around us. Lifts, check-outs, credit checking systems. It's important we figure out whether to trust them and why. Here is the Shape of Your Trust."
 };
 
 const initialState: QuestionState = {
@@ -28,164 +28,164 @@ const initialState: QuestionState = {
     questions: {
         0 : {
             "d1":{
-                "q1":["I understand what an AV is"],
-                "q2":["I understand why Ubler use AVs"],
-                "q3":["I know how AVs work"]
+                "q1":["I understand <em>what</em> self-driving vehicles are"],
+                "q2":["I am aware <em>why</em> Ublar (the taxi company) use self-driving vehicles"],
+                "q3":["I know <em>how</em> self-driving vehicles work"]
             },
             "d2":{
-                "q1":["I have a choice about using this AV"],
-                "q2":["I think the AV is useful to me"],
-                "q3":["I would prefer an AV to a non-autonomous vehicle"],
-                "q4":["I would recommend an AV to others"]
+                "q1":["I have the <em>option</em> <u>not</u> to use the self-driving taxi"],
+                "q2":["I see the <em>usefulness</em> of self-driving vehicles"],
+                "q3":["I <em>prefer</em> self-driving taxis to person-driven taxis"],
+                "q4":["I would <em>recommend</em> self-driving taxis to others"]
             },
             "d3":{
-                "q1":["The AV will get me to the shops"],
-                "q2":["I will be safe in this AV"],
-                "q3":["Others will be safe from the operation of this AV"],
-                "q4":["I think this AV will be safer than a taxi driven by a human"],
-                "q5":["I think if anything goes wrong during the AV experience, I won't be held responsible"]
+                "q1":["This self-driving taxi is more <em>reliable</em> than a person-driven one"],
+                "q2":["The self-driving taxi will keep <em><u>me</u> safe</em>"],
+                "q3":["The self-driving taxi will keep <em><u>others</u> safe</em>"],
+                "q4":["On balance the self-driving taxi is <em>less risky</em> than person-driven taxi"],
+                "q5":["If harm is caused because of the self-driving taxi then I will know who to <em>blame</em>"]
             }
         },
         1: {
             "d1":{
-                "q1":["I understand what AI speed control is"],
-                "q2":["I understand why this AV has AI speed control"],
-                "q3":["I understand how AI speed control works"]
+                "q1":["I know <em>what</em> the automatic speed control does"],
+                "q2":["I am aware <em>why</em> automatic speed control is neccessary"],
+                "q3":["I a understand <em>how</em> the automatic speed control works"]
             },
             "d2":{
-                "q1":["I have a choice about using this AI speed control"],
-                "q2":["I think the AI speed control is useful"],
-                "q3":["I would prefer an AV to use AI speed control"],
-                "q4":["I would recommend AI speed control to others"]
+                "q1":["I have the <em>option</em> to <u>disable</u> automatic speed control in the taxi"],
+                "q2":["I think automatic speed control is <em>useful</em> for the taxi"],
+                "q3":["I <em>prefer</em> self-driving vehicles that can control their speed automatically"],
+                "q4":["I would <em>recommend</em> that other self-driving vehicles have automatic speed control"]
             },
             "d3":{
-                "q1":["I think AI speed control will travel at a safe speed"],
-                "q2":["I think I will be safe at when the AI speed control changes speed"],
-                "q3":["I think others will be safe when the AI speed control changes speed"],
-                "q4":["I this AI speed control will be safer than a taxi driven by a human"],
-                "q5":["I think if anything goes wrong with the AI speed control, I will not be held responsible"]
+                "q1":["The automatic speed control is likely to work <em>reliably</em>"],
+                "q2":["Automatic speed control will keep <em>me safe</em> during my journey"],
+                "q3":["Automatic speed control will <em>be safe</em> for others while I'm travelling"],
+                "q4":["The automatic speed control will be <em>less risky</em> than a person controlling the speed"],
+                "q5":["If the speed control malfunctions, I know whose <em>fault</em> it will be"]
             }
         },
         2: {
             "d1":{
-                "q1":["I understand what the AV navigation is"],
-                "q2":["I understand why this AV uses AI navigation"],
-                "q3":["I know how AI navigation control works"]
+                "q1":["I am aware that the taxi can navigate on its own"],
+                "q2":["I appreciate <em>why</em> being able to navigate is important"],
+                "q3":["I understand <em>how</em> the automatic navigation system works"]
             },
             "d2":{
-                "q1":["I have a choice about this AV using AI navigation"],
-                "q2":["I think the AI navigation in an AV is useful"],
-                "q3":["I would prefer an AV to use AI navigation"],
-                "q4":["I would recommend AI navigation to others"]
+                "q1":["I have the <em>option</em> to override the taxi's automatic navigation"],
+                "q2":["The automatic navigation is a <em>useful</em> thing to have in this taxi"],
+                "q3":["I <em>prefer</em> automatic navigation to a human taxi driver navigating"],
+                "q4":["I would <em>recommend</em> automatic navigation to others"]
             },
             "d3":{
-                "q1":["I think the AI navigation will function as I expect"],
-                "q2":["I think I won't get lost with the use of AI navigation"],
-                "q3":["I think others will be safe due to the AV using AI navigation"],
-                "q4":["I think this AI navigation would do a better job than a taxi ride operated by a human"],
-                "q5":["I think if anything goes wrong with the AI navigation (i.e. get lost), I will not be held responsible"]
+                "q1":["I think the AI navigation will <em>reliably</em> get me to my destination"],
+                "q2":["Automatic navigation will <em>not put my safety</em> at risk"],
+                "q3":["Automatic navigation does <em>not pose any safety concerns</em> for others"],
+                "q4":["Compared to a human driver, automatic navigation is generally better"],
+                "q5":["If something goes wrong with navigation, I will know whose responsibility it was"]
             }
         },
         3:{
             "d1":{
-                "q1":["I understand what an autonomous ecosystem is"],
-                "q2":["I understand why there is an automomous ecosystem"],
-                "q3":["I know how automomous ecosystems work"]
+                "q1":["I know <em>what</em> it means for multiple cars to be networked with <u>each other</u>, with <u>companies</u>, the <u>highways agency</u>, <u>and beyond</u>!"],
+                "q2":["I understand <em>why</em> it is necessary to be part of a network 'ecosystem'"],
+                "q3":["I am aware <em>how</em> network ecosystems and data economies work"]
             },
             "d2":{
-                "q1":["I have a choice about whether I use an autonomous ecosystem"],
-                "q2":["I think that networks of systems are useful"],
-                "q3":["I would prefer for AV to be part of a network"],
-                "q4":["I would recommend others to use network-connected AVs"]
+                "q1":["I have the <em>option</em> to decide <u>not</u> to take part in this network ecosystem"],
+                "q2":["I think that network ecosystems are <em>useful</em>"],
+                "q3":["It is <em>better</em> to be part of a network ecosystem than not"],
+                "q4":["I would <em>recommend</em> others participate in network ecosystems too"]
             },
             "d3":{
-                "q1":["I think an autonomous ecosystem will function in a way that will avoid colliding into other vehicles on the road"],
-                "q2":["I think I will be safe as a user of an autonomous ecosystem"],
-                "q3":["I think the autonomous ecosystem will safely respond and avoid impact with other vehicles, if another vehicle loses control"],
-                "q4":["I think that AVs part of an autonomous ecosystem will be safer than a taxi ride operated by a human"],
-                "q5":["I think that if anything goes wrong within an autonomous ecosystem, I will not be held responsible"]
+                "q1":["I can <em>rely</em> on all aspects of the network ecosystem"],
+                "q2":["The network ecosystem will enhance <em>my safety</em>"],
+                "q3":["The network ecosystem will help keep <em>others safe</em>"],
+                "q4":["Cars which are part of the network ecosystem are better than those that are not"],
+                "q5":["If something goes wrong because of the network ecosystem, it is easy to figure out who is liable"]
             }
         },
         4:{
             "d1":{
-                "q1":["I understand what system override is"],
-                "q2":["I understand why there would be an option of system override"],
-                "q3":["I know how system override works"]
+                "q1":["I know that sometimes self-driving cars will override my instructions"],
+                "q2":["I understand <em>why</em> self-driving cars need to override my instructions"],
+                "q3":["I am aware <em>how</em> self-driving cars know when they should or should not override my instructions"]
             },
             "d2":{
-                "q1":["I have a choice about whether to use system override"],
-                "q2":["I think that system override is useful in an AV"],
-                "q3":["I would prefer to have the option of system override in my AV"],
-                "q4":["I would recommend others to use AVs which has a system override function"],
-               
+                "q1":["I have the <em>option</em> turn off the cars' ability to override me"],
+                "q2":["It is <em>useful</em> that self-driving cars can override my instructions"],
+                "q3":["On balance I <em>prefer</em> that self-driving cars can override instructions"],
+                "q4":["I would tell others that overriding instructions is a good thing, for a self-driving car"]
+
             },
             "d3":{
-                "q1":["I think that system override will stop things from going wrong"],
-                "q2":["I think that system override could prevent injury to me"],
-                "q3":["I think that system override could prevent injury to others"],
-                "q4":["I think I would make better decision then an AV and system override is vital"],
-                "q5":["I  think if anything goes wrong because system override was not available, I will not be held responsible"]
+                "q1":["Overriding my instructions the self-driving car more <em>reliable</em>"],
+                "q2":["Overriding my instructions will keep me safe"],
+                "q3":["Overriding my instructions will keep others safe"],
+                "q4":["Compared to my own decisions, the car's decisions will generally be <em>better</em>"],
+                "q5":["If the car makes a bad decision, it will be clear whose <em>responsible</em> for that decision"]
             }
         },
         5:{
             "d1":{
-                "q1":["I am confident about what Machine Learning is"],
-                "q2":["I am confident I know why AVs would use Machine Learning"],
-                "q3":["I am confident I know how Machine Learning works"],
+                "q1":["I know <em>what</em> Machine Learning is"],
+                "q2":["I appreciate <em>why</em> Machine learning is used in self-driving cars"],
+                "q3":["I understand <em>how</em> Machine Learning works"]
             },
             "d2":{
-                "q1":["I have a choice about whether the AV uses Machine Learning"],
-                "q2":["I think that Machine Learning is useful in an AV"],
-                "q3":["I would prefer to have Machine Learning used by my AV"],
-                "q4":["I would recommend others to use AVs which uses Machine Learning"],
-             
+                "q1":["Whilst riding in this taxi I have the <em>option</em> not to use Machine Learning"],
+                "q2":["For the purposes of my taxi ride, Machine Learning is <em>useful</em>"],
+                "q3":["On balance I <em>prefer</em> that Machine Learning is used in this taxi"],
+                "q4":["I would <em>recommend</em> Machine Learning to others riding in self-driving taxis"]
+
             },
             "d3":{
-                "q1":["I think that Machine Learning will enable the AV to avoid hazards"],
-                "q2":["I think that my safety will not be compromised due to the use of Machine Learning by the AV"],
-                "q3":["I think that others safety will not be compromised due to the use of Machine Learning by the AV"],
-                "q4":["I think that AVs using Machine Learning will be safer than a taxi ride operated by a human"],
-                "q5":["I think that if anything goes wrong because of the AV’s use of Machine Learning, I will not be held responsible"]
+                "q1":["Machine Learning is a <em>reliable</em>"],
+                "q2":["Machine Learning will <em>keep me safe</em>"],
+                "q3":["Machine Learning will <em>keep others safe</em>"],
+                "q4":["The decisions made based on Machine Learning will be <em>better</em> than decisions made by a human driver"],
+                "q5":["If something goes wrong with the Machine Learning, I will know who to hold <em>responsible</em>"]
             }
         },
         6:{
             "d1":{
-                "q1":["I understand what sensors are"],
-                "q2":["I understand why AVs would use sensors"],
-                "q3":["I know how sensors works"]
+                "q1":["I know <em>what</em> sensors the taxi uses"],
+                "q2":["I am aware <em>why</em> the taxi needs sensors"],
+                "q3":["I appreciate <em>how</em> the taxi's sensors work"]
             },
             "d2":{
-                "q1":["I have a choice about whether the AV uses sensors"],
-                "q2":["I think that sensors useful in an AV"],
-                "q3":["I  would prefer to have sensors used by my AV"],
-                "q4":["I would recommend others to use Avs which uses sensors"],
+                "q1":["I could <em>optionally</em> choose that the taxi does not use its sensors"],
+                "q2":["The sensors are <em>useful</em> for the taxi's operation"],
+                "q3":["On balance I think it is <em>preferable</em> that the taxi uses sensors"],
+                "q4":["I would tell others to use self-driving vehicles that are enabled with sensing technology"]
             },
             "d3":{
-                "q1":["I think that sensors will enable the AV to operate effectively in bad weather"],
-                "q2":["I think that my safety will not be compromised due to the use of Machine Learning by the AV"],
-                "q3":["I  think that others will be safe due to the use of sensors"],
-                "q4":["I  think that AVs using sensors will be safer than a taxi ride operated by a human in bad weather"],
-                "q5":["I think that if anything goes wrong because of the AV's use of sensors, I will not be held responsible"]
+                "q1":["The sensors are <em>reliable</em> <u>even</u> in bad weather"],
+                "q2":["The sensors will <em>keep me safe</em>"],
+                "q3":["The sensors will <em>keep others safe</em>"],
+                "q4":["The decisions made using the sensor data will be <em>better</em> than those made by a human"],
+                "q5":["If anything goes wrong with the sensors, I will know who to <em>blame</em>"]
             }
         },
         7:{
             "d1":{
-                "q1":["I understand what an AR is"],
-                "q2":["I understand why we would use ARs"],
-                "q3":["I know how an AR could work"],
+                "q1":["I understand <em>what</em> autonomous systems are"],
+                "q2":["I know <em>why</em> we use autonomous systems"],
+                "q3":["I am aware <em>how</em> autonomous systems work"]
             },
             "d2":{
-                "q1":["I have a choice about whether or not to use ARs"],
-                "q2":["I think that AR are useful"],
-                "q3":["I think that ARs are desirable"],
-                "q4":["I would recommend others to use ARs"],
+                "q1":["I have a <em>choice</em> about whether or not to use autonomous systems"],
+                "q2":["I think that autonomous systems are <em>useful</em>"],
+                "q3":["I think that autonomous systems are <em>desirable</em>"],
+                "q4":["I would <em>recommend</em> others use autonomous systems"]
             },
             "d3":{
-                "q1":["I think that AR will not 'normally' malfunction"],
-                "q2":["I think that my safety will not be compromised due to the use of an AR"],
-                "q3":["I think that others will be safe due to the use of ARs"],
-                "q4":["I think that ARs is better than a human doing the same job"],
-                "q5":["I  think that if anything goes wrong because of a malfunctioning AR, I will not be held responsible"]
+                "q1":["I think autonomous systems are <em>reliable</em>"],
+                "q2":["I think autonomous systems are generally <em>safe for me</em> to use"],
+                "q3":["I think autonomous systems are generally <em>safe for others</em> to use"],
+                "q4":["I think autonomous systems are generally <em>better</em> than humans at their jobs"],
+                "q5":["If someting goes wrong with an autonomous system, I know who will be <em>liable</em> for any harm caused"]
             }
         }
     }, 

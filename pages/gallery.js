@@ -1,10 +1,14 @@
 import { getAnswers,  } from '../lib/api';
 import GalleryShape from '../components/GalleryShape';
 import styles from '../styles/Gallery.module.scss';
+import { useRouter } from 'next/router'
 
 export default function Gallery({answers:_answers}) {
+    const router = useRouter()
+   
+    const {last=20} = router.query;
 
-    const images  = (_answers||[]).map((a,i)=>{
+    const images  = (_answers||[]).slice(-last).map((a,i)=>{
         const {ts, answers, id} = a;
         return <GalleryShape key={i} ts={ts} id={id} answers={answers}/>
     })
@@ -17,6 +21,7 @@ export default function Gallery({answers:_answers}) {
 }
 
 export async function getStaticProps(context) {
+ 
   const _answers = await getAnswers();
   const answers = _answers || [];
 

@@ -1,0 +1,15 @@
+* questions JSON has <em> and <u> tags in it...so, need to implement that somehow. [done]
+
+* On the triangle the how/why labels are the wrong way around [done]
+
+* The transitioning between shapes still doesn't quite run smoothly. It seems to be that when the 'next' shape becomes active (e.g., when I've completed the 3rd triangle question, and square becomes active) .. the last question from the triangle is still displayed until I click on the slider. [done]
+
+* Can we have the outline labels permanently displayed - I don't think it helps hiding them when the shape isn't active [done]
+
+* Speaking of the labels, can we change the text of these ones: prefer -> preference; utility -> usefulness; reliable -> reliability [done]
+
+* Can we... style the relevant text as buttons (relevant text would be, 'Next Chapter' and 'View Your Final Shape' and 'Reset') see attached example of styling .... no need to spend ages on it, just a border or something to make it a bit more obvious that it's clickable [done]
+
+* Once the final segment is completed... you can still click between the shapes (but then you can't really change the values) ... so, I guess we just need to disable any clicking on entirely, i.e., no clicking between the different shapes at any point [done]
+
+* Also, once the final segment is completed for each chapter, the triangle becomes 'active' again, and is highlighted... which is confusing. Either highlight ALL the shapes at this point (in some sort of signal that "you're done") or make sure none of them are highlighted [done]

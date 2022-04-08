@@ -2,8 +2,8 @@ import styles from '../styles/FivePoint.module.scss'
 import { fullpath, segpath, seppath, shapes } from '../utils/fivepoint';
 import React from 'react';
 const SVGHEIGHT = 300;
-const FivePointFeedback = ({answers, previous, clicked, selected, width=SVGHEIGHT, height=SVGHEIGHT}) => {
-    
+const FivePointFeedback = ({answers, previous, clicked, selected, width=SVGHEIGHT, height=SVGHEIGHT,  chaptercomplete=false, labels=false}) => {
+   
 
     const API_ENDPOINT = 'https://inputtools.google.com/request?ime=handwriting&app=autodraw&dbg=1&cs=1&oe=UTF-8';
     const SVG_ENDPOINT = 'https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/'
@@ -87,7 +87,7 @@ const FivePointFeedback = ({answers, previous, clicked, selected, width=SVGHEIGH
 
     const renderGhosts = ()=>{
         return Object.keys(previous||{}).map((k,i)=>{
-            return <path key={i} d={fullpath(previous[k].d2)} className={styles.ghost} style={{opacity}}></path> 
+            return <path key={i} d={fullpath(previous[k].d3)} className={styles.ghost} style={{opacity}}></path> 
         });
     }
 
@@ -95,7 +95,7 @@ const FivePointFeedback = ({answers, previous, clicked, selected, width=SVGHEIGH
     
 
         return <g>
-                <text x={112} y={32} className={styles.label}  style={{opacity: index==0 ? 1.0 : 0.4}}  transform="rotate(36,105,30)">reliable</text>
+                <text x={112} y={32} className={styles.label}  style={{opacity: index==0 ? 1.0 : 0.4}}  transform="rotate(36,105,30)">reliability</text>
                 <text x={130} y={114} className={styles.label}  style={{opacity: index==1 ? 1.0 : 0.4}}transform="rotate(-72,125,105)">my safety</text>
                 <text x={75} y={146.2}className={styles.label} style={{opacity: index==2 ? 1.0 : 0.4}} transform="rotate(0,75,146)">{`others' safety`}</text>
                 <text x={30} y={102} className={styles.label}  style={{opacity: index==3 ? 1.0 : 0.4}}transform="rotate(-108,25,105)">better</text>
@@ -110,16 +110,16 @@ const FivePointFeedback = ({answers, previous, clicked, selected, width=SVGHEIGH
                     
                     <g transform="translate(0,2)">
                     <g id="bighexagon">
-                        <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex} style={{stroke: selected ? "white": "none"}}/>
+                        <path id="outerhex" d="M75.482,17.152L138.285,62.869L114.297,136.839L36.668,136.839L12.679,62.869L75.482,17.152Z" className={styles.outerhex} style={{stroke: selected || chaptercomplete ? "white": "none"}}/>
                         <g><text x="73.922px" y="85.036px" className={styles.zerotext}></text></g>
                     </g>         
                 
-                    {selected && renderLabels(_sindex)}
+                    {/*selected &&*/ labels && renderLabels(_sindex)}
                     {renderGhosts()}
                     {paths.map((p,i)=>{
                             return <path key={i} d={p} className={styles.innerhexline} style={{opacity}}></path>
                         })}
-                        {_sindex >= 0 && <path d={paths[_sindex||0]} className={styles.innerhexline} style={{opacity: 1.0}}></path>}
+                        { _sindex >= 0  && <path d={paths[_sindex||0]} className={styles.innerhexline} style={{opacity: 1.0}}></path>}
 
                    
                     </g>
