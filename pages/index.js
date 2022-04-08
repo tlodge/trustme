@@ -19,7 +19,7 @@ export default function Gallery({answers:_answers}) {
                 
                   <div className={styles.heading}>{pages[page]}</div>
                   {page < pages.length - 1 && <div onClick={_setPage} className={styles.button}>Next</div>}
-                  {page == pages.length - 1 && <Link href="/shapes" className={styles.button}>GO</Link>}
+                  {page == pages.length - 1 && <Link href="/shapes"><a className={styles.button}>GO</a></Link>}
                 
             </div>
           </div>
