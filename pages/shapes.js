@@ -138,6 +138,7 @@ export default function Home(props) {
     _setDimension("d1");
     dispatch(setChapter(chapter));
     setView("player");
+    setCompleted(false);
   }
 
   const questionScale = d3.scaleLinear().clamp(true).domain([0,100]).range([0, questions.q1.length-1]);
