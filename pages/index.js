@@ -18,7 +18,7 @@ export default function Gallery({answers:_answers}) {
       setPage(page++)
     }
     return <div className={styles.container}>
-            <div onClick={_setPage} className={styles.shapecontainer}>
+            <div onClick={_setPage} className={styles.shapecontainer} style={{padding:20}}>
                 
                   <div className={styles.heading}>{pages[page]}</div>
                   {page < pages.length - 1 && <div onClick={_setPage} className={styles.button}>Next</div>}
