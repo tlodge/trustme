@@ -9,6 +9,7 @@ const useVideoPlayer = (videoElement) => {
   });
 
   const togglePlay = () => {
+   
     setPlayerState({
       ...playerState,
       isPlaying: !playerState.isPlaying,
@@ -16,7 +17,7 @@ const useVideoPlayer = (videoElement) => {
   };
 
   useEffect(() => {
-      console.log('player state is', playerState);
+     
     playerState.isPlaying
       ? videoElement.current.play()
       : videoElement.current.pause();
@@ -41,11 +42,10 @@ const useVideoPlayer = (videoElement) => {
   };
 
   const handleOnPlay = (event)=>{
-      console.log("ok seen handle on play", event);
+     
   }
 
   const handleOnEnded= (cb)=>{
-    console.log("ok seen handle on ENDED!");
     cb();
   }
 
