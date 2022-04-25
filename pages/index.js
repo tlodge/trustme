@@ -3,8 +3,11 @@ import {useState} from 'react';
 import Link from 'next/link'
 const pages = [
   "Welcome to the SHAPE OF TRUST project",
-  "We are going to show you a story about taking a taxi",
-  "Ready?"
+  "We are trying to understand how we learn to trust automated systems",
+  "To do this we are going to show you a story about taking a self-driving taxi",
+  "After each stage of the journey we will ask you some questions",
+  "By the end of the journey you will have have created your own unique SHAPE OF TRUST - and you can take it home with you!",
+  "Are you ready? When you press go the video will load, click on it to play it"
 ]
 
 export default function Gallery({answers:_answers}) {

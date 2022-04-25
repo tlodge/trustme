@@ -13,14 +13,14 @@ export interface QuestionState {
 }
 
 const _chaptertext = {
-    0: "After each chapter we are going to ask your some questions. We will use your answers to build your Shape of Trust. Please use the slider the answer the questions.",
+    0: "After each chapter we are going to ask you some questions. We will use your answers to build your Shape of Trust. Please use the slider the answer the questions.",
     1: "You're on your way in the self-driving taxi! How do you feel about the taxi's ability to control its speed? Please use the slider to answer the questions below.",
-    2: "The taxi starts taking a different route to the one you usually take. How do you feel about the automatic navigation system? Use the sliders to answer the questions below.",
-    3: "An old, person-driven motorbike comes past breaking the speed limit. Because self-driving cars are all connected to each other they all slow down to let the biker pass safely—but how do you feel about being part of an extended network ecosystem?",
-    4: "In some circumstances self-driving cars may override what you want. In this example the car won't let you outside, even though the traffic isn't moving. How does the car's ability to override you make you feel?",
-    5: "The taxi manages to avoid hitting a child because the relevant Machine Learning model recognised the danger. Use the sliders to answer the questions about Machine Learning.",
-    6: "Self-driving cars rely on a wide range of different sensing technologies to operate effectively. Please use the sliders to answer questions about the car's sensors.",
-    7: "Autonomous systems like the self-driving taxi, are actually all around us. Lifts, check-outs, credit checking systems. It's important we figure out whether to trust them and why. Here is the Shape of Your Trust."
+    /*2: "The taxi starts taking a different route to the one you usually take. How do you feel about the automatic navigation system? Use the sliders to answer the questions below.",*/
+    2: "An old, person-driven motorbike comes past breaking the speed limit. Because self-driving cars are all connected to each other they all slow down to let the biker pass safely—but how do you feel about being part of an extended network ecosystem?",
+    3: "In some circumstances self-driving cars may override what you want. In this example the car won't let you outside, even though the traffic isn't moving. How does the car's ability to override you make you feel?",
+    4: "The taxi manages to avoid hitting a child because the relevant Machine Learning model recognised the danger. Use the sliders to answer the questions about Machine Learning.",
+   /* 6: "Self-driving cars rely on a wide range of different sensing technologies to operate effectively. Please use the sliders to answer questions about the car's sensors.",*/
+    5: "Autonomous systems like the self-driving taxi, are actually all around us. Lifts, check-outs, credit checking systems. It's important we figure out whether to trust them and why. Here is the Shape of Your Trust."
 };
 
 const initialState: QuestionState = {
@@ -66,7 +66,7 @@ const initialState: QuestionState = {
                 "q5":["If the speed control malfunctions, I know whose <em>fault</em> it will be"]
             }
         },
-        2: {
+        /*2: {
             "d1":{
                 "q1":["I am aware that the taxi can navigate on its own"],
                 "q2":["I appreciate <em>why</em> being able to navigate is important"],
@@ -85,8 +85,8 @@ const initialState: QuestionState = {
                 "q4":["Compared to a human driver, automatic navigation is generally better"],
                 "q5":["If something goes wrong with navigation, I will know whose responsibility it was"]
             }
-        },
-        3:{
+        },*/
+        2:{
             "d1":{
                 "q1":["I know <em>what</em> it means for multiple cars to be networked with <u>each other</u>, with <u>companies</u>, the <u>highways agency</u>, <u>and beyond</u>!"],
                 "q2":["I understand <em>why</em> it is necessary to be part of a network 'ecosystem'"],
@@ -106,7 +106,7 @@ const initialState: QuestionState = {
                 "q5":["If something goes wrong because of the network ecosystem, it is easy to figure out who is liable"]
             }
         },
-        4:{
+        3:{
             "d1":{
                 "q1":["I know that sometimes self-driving cars will override my instructions"],
                 "q2":["I understand <em>why</em> self-driving cars need to override my instructions"],
@@ -127,7 +127,7 @@ const initialState: QuestionState = {
                 "q5":["If the car makes a bad decision, it will be clear whose <em>responsible</em> for that decision"]
             }
         },
-        5:{
+        4:{
             "d1":{
                 "q1":["I know <em>what</em> Machine Learning is"],
                 "q2":["I appreciate <em>why</em> Machine learning is used in self-driving cars"],
@@ -148,7 +148,7 @@ const initialState: QuestionState = {
                 "q5":["If something goes wrong with the Machine Learning, I will know who to hold <em>responsible</em>"]
             }
         },
-        6:{
+       /* 6:{
             "d1":{
                 "q1":["I know <em>what</em> sensors the taxi uses"],
                 "q2":["I am aware <em>why</em> the taxi needs sensors"],
@@ -167,8 +167,8 @@ const initialState: QuestionState = {
                 "q4":["The decisions made using the sensor data will be <em>better</em> than those made by a human"],
                 "q5":["If anything goes wrong with the sensors, I will know who to <em>blame</em>"]
             }
-        },
-        7:{
+        },*/
+        5:{
             "d1":{
                 "q1":["I understand <em>what</em> autonomous systems are"],
                 "q2":["I know <em>why</em> we use autonomous systems"],
@@ -310,7 +310,7 @@ const initialState: QuestionState = {
                 "q5":-1,
             }
         },
-        6:{
+       /* 6:{
             "d1":{
                 "q1":-1,
                 "q2":-1,
@@ -349,7 +349,7 @@ const initialState: QuestionState = {
                 "q4":-1,
                 "q5":-1,
             }
-        },
+        },*/
     },
     chapter: 0,
     dimension: "d1",

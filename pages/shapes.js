@@ -160,7 +160,7 @@ const moveToFinal = ()=>{
     setView("final")
 }
 const renderNavigation = ()=>{
-  if (chapter >= 7){
+  if (chapter >= 5){
     return <div className={styles.nextChapter} onClick={moveToFinal}>{complete ? "View your final shape" : ""}</div>
   }
   return <div className={styles.nextChapter} onClick={()=>{_setChapter(chapter+1)}}>{complete ? "Go to next chapter" : ""}</div>

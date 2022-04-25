@@ -12,7 +12,7 @@ const Layout = ({children, chapter, colours, answers, setChapter, setDimension, 
 
     const chapters = ()=>{
         
-        return [0,1,2,3,4,5,6,7].map((c)=>{
+        return [0,1,2,3,4,5].map((c)=>{
            
             return <div key={c} onClick={()=>setChapter(c)} style={{display:"flex", flexDirection:"row", paddingTop:10, paddingBottom:10}}>
                         <div style={{padding:7}}><ThreePointFeedback selected={false} answers={answers[c].d1} clicked={()=>{}} width={50} height={50}/></div>

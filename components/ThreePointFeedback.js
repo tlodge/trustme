@@ -21,7 +21,7 @@ const ThreePointFeedback = ({answers, previous, selected, clicked, width=SVGHEIG
 
     const _sindex = selected ? selected[1]-1 : -1;
     const paths = seppath(answers);
-    const opacity = selected ? 0.3 : 1;
+    const opacity = selected && !chaptercomplete ? 0.3 : 1;
 
     //deviceType == "mobile" ? height - (width) : height-270;
     return     <svg  onClick={clicked} width={width} height={height} viewBox="0 0 150 150" className={styles.trianglesvg}>
