@@ -50,7 +50,7 @@ const initialState: QuestionState = {
             "d1":{
                 "q1":["I know <em>what</em> the automatic speed control does"],
                 "q2":["I am aware <em>why</em> automatic speed control is neccessary"],
-                "q3":["I a understand <em>how</em> the automatic speed control works"]
+                "q3":["I understand <em>how</em> the automatic speed control works"]
             },
             "d2":{
                 "q1":["I have the <em>option</em> to <u>disable</u> automatic speed control in the taxi"],
@@ -517,8 +517,7 @@ export const setAnswer = (payload): AppThunk => async (dispatch, getState) => {
   //  }
 }
 
-export const saveShape = (): AppThunk => async (dispatch, getState) => {  
-    console.log("SVING SHAPE!!");
+export const saveShape = (): AppThunk => async (dispatch, getState) => { 
     const answers = getState().questions.answers;
     const result = await post("/api/save", answers);
     const {id} = result;
