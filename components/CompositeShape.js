@@ -20,6 +20,7 @@ import {
     toggleOption,
     setOptions,
 } from '../features/shapes/shapeSlice'
+import { select } from 'd3';
 
 const COLOURS = ["#fff", "#000", "#c8c8c8", "#282b55", "#bb2929","#e19c38","#61b359"];
 
@@ -47,16 +48,14 @@ const filterEmpty = (_answers)=>{
 
 const CompositeShape = ({questions, answers, averages, onPrint}) => {
    
-    console.log("nice am here", averages);
-
     const images = useAppSelector(selectImages);
     const options = useAppSelector(selectStyles);
-
     const dispatch = useAppDispatch()
     const [data, _setData] = React.useState(filterEmpty(answers));
-    const [controls, showControls] = React.useState(false);
     const [tt, setTT] = React.useState({question:"",pos:[0,0]});
-   
+    const [filters, setFilters] = React.useState({d1:true, d2:true, d3:true});
+    const [segment, selectSegment] = React.useState();
+
     const dataRef = useRef(data);
     
 
@@ -126,13 +125,12 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
         const cp = center[dimension];
         return [am,cp[0],cp[1]];
     }   
-    const TRANSDELAY = 100;
+    const TRANSDELAY = 10;
     const YDELTA = 30;
 
-    
-    //Quite neat nested interleaving with d3
-    const interleaved = useD3((root)=>{
-        
+
+
+    const renderShape = (root, grid)=>{
         const {x:domX,y:domY} = root.node().getBoundingClientRect();
 
         const mydata = dataRef.current;
@@ -167,12 +165,12 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 const [x,y] = translatefn(dimindx[d.dim]);
                 const [x1,y1] = gridtranslate(dimindx[d.dim],d.chapter);
                 if (options.rotate){
-                    return options.grid ? `rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
+                    return grid ? `rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
                 }else{
-                    return options.grid ? `translate(${x+80+x1},${y-150+d.chapter*150})` : `translate(${x},${y+50}) `
+                    return grid ? `translate(${x+80+x1},${y-150+d.chapter*150})` : `translate(${x},${y+50}) `
                 }
             })
-            .transition().duration(500).delay(function(d, i) {
+            .transition().duration(50).delay(function(d, i) {
                 return (d.chapter* 3) * TRANSDELAY + (dimindx[d.dim]*TRANSDELAY)
             })
             .attr("transform", (d,i)=>{
@@ -180,12 +178,15 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 const [x,y] = translatefn(dimindx[d.dim]);
                 const [x1,y1] = gridtranslate(dimindx[d.dim],d.chapter);
                 if (options.rotate){
-                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
+                    return grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
                 }else{
-                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x+50},${y+YDELTA}) `
+                    return grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x+50},${y+YDELTA}) `
                 }
             })
             .style("fill", (d,i)=>{
+                if (segment && segment.chapter==d.chapter && segment.question==d.question && segment.dimension==d.dim){
+                    return 'white';
+                }
                 return options.fill ? cli[i] : "none"
             })
             .attr("d", (d,i)=>{
@@ -196,13 +197,16 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
             })
             
             .style("fill-opacity", (d,i)=>{
-                return options.grid ? 1.0 : options.fillopacity;
+                if (!grid && segment && segment.chapter==d.chapter && segment.question==d.question && segment.dimension==d.dim){
+                    return 1.0;
+                }
+                return grid ? 1.0 : options.fillopacity;
             })
             .style("stroke-opacity", (d,i)=>{
                 return options.strokeopacity;
             })
             .style("opacity", (d,i)=>{
-                return options[d.dim] ? 1.0 : 0.0
+                return grid || filters[d.dim] ? 1.0 : 0.0
             })
     
         
@@ -213,33 +217,54 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 return fni[dimindx[d.dim]](d.d)[d.question];
             })
             .on("mouseover", (e,d)=>{
-                const question = questions[d.chapter][d.dim][`q${[d.question+1]}`][0];
-                const rank = Math.round(d.d[`q${d.question+1}`]);
-                const average = averages[d.chapter][d.dim][`q${[d.question+1]}`];
-                const colour = d.dim === "d1" ? "#e5efc1" : d.dim === "d2" ? "#a2d5ab" : "#39aea9";
-                setTT({colour, question: `${question} <div style="padding:10px 0px 10px 00px"> your score: <strong>${rank}</strong> average: <strong> ${average}</strong></div>`, pos:[domX+e.offsetX-50,domY+e.offsetY-50]});
+                if (grid){
+                    const question = questions[d.chapter][d.dim][`q${[d.question+1]}`][0];
+                    const rank = Math.round(d.d[`q${d.question+1}`]);
+                    const average = averages[d.chapter][d.dim][`q${[d.question+1]}`];
+                    const colour = d.dim === "d1" ? "#e5efc1" : d.dim === "d2" ? "#a2d5ab" : "#39aea9";
+                    setTT({colour, question: `${question} <div style="padding:10px 0px 10px 00px"> your score: <strong>${rank}%</strong> average: <strong> ${average}%</strong></div>`, pos:[domX+e.offsetX-50,domY+e.offsetY-50]});
+                    setFilters({...{"d1":false, "d2":false, "d3":false},[d.dim]:true})
+                    selectSegment({chapter:d.chapter, dimension:d.dim, question:d.question});
+                }
             }).on("mouseout", (d,i)=>{
-                setTT({question: "", pos:[0,0]});
+                if (grid){
+                    setTT({question: "", pos:[0,0]});
+                    setFilters({"d1":true, "d2":true, "d3":true})
+                    selectSegment();
+                }
             })
             .transition().duration(500).delay(function(d, i) {
                 return (d.chapter* 3) * TRANSDELAY + (dimindx[d.dim]*TRANSDELAY)
             })
             .style("fill-opacity", (d,i)=>{
-                return options.grid ? 1.0 : options.fillopacity;
+                if (segment && segment.chapter==d.chapter && segment.question==d.question && segment.dimension==d.dim){
+                    return 1.0;
+                }
+                if (!grid && segment && segment.dimension==d.dim){
+                    return 0.1;
+                }
+                return grid ? 1.0 : options.fillopacity;
             })
             .style("stroke-opacity", (d,i)=>{
                 return options.strokeopacity;
             })
             .style("stroke", (d,i)=>{
+                if (segment && segment.chapter==d.chapter && segment.question==d.question && segment.dimension==d.dim){
+                    return 'black';
+                }
                 return options[`${d.dim}stroke`] || "none" 
             })
             .style("stroke-width", (d,i)=>{
+                
                 return options.strokewidth;
             })
             .style("opacity", (d,i)=>{
-                return options[d.dim] ? 1.0 : 0.0
+                return grid || filters[d.dim] ? 1.0 : 0.0
             })
             .style("fill", (d,i)=>{
+                if (segment && segment.chapter==d.chapter && segment.question==d.question && segment.dimension==d.dim){
+                    return 'white';
+                }
                 return options.fill ? options[`${d.dim}fill`] ||cli[i] : "none"
             }) 
             
@@ -249,13 +274,21 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 const [x,y] = translatefn(dimindx[d.dim]);
                 const [x1,y1] = gridtranslate(dimindx[d.dim],d.chapter);
                 if (options.rotate){
-                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
+                    return grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150}) rotate(${rotation[0]},${rotation[1]},${rotation[2]})` : `scale(1.0) translate(${x},${y+YDELTA}) rotate(${rotation[0]},${rotation[1]},${rotation[2]}) `
                 }else{
-                    return options.grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x},${y+YDELTA}) `
+                    return grid ? `scale(0.2) translate(${x+80+x1},${y-150+d.chapter*150})` : `scale(1.0) translate(${x},${y+YDELTA}) `
                 }
             })
 
-    }, [data, options, tt])
+    }
+
+    const combined = useD3((root)=>{
+        renderShape(root, false)
+    }, [data, options, tt, filters, segment]);
+    //Quite neat nested interleaving with d3
+    const interleaved = useD3((root)=>{
+        renderShape(root, true);   
+    }, [data, options, tt, segment])
 
     const _toggleOption = (attr)=>{
         dispatch(toggleOption(attr));
@@ -368,20 +401,20 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     const renderChapterLabels = ()=>{
         return [0,1,2,3,4,5].map(c=>{
             return <g key={c}>
-                    <circle cx={7} cy={-34 + (c*31)} r={6} style={{stroke:"#fff", strokeWidth:1}}></circle>
-                    <image  xlinkHref={`/thumbs/c${c+1}a.png`}  width="12px" height="12px"x={1} y={-40 + (c*31)}  />
+                    <circle cx={7} cy={(c*31)} r={6} style={{stroke:"#fff", strokeWidth:1}}></circle>
+                    <image  xlinkHref={`/thumbs/c${c+1}a.png`}  width="12px" height="12px"x={1} y={-6 + (c*31)}  />
                    
                 </g>
         })
     }
     
     const renderGridAxes = ()=>{
-        return  <g className={styles.gridcategories}>
+        return null;  {/*<g className={styles.gridcategories}>
                     {options.grid && renderChapterLabels()}
                     <text onClick={()=>_toggleOption("d1")} x={40} y={205} style={{opacity: options["d1"] ? 1 : 0.2, fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>knowledge</text>
                     <text onClick={()=>_toggleOption("d2")} x={77} y={205} style={{opacity: options["d2"] ? 1 : 0.2,fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>choice</text>
                     <text onClick={()=>_toggleOption("d3")} x={112} y={205} style={{opacity: options["d3"] ? 1 : 0.2,fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>risk</text>
-                </g>
+    </g>*/}
     }
 
    
@@ -399,9 +432,10 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
            
         })
     }
-    const SVGWIDTH = 450; const SVGHEIGHT = 800;
-    const tx = options.grid ? 10 : 15;
-    const ty = options.grid ? -15 :  0;
+    const SVGWIDTH = 450; const SVGHEIGHT = 600;
+    const SVGCOMPOSITEWIDTH = 450; const SVGCOMPOSITEHEIGHT = 450;
+    const tx = 10;
+    const ty = 15;
 
     const tooltipstyle = {
         left:tt.pos[0],
@@ -411,26 +445,21 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
 
     const renderScreenView = ()=>{
             return <div style={{display:"flex", flexDirection:"column"}}>
-                
-                <div style={{display:"flex", flexDirection:"row", margin:20}}>
-                    {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
-                        
-                        <g onClick={()=>_toggleOption("grid")} ref={interleaved} id="container" transform={`translate(${tx},${ty})`}>
-
-                            
-                        </g>
+                    
+                   
+                   
+                    {<svg  width={SVGCOMPOSITEWIDTH} height={SVGCOMPOSITEHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
+                        <g ref={combined} id="container" transform={`translate(${0},${-30})`}></g>
                         {renderGridAxes()}
                     </svg>}
-                </div>
-                {options.grid && tt.pos[0] > 0 && tt.pos[1] > 0 && <div className={styles.tooltip}  style={tooltipstyle} dangerouslySetInnerHTML={{__html:tt.question}}></div>}
-                <div style={{color:"white", fontSize:20, margin: "0px 0px 30px 190px"}} onClick={()=>_toggleOption("grid")}>
-                    {`${options.grid? "view my shape" : "view as grid"}`}
-                </div>
-                <img target="_blank" onClick={()=>onPrint()} alt={"print image"} src={"/print.png"} width={22} height={22}/>
-                {/*<div style={{textAlign:"center", color:"white", padding:7}} onClick={print}>print!</div>*/}
-                {/*<div style={{textAlign:"center", color:"white", padding:7}} onClick={save}>save!</div>*/}
-                {/*!printView &&  <div className={styles.stylecontainer} style={{textAlign:"center", color:"#171834", padding:7}} onClick={()=>{showControls(!controls)}}>style</div>*/}
-                {/*controls && !printView && renderControls()*/}                     
+                    {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
+                        <g ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
+                        {renderChapterLabels()}
+                    </svg>}
+                   
+               
+                {tt.pos[0] > 0 && tt.pos[1] > 0 && <div className={styles.tooltip}  style={tooltipstyle} dangerouslySetInnerHTML={{__html:tt.question}}></div>}
+                <img target="_blank" onClick={()=>onPrint()} alt={"print image"} src={"/print.png"} width={22} height={22}/>         
             </div>
     }
   
