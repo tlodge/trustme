@@ -19,6 +19,19 @@
     background: $gallerybackground;
 }
 
+.tooltip{
+    position:absolute;  
+    background: $gallerybackground;
+    border: 2px solid white; 
+    border-radius: 5px;
+    width: 300px;
+    padding:10px;
+    color: black;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    font-size:0.9em;
+
+}
+
 @media print {
     .square{
         display: none;
