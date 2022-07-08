@@ -20,8 +20,7 @@ import {
     toggleOption,
     setOptions,
 } from '../features/shapes/shapeSlice'
-import { select } from 'd3';
-import { compose } from '@reduxjs/toolkit';
+
 
 const COLOURS = ["#fff", "#000", "#c8c8c8", "#282b55", "#bb2929","#e19c38","#61b359"];
 
@@ -497,21 +496,21 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                      
                     </svg>}
                         <div style={{display:"flex", flexDirection:"row"}}>
-                            <div style={{display: "flex", flexDirection:"column", padding:20}}>
+                            <div onMouseEnter={()=>setFilters({d1:true, d2:false, d3:false})} onMouseLeave={()=>setFilters({d1:true, d2:true, d3:true})}  style={{display: "flex", flexDirection:"column", padding:20}}>
                                 <div className={styles.summary}>You have</div>
                                 <div className={styles.summarycontainer}>
                                     <div className={styles.subknowledge}>{aggregatemsgs.d1[0]}</div>
                                     <div className={styles.subknowledge}>{aggregatemsgs.d1[1]}</div>
                                 </div>
                             </div>
-                            <div style={{display: "flex", flexDirection:"column", padding:20}}>
+                            <div onMouseEnter={()=>setFilters({d1:false, d2:true, d3:false})} onMouseLeave={()=>setFilters({d1:true, d2:true, d3:true})}  style={{display: "flex", flexDirection:"column", padding:20}}>
                                 <div className={styles.summary}>You want</div>
                                 <div className={styles.summarycontainer}>
                                 <div className={styles.subknowledge}>{aggregatemsgs.d2[0]}</div>
                                 <div className={styles.subknowledge}>{aggregatemsgs.d2[1]}</div>
                                 </div>
                             </div>
-                            <div style={{display: "flex", flexDirection:"column", padding:20}}>
+                            <div onMouseEnter={()=>setFilters({d1:false, d2:false, d3:true})} onMouseLeave={()=>setFilters({d1:true, d2:true, d3:true})}  style={{display: "flex", flexDirection:"column", padding:20}}>
                                 <div className={styles.summary}>You see</div> 
                                 <div className={styles.summarycontainer}>
                                     <div className={styles.subknowledge}>{aggregatemsgs.d3[0]} </div>
