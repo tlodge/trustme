@@ -54,6 +54,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     const [data, _setData] = React.useState(filterEmpty(answers));
     const [tt, setTT] = React.useState({question:"",pos:[0,0]});
     const [filters, setFilters] = React.useState({d1:true, d2:true, d3:true});
+    const [cfilters, setCFilters] = React.useState([true,true,true,true,true,true]);
     const [segment, selectSegment] = React.useState();
 
     const dataRef = useRef(data);
@@ -258,7 +259,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 return options.strokeopacity;
             })
             .style("opacity", (d,i)=>{
-                return grid || filters[d.dim] ? 1.0 : 0.0
+                return grid || filters[d.dim] ?  cfilters[d.chapter] ? 1.0 : 0.0 : 0.0;
             })
     
         
@@ -312,7 +313,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 return options.strokewidth;
             })
             .style("opacity", (d,i)=>{
-                return grid || filters[d.dim] ? 1.0 : 0.0
+                return grid || filters[d.dim] ?  cfilters[d.chapter] ? 1.0 : 0.0 : 0.0;
             })
             .style("fill", (d,i)=>{
                 if (segment && segment.chapter==d.chapter && segment.question==d.question && segment.dimension==d.dim){
@@ -337,7 +338,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
 
     const combined = useD3((root)=>{
         renderShape(root, false)
-    }, [data, options, tt, filters, segment]);
+    }, [data, options, tt, filters, cfilters, segment]);
 
     //Quite neat nested interleaving with d3
     const interleaved = useD3((root)=>{
@@ -454,9 +455,9 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
 
     const renderChapterLabels = ()=>{
         return [0,1,2,3,4,5].map(c=>{
-            return <g key={c}>
+            return <g key={c}  onMouseEnter={()=>{setCFilters([c==0,c==1,c==2,c==3,c==4,c==5])}} onMouseLeave={()=>setCFilters([true,true,true,true,true,true])}>
                     <circle cx={7} cy={(c*31)} r={6} style={{stroke:"#fff", strokeWidth:1}}></circle>
-                    <image  xlinkHref={`/thumbs/c${c+1}a.png`}  width="12px" height="12px"x={1} y={-6 + (c*31)}  />
+                    <image xlinkHref={`/thumbs/c${c+1}a.png`}  width="12px" height="12px"x={1} y={-6 + (c*31)}  />
                    
                 </g>
         })
