@@ -32,6 +32,29 @@
 
 }
 
+.summary{
+    color: white;
+    margin:10px;
+    font-weight: 700;
+    font-size: 2em;
+    font-family: 'Headline-Light';
+    letter-spacing: 3px;
+}
+
+.summarycontainer{
+    margin-top: 0px;
+}
+.subknowledge{
+    color: white;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.subchoice{
+    color: white;
+    font-size: 3.1em;
+    text-align: center;
+}
 @media print {
     .square{
         display: none;

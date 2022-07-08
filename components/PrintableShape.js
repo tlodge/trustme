@@ -235,7 +235,7 @@ const PrintableShape = ({answers, id}) => {
                 
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", margin:0}}>
                     <div style={{position:"absolute", top: 280, left: 24}}>
-                        <QRCode value={id} size={44}/>
+                        <QRCode value={id} size={74}/>
                     </div>
                     <svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
                         <g ref={interleaved} id="container" transform={`translate(${tx},${ty}) rotate(90,109.5,90.5)`}></g>

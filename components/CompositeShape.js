@@ -21,6 +21,7 @@ import {
     setOptions,
 } from '../features/shapes/shapeSlice'
 import { select } from 'd3';
+import { compose } from '@reduxjs/toolkit';
 
 const COLOURS = ["#fff", "#000", "#c8c8c8", "#282b55", "#bb2929","#e19c38","#61b359"];
 
@@ -57,6 +58,59 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     const [segment, selectSegment] = React.useState();
 
     const dataRef = useRef(data);
+    
+
+    const dimaverages = (averages)=>{
+        const sumquestions = (obj)=>{
+            return Object.keys(obj).reduce((acc, key)=>{
+                return acc + Number(obj[key]);
+            },0)
+        }
+
+        const dimtots = Object.keys(averages).reduce((acc,key)=>{
+            return {
+                d1 : (acc.d1 || 0) + sumquestions(averages[key].d1),
+                d2 : (acc.d2 || 0) + sumquestions(averages[key].d2),
+                d3 : (acc.d3 || 0) + sumquestions(averages[key].d3)
+            }
+        },{});
+
+        const chapters = Object.keys(averages).length;
+
+        return {
+            d1 : Math.round(dimtots.d1 / chapters),
+            d2 : Math.round(dimtots.d2 / chapters),
+            d3 : Math.round(dimtots.d3 / chapters),
+        }
+    }
+
+
+    const createmessages = (answers, averages)=>{
+        const diff = {
+            d1 : answers.d1 - averages.d1,
+            d2 : answers.d2 - averages.d2,
+            d3 : answers.d3 - averages.d3,
+        }
+        return {
+            d1: 
+                [
+                    diff.d1 >= -1 && diff.d1 <= 1 ? "the same knowledge" : diff.d1 <=1 ? "less knowledge" : "more knowledge",
+                    diff.d1 >= -1 && diff.d1 <= 1 ? "as most" : diff.d1 <=1 ? "than most" : "than most",
+                ],
+
+            d2: [
+                    diff.d2 >= -1 && diff.d2 <= 1 ? "the same choice" : diff.d2 <=1 ? "less choice" : "more choice",
+                    diff.d2 >= -1 && diff.d2 <= 1 ? "as most" : diff.d2 <=1 ? "than most" : "than most",
+                ],
+
+            d3: [
+                    diff.d3 >= -1 && diff.d3 <= 1 ? "the same risk" : diff.d3 <=1 ? "less risk" : "greater risk",
+                    diff.d3 >= -1 && diff.d3 <= 1 ? "as most" : diff.d3 <=1 ? "than most" : "than most",
+                ]
+        }
+    }
+    const aggregatemsgs = createmessages(dimaverages(answers), dimaverages(averages))
+
     
 
     React.useEffect(()=>{
@@ -407,16 +461,6 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 </g>
         })
     }
-    
-    const renderGridAxes = ()=>{
-        return null;  {/*<g className={styles.gridcategories}>
-                    {options.grid && renderChapterLabels()}
-                    <text onClick={()=>_toggleOption("d1")} x={40} y={205} style={{opacity: options["d1"] ? 1 : 0.2, fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>knowledge</text>
-                    <text onClick={()=>_toggleOption("d2")} x={77} y={205} style={{opacity: options["d2"] ? 1 : 0.2,fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>choice</text>
-                    <text onClick={()=>_toggleOption("d3")} x={112} y={205} style={{opacity: options["d3"] ? 1 : 0.2,fontSize:4, fill:"#c8c8c8", textAnchor:"middle"}}>risk</text>
-    </g>*/}
-    }
-
    
     const renderRows = ()=>{
         const renderImages = (row)=>{
@@ -434,7 +478,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     }
     const SVGWIDTH = 450; const SVGHEIGHT = 600;
     const SVGCOMPOSITEWIDTH = 450; const SVGCOMPOSITEHEIGHT = 450;
-    const tx = 10;
+    const tx = 20;
     const ty = 15;
 
     const tooltipstyle = {
@@ -444,14 +488,38 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     }
 
     const renderScreenView = ()=>{
-            return <div style={{display:"flex", flexDirection:"column"}}>
+            return <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
                     
                    
-                   
+                  
                     {<svg  width={SVGCOMPOSITEWIDTH} height={SVGCOMPOSITEHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
-                        <g ref={combined} id="container" transform={`translate(${0},${-30})`}></g>
-                        {renderGridAxes()}
+                        <g ref={combined} id="container" transform={`translate(${20},${-30})`}></g>
+                     
                     </svg>}
+                        <div style={{display:"flex", flexDirection:"row"}}>
+                            <div style={{display: "flex", flexDirection:"column", padding:20}}>
+                                <div className={styles.summary}>You have</div>
+                                <div className={styles.summarycontainer}>
+                                    <div className={styles.subknowledge}>{aggregatemsgs.d1[0]}</div>
+                                    <div className={styles.subknowledge}>{aggregatemsgs.d1[1]}</div>
+                                </div>
+                            </div>
+                            <div style={{display: "flex", flexDirection:"column", padding:20}}>
+                                <div className={styles.summary}>You want</div>
+                                <div className={styles.summarycontainer}>
+                                <div className={styles.subknowledge}>{aggregatemsgs.d2[0]}</div>
+                                <div className={styles.subknowledge}>{aggregatemsgs.d2[1]}</div>
+                                </div>
+                            </div>
+                            <div style={{display: "flex", flexDirection:"column", padding:20}}>
+                                <div className={styles.summary}>You see</div> 
+                                <div className={styles.summarycontainer}>
+                                    <div className={styles.subknowledge}>{aggregatemsgs.d3[0]} </div>
+                                    <div className={styles.subknowledge}>{aggregatemsgs.d3[1]}</div>
+                                </div>
+                            </div>
+                        </div>
+                  
                     {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
                         <g ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
                         {renderChapterLabels()}
