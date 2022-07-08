@@ -117,8 +117,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
         dataRef.current = data;
         _setData(data);    
     },[answers])  
-
-
+    
     const _setOptions = (attr,value)=>{
         dispatch(setOptions(attr,value));
     }
@@ -184,8 +183,8 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
 
 
     const renderShape = (root, grid)=>{
-        const {x:domX,y:domY} = root.node().getBoundingClientRect();
-
+       
+    
         const mydata = dataRef.current;
 
         var div = root.select(".tooltip").append("div").attr("class", "tooltip").style("opacity", 0);
@@ -264,7 +263,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     
         
         const _paths = paths.merge(newpaths)
-        
+       
         _paths
             .attr("d", (d,i)=>{   
                 return fni[dimindx[d.dim]](d.d)[d.question];
@@ -275,7 +274,8 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                     const rank = Math.round(d.d[`q${d.question+1}`]);
                     const average = averages[d.chapter][d.dim][`q${[d.question+1]}`];
                     const colour = d.dim === "d1" ? "#e5efc1" : d.dim === "d2" ? "#a2d5ab" : "#39aea9";
-                    setTT({colour, question: `${question} <div style="padding:10px 0px 10px 00px"> your score: <strong>${rank}%</strong> average: <strong> ${average}%</strong></div>`, pos:[domX+e.offsetX-50,domY+e.offsetY-50]});
+                    const {x:domX,y:domY} = root.node().getBoundingClientRect();
+                    setTT({colour, question: `${question} <div style="padding:10px 0px 10px 0px"> your score: <strong>${rank}%</strong> average: <strong> ${average}%</strong></div>`, pos:[domX+e.offsetX-50,domY+e.offsetY-50]});
                     setFilters({...{"d1":false, "d2":false, "d3":false},[d.dim]:true})
                     selectSegment({chapter:d.chapter, dimension:d.dim, question:d.question});
                 }
@@ -338,6 +338,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     const combined = useD3((root)=>{
         renderShape(root, false)
     }, [data, options, tt, filters, segment]);
+
     //Quite neat nested interleaving with d3
     const interleaved = useD3((root)=>{
         renderShape(root, true);   
