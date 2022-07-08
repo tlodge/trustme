@@ -99,7 +99,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 ],
 
             d2: [
-                    diff.d2 >= -1 && diff.d2 <= 1 ? "the same choice" : diff.d2 <=1 ? "less choice" : "more choice",
+                    diff.d2 >= -1 && diff.d2 <= 1 ? "the same choice" : diff.d2 <=1 ? "greater choice" : "less choice",
                     diff.d2 >= -1 && diff.d2 <= 1 ? "as most" : diff.d2 <=1 ? "than most" : "than most",
                 ],
 
