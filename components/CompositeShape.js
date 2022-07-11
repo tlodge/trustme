@@ -279,7 +279,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                     const average = averages[d.chapter][d.dim][`q${[d.question+1]}`];
                     const colour = d.dim === "d1" ? "#e5efc1" : d.dim === "d2" ? "#a2d5ab" : "#39aea9";
                     const {x:domX,y:domY} = root.node().getBoundingClientRect();
-                    setTT({colour, question: `${question} <div style="padding:10px 0px 10px 0px"> your score: <strong>${rank}%</strong> average: <strong> ${average}%</strong></div>`, pos:[domX+e.offsetX-50,domY+e.offsetY-50]});
+                    setTT({colour, question: `${question} <div style="padding:10px 0px 10px 0px"> your score: <strong>${rank}%</strong> average: <strong> ${average}%</strong></div>`, pos:[domX+e.offsetX-250,domY+e.offsetY-10]});
                     setFilters({...{"d1":false, "d2":false, "d3":false},[d.dim]:true})
                     selectSegment({chapter:d.chapter, dimension:d.dim, question:d.question});
                 }
