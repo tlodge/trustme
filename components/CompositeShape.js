@@ -259,6 +259,9 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 return options.strokeopacity;
             })
             .style("opacity", (d,i)=>{
+                const cfs = Object.keys(cfilters).reduce((acc,item)=>{
+                    return cfilters[item] && acc;
+                }, true);
                 return grid || filters[d.dim] ?  cfilters[d.chapter] ? 1.0 : 0.0 : 0.0;
             })
     
@@ -313,6 +316,10 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                 return options.strokewidth;
             })
             .style("opacity", (d,i)=>{
+                const cfs = Object.keys(cfilters).reduce((acc,item)=>{
+                    return cfilters[item] && acc;
+                }, true);
+
                 return grid || filters[d.dim] ?  cfilters[d.chapter] ? 1.0 : 0.0 : 0.0;
             })
             .style("fill", (d,i)=>{
@@ -343,7 +350,7 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     //Quite neat nested interleaving with d3
     const interleaved = useD3((root)=>{
         renderShape(root, true);   
-    }, [data, options, tt, segment])
+    }, [data, options, tt, cfilters, segment])
 
     const _toggleOption = (attr)=>{
         dispatch(toggleOption(attr));
