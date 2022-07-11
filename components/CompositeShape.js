@@ -491,8 +491,8 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
     const renderScreenView = ()=>{
             return <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
                     
-                   
-                  
+                 <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center"}}>
+                   <div  style={{margin:20}}>
                     {<svg  width={SVGCOMPOSITEWIDTH} height={SVGCOMPOSITEHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
                         <g ref={combined} id="container" transform={`translate(${20},${-30})`}></g>
                      
@@ -520,15 +520,19 @@ const CompositeShape = ({questions, answers, averages, onPrint}) => {
                                 </div>
                             </div>
                         </div>
-                  
+                    </div>
+                    <div  style={{margin:20}}>
                     {<svg  width={SVGWIDTH} height={SVGHEIGHT}   viewBox={`0 0 ${150} ${150}`}> 
                         <g ref={interleaved} id="container" transform={`translate(${tx},${ty})`}></g>
                         {renderChapterLabels()}
                     </svg>}
-                   
+                   </div>
+                   </div>
                
                 {tt.pos[0] > 0 && tt.pos[1] > 0 && <div className={styles.tooltip}  style={tooltipstyle} dangerouslySetInnerHTML={{__html:tt.question}}></div>}
-                <img target="_blank" onClick={()=>onPrint()} alt={"print image"} src={"/print.png"} width={22} height={22}/>         
+                <div>
+                <img target="_blank" onClick={()=>onPrint()} alt={"print image"} src={"/print.png"} width={22} height={22}/>  
+                </div>       
             </div>
     }
   

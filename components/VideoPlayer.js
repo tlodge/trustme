@@ -21,11 +21,14 @@ const VideoPlayer = ({amFinished, chapter, width}) => {
     return  <div className={styles.container}>
         <div className={styles.heading}>{`chapter ${chapter}`}</div>
        
-        <video autoPlay ref={videoElement} onPlaying={handleOnPlay}  onEnded={handleOnEnded.bind(this,()=>{amFinished(true)})} width={width} height="auto">
+        <video autoPlay ref={videoElement} onPlaying={handleOnPlay} onEnded={handleOnEnded.bind(this,()=>{amFinished(true)})} width={width} height="auto">
              <source src={`videos/c${chapter}.mp4`} type="video/mp4"/>
         </video>
         <div  onDoubleClick={handleOnEnded.bind(this,()=>{amFinished(true)})} onClick={()=>{togglePlay()}} className={styles.playcontainer} style={{background:playerState.isPlaying?"transparent":"black"}}>
-           {!playerState.isPlaying &&  <div className={styles.play}>{`Watch Chapter ${chapter}`}</div>}
+           {!playerState.isPlaying &&  <>
+            <div className={styles.play}>{`Watch Chapter ${chapter}`}</div>
+            <div onClick={handleOnEnded.bind(this,()=>{amFinished(true)})} className={styles.play}>{`Skip`}</div>
+           </>}
         </div>
     </div>
 }
